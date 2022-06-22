@@ -4,12 +4,20 @@ import { Provider } from "react-redux";
 import { store } from "./app/store";
 import App from "./App";
 import "./index.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 
 root.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route index element={<HomePage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   </Provider>
 );
