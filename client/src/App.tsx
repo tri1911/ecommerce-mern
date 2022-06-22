@@ -1,8 +1,7 @@
-import React from "react";
-import "./App.css";
+import Layout from "./components/Layout";
 
 function App() {
-  return <div className="text-green-400">Hello</div>;
+  return <Layout>content</Layout>;
 }
 
 export default App;
