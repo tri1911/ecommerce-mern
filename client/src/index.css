@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .size-filter input:checked + label {
+    @apply bg-primary text-white;
+  }
+
+  .color-filter input:checked + label {
+    @apply ring-2 ring-primary;
+  }
+}

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function CategoryItem({
   href,
   image,
@@ -47,9 +49,9 @@ function CategoriesDropdown() {
 
 function NavItem({ href, text }: { href: string; text: string }) {
   return (
-    <a href={href} className="text-gray-200 hover:text-white transition">
+    <Link to={href} className="text-gray-200 hover:text-white transition">
       {text}
-    </a>
+    </Link>
   );
 }
 

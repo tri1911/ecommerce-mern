@@ -1,100 +1,24 @@
+import { faker } from "@faker-js/faker";
 import { Product } from "../types";
 
-export const products: Product[] = [
-  {
-    _id: "1",
-    name: "Guyer chair",
-    image: "images/products/product1.jpg",
-    price: 45,
-    rating: 4.5,
-    reviews: 150,
-  },
-  {
-    _id: "2",
-    name: "Guyer chair",
-    image: "images/products/product2.jpg",
-    price: 45,
-    rating: 4.5,
-    reviews: 150,
-  },
-  {
-    _id: "3",
-    name: "Guyer chair",
-    image: "images/products/product3.jpg",
-    price: 45,
-    rating: 4.5,
-    reviews: 150,
-  },
-  {
-    _id: "4",
-    name: "Guyer chair",
-    image: "images/products/product4.jpg",
-    price: 45,
-    rating: 4.5,
-    reviews: 150,
-  },
-  {
-    _id: "5",
-    name: "Guyer chair",
-    image: "images/products/product5.jpg",
-    price: 45,
-    rating: 4.5,
-    reviews: 150,
-  },
-  {
-    _id: "6",
-    name: "Guyer chair",
-    image: "images/products/product6.jpg",
-    price: 45,
-    rating: 4.5,
-    reviews: 150,
-  },
-  {
-    _id: "7",
-    name: "Guyer chair",
-    image: "images/products/product7.jpg",
-    price: 45,
-    rating: 4.5,
-    reviews: 150,
-  },
-  {
-    _id: "8",
-    name: "Guyer chair",
-    image: "images/products/product8.jpg",
-    price: 45,
-    rating: 4.5,
-    reviews: 150,
-  },
-  {
-    _id: "9",
-    name: "Guyer chair",
-    image: "images/products/product9.jpg",
-    price: 45,
-    rating: 4.5,
-    reviews: 150,
-  },
-  {
-    _id: "10",
-    name: "Guyer chair",
-    image: "images/products/product10.jpg",
-    price: 45,
-    rating: 4.5,
-    reviews: 150,
-  },
-  {
-    _id: "11",
-    name: "Guyer chair",
-    image: "images/products/product11.jpg",
-    price: 45,
-    rating: 4.5,
-    reviews: 150,
-  },
-  {
-    _id: "12",
-    name: "Guyer chair",
-    image: "images/products/product12.jpg",
-    price: 45,
-    rating: 4.5,
-    reviews: 150,
-  },
-];
+const TOTAL = 12;
+
+export const products: Product[] = [];
+
+export function createRandomProduct(): Product {
+  return {
+    _id: faker.datatype.uuid(),
+    name: faker.commerce.productName(),
+    image: `images/products/product${faker.datatype.number({
+      min: 1,
+      max: TOTAL,
+    })}.jpg`,
+    price: faker.datatype.number({ min: 10, max: 100, precision: 0.01 }),
+    rating: faker.datatype.number({ min: 1, max: 5, precision: 0.1 }),
+    reviews: faker.datatype.number(500),
+  };
+}
+
+Array.from({ length: TOTAL }).forEach(() => {
+  products.push(createRandomProduct());
+});

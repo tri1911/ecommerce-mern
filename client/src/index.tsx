@@ -6,6 +6,7 @@ import App from "./App";
 import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import ShopPage from "./pages/ShopPage";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -16,6 +17,7 @@ root.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
+          <Route path="shop" element={<ShopPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
