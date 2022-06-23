@@ -10,7 +10,7 @@ export const useFilterCheckboxHandler = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // make the filter checkbox to be additive (clicking `cat1` and then `cat2` adds both categories to the search params) instead of replacing the brand
-  const handleBoxChecked: React.ChangeEventHandler<HTMLInputElement> = (
+  const handleCheckboxChanged: React.ChangeEventHandler<HTMLInputElement> = (
     event
   ) => {
     const { name, value, checked } = event.target;
@@ -28,5 +28,20 @@ export const useFilterCheckboxHandler = () => {
     }
   };
 
-  return handleBoxChecked;
+  return handleCheckboxChanged;
+};
+
+export const useFilterRadioHandler = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleRadioChanged: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    const { name, value } = event.target;
+
+    searchParams.set(name, value);
+    setSearchParams(searchParams);
+  };
+
+  return handleRadioChanged;
 };

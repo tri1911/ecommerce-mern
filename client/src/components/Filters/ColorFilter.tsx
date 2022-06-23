@@ -1,13 +1,16 @@
 import { useSearchParams } from "react-router-dom";
+import { useFilterRadioHandler } from "../../app/hooks";
 import { COLORS } from "../../types";
 
 function ColorItem({
   colorName,
   hexCode,
+  checked,
   onChange,
 }: {
   colorName: string;
   hexCode: string;
+  checked?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }) {
   const id = `color-${colorName}`;
@@ -20,6 +23,7 @@ function ColorItem({
         id={id}
         name="color"
         value={colorName}
+        checked={checked}
         onChange={onChange}
       />
       <label
@@ -32,16 +36,8 @@ function ColorItem({
 }
 
 export default function ColorFilter() {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const handleColorChanged: React.ChangeEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    const { name, value } = event.target;
-
-    searchParams.set(name, value);
-    setSearchParams(searchParams);
-  };
+  const [searchParams] = useSearchParams();
+  const handleColorChanged = useFilterRadioHandler();
 
   return (
     <div className="pt-4">
@@ -54,6 +50,7 @@ export default function ColorFilter() {
             key={colorName}
             colorName={colorName}
             hexCode={hexCode}
+            checked={searchParams.get("color") === colorName}
             onChange={handleColorChanged}
           />
         ))}

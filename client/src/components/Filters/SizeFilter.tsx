@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom";
+import { useFilterRadioHandler } from "../../app/hooks";
 import { Size, SIZES } from "../../types";
 
 function SizeItem({
@@ -34,16 +35,8 @@ function SizeItem({
 // TODO: clicking on the currently-active button should de-active it
 // NOTE: should put onChangeHandler here?
 export default function SizeFilter() {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const handleSizeChanged: React.ChangeEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    const { name, value } = event.target;
-
-    searchParams.set(name, value);
-    setSearchParams(searchParams);
-  };
+  const [searchParams] = useSearchParams();
+  const handleSizeChanged = useFilterRadioHandler();
 
   return (
     <div className="pt-4">
