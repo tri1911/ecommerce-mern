@@ -8,6 +8,23 @@ export const COLORS = {
 export type Size = typeof SIZES[number];
 export type Color = keyof typeof COLORS;
 
+export type CompareFn = (a: Product, b: Product) => number;
+
+export const SORT_OPTIONS: {
+  [key: string]: { name: string; compareFn: CompareFn };
+} = {
+  default: {
+    name: "Default sorting",
+    compareFn: (a, b) => a.name.localeCompare(b.name),
+  },
+  priceAsc: { name: "Price low-high", compareFn: (a, b) => a.price - b.price },
+  priceDesc: { name: "Price high-low", compareFn: (a, b) => b.price - a.price },
+  newest: {
+    name: "Latest product",
+    compareFn: (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt),
+  },
+};
+
 export interface Product {
   _id: string;
   name: string;
@@ -20,6 +37,7 @@ export interface Product {
   price: number;
   rating: number;
   reviews: number;
+  createdAt: string;
 }
 
 export interface Category {

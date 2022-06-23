@@ -25,6 +25,7 @@ export function createRandomProduct(): Product {
     price: faker.datatype.number({ min: 10, max: 100, precision: 0.01 }),
     rating: faker.datatype.number({ min: 1, max: 5, precision: 0.1 }),
     reviews: faker.datatype.number(500),
+    createdAt: faker.date.past().toISOString(),
   };
 }
 

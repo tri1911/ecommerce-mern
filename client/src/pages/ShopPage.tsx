@@ -13,6 +13,7 @@ import {
   selectAllProducts,
   selectProductsRequestStatus,
 } from "../slices/productsSlice";
+import { SORT_OPTIONS } from "../types";
 
 export default function ShopPage() {
   const [searchParams] = useSearchParams();
@@ -20,12 +21,16 @@ export default function ShopPage() {
   const products = useAppSelector(selectAllProducts);
   const status = useAppSelector(selectProductsRequestStatus);
 
-  const selectedCategories = searchParams.getAll("category") ?? "";
-  const selectedBrands = searchParams.getAll("brand") ?? "";
+  const selectedCategories = searchParams.getAll("category") ?? [];
+  const selectedBrands = searchParams.getAll("brand") ?? [];
   const selectedSize = searchParams.get("size") ?? "";
   const selectedColor = searchParams.get("color") ?? "";
 
-  const filteredProducts = products
+  const selectedSort = searchParams.get("sort") ?? "";
+
+  const { compareFn } = SORT_OPTIONS[selectedSort];
+
+  const processedProducts = products
     .filter((product) =>
       selectedCategories.length === 0
         ? true
@@ -39,7 +44,8 @@ export default function ShopPage() {
     .filter((product) => (!selectedSize ? true : selectedSize === product.size))
     .filter((product) =>
       !selectedColor ? true : selectedColor === product.color
-    );
+    )
+    .sort(compareFn);
 
   const dispatch = useAppDispatch();
 
@@ -64,7 +70,7 @@ export default function ShopPage() {
           </div>
           {status === "loading" && <Spinner />}
           {status === "succeeded" && (
-            <ProductsList products={filteredProducts} />
+            <ProductsList products={processedProducts} />
           )}
         </section>
       </div>
