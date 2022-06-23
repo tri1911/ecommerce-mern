@@ -11,7 +11,7 @@ function SocialLink({ href = "#", icon }: { href?: string; icon: string }) {
 function FooterText() {
   return (
     <div className="space-y-8 xl:col-span-1">
-      <img className="w-30" src="images/logo.svg" alt="E-commerce Logo" />
+      <img className="w-30" src="images/svg/logo.svg" alt="E-commerce Logo" />
       <p className="text-gray-500 text-base">
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi est
         consectetur aperiam similique consequuntur beatae.

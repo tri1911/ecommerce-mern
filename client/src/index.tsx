@@ -7,6 +7,7 @@ import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/ShopPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -18,6 +19,7 @@ root.render(
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
           <Route path="shop" element={<ShopPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

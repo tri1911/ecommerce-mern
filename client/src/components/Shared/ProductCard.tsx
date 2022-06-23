@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Product } from "../../types";
 
 function ProductImage({ id, image }: { id: string; image: string }) {
@@ -66,12 +67,12 @@ function ProductContent({
 
 function AddToCartBtn({ id }: { id: string }) {
   return (
-    <a
-      href={`/cart/${id}`}
+    <Link
+      to={`/cart/${id}`}
       className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition"
     >
       Add to Cart
-    </a>
+    </Link>
   );
 }
 

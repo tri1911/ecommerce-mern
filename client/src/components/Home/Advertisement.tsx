@@ -1,13 +1,15 @@
+import { Link } from "react-router-dom";
+
 export default function Advertisement() {
   return (
     <div className="container pb-16">
-      <a href="/">
+      <Link to="/">
         <img
           className="w-full"
           src="images/offer.jpg"
           alt="advertisement banner"
         />
-      </a>
+      </Link>
     </div>
   );
 }
