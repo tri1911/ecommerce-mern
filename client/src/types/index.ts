@@ -1,3 +1,5 @@
+import { SIZES } from "../components/Filters/SizeFilter";
+
 export interface Product {
   _id: string;
   name: string;
@@ -5,6 +7,7 @@ export interface Product {
   description: string;
   brand: string;
   category: string;
+  size: Size;
   price: number;
   rating: number;
   reviews: number;
@@ -27,3 +30,5 @@ export type RequestStatus = {
   status: "idle" | "loading" | "succeeded" | "failed";
   error?: string;
 };
+
+export type Size = typeof SIZES[number];

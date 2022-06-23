@@ -22,6 +22,7 @@ export default function ShopPage() {
 
   const selectedCategories = searchParams.getAll("category") ?? "";
   const selectedBrands = searchParams.getAll("brand") ?? "";
+  const selectedSize = searchParams.get("size") ?? "";
 
   const filteredProducts = products
     .filter((product) =>
@@ -33,6 +34,9 @@ export default function ShopPage() {
       selectedBrands.length === 0
         ? true
         : selectedBrands.includes(product.brand)
+    )
+    .filter((product) =>
+      !selectedSize ? true : selectedSize === product.size
     );
 
   const dispatch = useAppDispatch();

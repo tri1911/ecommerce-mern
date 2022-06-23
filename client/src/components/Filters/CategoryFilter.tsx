@@ -11,7 +11,7 @@ function CloseFilterButton() {
 }
 
 export default function CategoryFilter({ items }: { items: Category[] }) {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
 
@@ -23,14 +23,16 @@ export default function CategoryFilter({ items }: { items: Category[] }) {
 
     if (checked) {
       searchParams.append("category", name);
-      navigate(`/shop?${searchParams.toString()}`);
+      setSearchParams(searchParams);
+      // navigate(`/shop?${searchParams.toString()}`);
     } else {
       const newParams = new URLSearchParams(
         Array.from(searchParams).filter(
           ([key, value]) => key !== "category" || value !== name
         )
       );
-      navigate(`/shop?${newParams.toString()}`);
+      setSearchParams(newParams);
+      // navigate(`/shop?${newParams.toString()}`);
     }
   };
 

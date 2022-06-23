@@ -4,7 +4,7 @@ import FilterCheckBox from "./FilterCheckBox";
 
 // TODO: abstract the CategoryFilter & BrandFilter into a generic one
 export default function BrandFilter({ items }: { items: Brand[] }) {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
 
@@ -15,14 +15,16 @@ export default function BrandFilter({ items }: { items: Brand[] }) {
 
     if (checked) {
       searchParams.append("brand", name);
-      navigate(`/shop?${searchParams.toString()}`);
+      setSearchParams(searchParams);
+      // navigate(`/shop?${searchParams.toString()}`);
     } else {
       const newParams = new URLSearchParams(
         Array.from(searchParams).filter(
           ([key, value]) => key !== "brand" || value !== name
         )
       );
-      navigate(`/shop?${newParams.toString()}`);
+      setSearchParams(newParams);
+      // navigate(`/shop?${newParams.toString()}`);
     }
   };
 

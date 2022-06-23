@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { SIZES } from "../components/Filters/SizeFilter";
 import { Product } from "../types";
 import { brands } from "./brands";
 import { categories } from "./categories";
@@ -18,6 +19,7 @@ export function createRandomProduct(): Product {
     description: faker.commerce.productDescription(),
     brand: brands[faker.datatype.number(brands.length - 1)].slug,
     category: categories[faker.datatype.number(categories.length - 1)].slug,
+    size: SIZES[faker.datatype.number(SIZES.length - 1)],
     price: faker.datatype.number({ min: 10, max: 100, precision: 0.01 }),
     rating: faker.datatype.number({ min: 1, max: 5, precision: 0.1 }),
     reviews: faker.datatype.number(500),
