@@ -21,7 +21,10 @@ export default function FilterCheckBox({
         className="text-primary focus:ring-0 rounded-sm cursor-pointer"
         onChange={onChange}
       />
-      <label htmlFor={slug} className="text-gray-600 ml-3 cursor-pointer">
+      <label
+        htmlFor={slug}
+        className="text-gray-600 ml-3 cursor-pointer truncate"
+      >
         {name}
       </label>
       <div className="ml-auto text-gray-600 text-sm">({productsCount})</div>

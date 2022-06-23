@@ -22,11 +22,9 @@ export default function CategoryFilter({ items }: { items: Category[] }) {
     const { checked, name } = event.target;
 
     if (checked) {
-      // setSearchParams({ category: name });
       searchParams.append("category", name);
       navigate(`/shop?${searchParams.toString()}`);
     } else {
-      // setSearchParams({});
       const newParams = new URLSearchParams(
         Array.from(searchParams).filter(
           ([key, value]) => key !== "category" || value !== name
@@ -45,7 +43,7 @@ export default function CategoryFilter({ items }: { items: Category[] }) {
       <div className="space-y-2">
         {items.map(({ slug, name, quantity }) => (
           <FilterCheckBox
-            key={name}
+            key={slug}
             name={name}
             slug={slug}
             productsCount={quantity}

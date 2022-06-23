@@ -21,13 +21,19 @@ export default function ShopPage() {
   const status = useAppSelector(selectProductsRequestStatus);
 
   const selectedCategories = searchParams.getAll("category") ?? "";
-  // console.log("selectedCategories:", selectedCategories);
+  const selectedBrands = searchParams.getAll("brand") ?? "";
 
-  const filteredProducts = products.filter((product) =>
-    selectedCategories.length === 0
-      ? true
-      : selectedCategories.includes(product.category)
-  );
+  const filteredProducts = products
+    .filter((product) =>
+      selectedCategories.length === 0
+        ? true
+        : selectedCategories.includes(product.category)
+    )
+    .filter((product) =>
+      selectedBrands.length === 0
+        ? true
+        : selectedBrands.includes(product.brand)
+    );
 
   const dispatch = useAppDispatch();
 

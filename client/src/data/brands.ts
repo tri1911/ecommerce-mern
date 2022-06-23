@@ -6,7 +6,7 @@ export const brands: Brand[] = [];
 export function createRandomBrand(): Brand {
   const brand = faker.company.companyName();
   return {
-    slug: brand.toLowerCase(),
+    slug: brand.toLowerCase().split(" ")[0],
     name: brand,
     quantity: Number(faker.random.numeric(2)),
   };
