@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
 function BannerContent() {
   return (
@@ -18,12 +18,12 @@ function BannerContent() {
 function CTAButton() {
   return (
     <div className="mt-12">
-      <a
-        href="/shop"
+      <Link
+        to="/shop"
         className="bg-primary border border-primary text-white px-8 py-3 font-medium rounded-md uppercase hover:bg-transparent hover:text-primary transition"
       >
         Shop Now
-      </a>
+      </Link>
     </div>
   );
 }

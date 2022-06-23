@@ -2,6 +2,9 @@ export interface Product {
   _id: string;
   name: string;
   image: string;
+  description: string;
+  brand: string;
+  category: string;
   price: number;
   rating: number;
   reviews: number;
@@ -19,3 +22,8 @@ export interface Brand {
   name: string;
   quantity: number;
 }
+
+export type RequestStatus = {
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error?: string;
+};

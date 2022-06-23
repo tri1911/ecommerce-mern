@@ -1,11 +1,30 @@
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
+import Spinner from "../components/Shared/Spinner";
 import FilterToggle from "../components/Shop/FilterToggle";
 import ProductsDisplayControl from "../components/Shop/ProductsDisplayControl";
 import ProductsList from "../components/Shop/ProductsList";
 import ProductSorter from "../components/Shop/ProductSorter";
 import ShopSidebar from "../components/Shop/ShopSidebar";
+import {
+  fetchProducts,
+  selectAllProducts,
+  selectProductsRequestStatus,
+} from "../slices/productsSlice";
 
 export default function ShopPage() {
+  const products = useAppSelector(selectAllProducts);
+  const status = useAppSelector(selectProductsRequestStatus);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchProducts());
+    }
+  }, [status, dispatch]);
+
   return (
     <div>
       <Breadcrumbs locationName="Shop" />
@@ -19,7 +38,8 @@ export default function ShopPage() {
             <ProductSorter />
             <ProductsDisplayControl />
           </div>
-          <ProductsList />
+          {status === "loading" && <Spinner />}
+          {status === "succeeded" && <ProductsList products={products} />}
         </section>
       </div>
     </div>

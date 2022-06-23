@@ -1,7 +1,7 @@
-import { products } from "../../data/products";
+import { Product } from "../../types";
 import ProductCard from "../Shared/ProductCard";
 
-export default function ProductsList() {
+export default function ProductsList({ products }: { products: Product[] }) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
       {products.map((product) => (
