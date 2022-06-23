@@ -1,11 +1,13 @@
 export default function FilterCheckBox({
   slug,
+  text,
   name,
   productsCount,
   checked,
   onChange,
 }: {
   slug: string;
+  text: string;
   name: string;
   productsCount: number;
   checked?: boolean;
@@ -16,7 +18,8 @@ export default function FilterCheckBox({
       <input
         type="checkbox"
         id={slug}
-        name={slug}
+        name={name}
+        value={slug}
         checked={checked}
         className="text-primary focus:ring-0 rounded-sm cursor-pointer"
         onChange={onChange}
@@ -25,7 +28,7 @@ export default function FilterCheckBox({
         htmlFor={slug}
         className="text-gray-600 ml-3 cursor-pointer truncate"
       >
-        {name}
+        {text}
       </label>
       <div className="ml-auto text-gray-600 text-sm">({productsCount})</div>
     </div>

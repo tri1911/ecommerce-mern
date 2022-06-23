@@ -1,4 +1,5 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import { useFilterCheckboxHandler } from "../../app/hooks";
 import { Category } from "../../types";
 import FilterCheckBox from "./FilterCheckBox";
 
@@ -11,30 +12,8 @@ function CloseFilterButton() {
 }
 
 export default function CategoryFilter({ items }: { items: Category[] }) {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const navigate = useNavigate();
-
-  // make the filter checkbox to be additive (clicking `cat1` and then `cat2` adds both categories to the search params) instead of replacing the brand
-  const handleBoxChecked: React.ChangeEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    const { checked, name } = event.target;
-
-    if (checked) {
-      searchParams.append("category", name);
-      setSearchParams(searchParams);
-      // navigate(`/shop?${searchParams.toString()}`);
-    } else {
-      const newParams = new URLSearchParams(
-        Array.from(searchParams).filter(
-          ([key, value]) => key !== "category" || value !== name
-        )
-      );
-      setSearchParams(newParams);
-      // navigate(`/shop?${newParams.toString()}`);
-    }
-  };
+  const [searchParams] = useSearchParams();
+  const handleCategorySelected = useFilterCheckboxHandler();
 
   return (
     <div className="relative">
@@ -43,14 +22,15 @@ export default function CategoryFilter({ items }: { items: Category[] }) {
         Categories
       </h3>
       <div className="space-y-2">
-        {items.map(({ slug, name, quantity }) => (
+        {items.map(({ slug, name: text, quantity }) => (
           <FilterCheckBox
             key={slug}
-            name={name}
             slug={slug}
+            text={text}
+            name="category"
             productsCount={quantity}
             checked={searchParams.getAll("category").includes(slug)}
-            onChange={handleBoxChecked}
+            onChange={handleCategorySelected}
           />
         ))}
       </div>
