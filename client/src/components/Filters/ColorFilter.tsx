@@ -1,38 +1,61 @@
-type Color = { name: string; code: string };
+import { useSearchParams } from "react-router-dom";
+import { COLORS } from "../../types";
 
-const COLORS: Color[] = [
-  { name: "red", code: "#fc3d57" },
-  { name: "white", code: "#fff" },
-  { name: "black", code: "#000" },
-];
+function ColorItem({
+  colorName,
+  hexCode,
+  onChange,
+}: {
+  colorName: string;
+  hexCode: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+}) {
+  const id = `color-${colorName}`;
 
-function ColorItem({ color: { name, code } }: { color: Color }) {
   return (
     <div className="color-filter">
       <input
-        type="radio"
-        name="color"
         className="hidden"
-        id={`color-${name}`}
+        type="radio"
+        id={id}
+        name="color"
+        value={colorName}
+        onChange={onChange}
       />
       <label
-        htmlFor={`color-${name}`}
-        style={{ backgroundColor: code }}
+        htmlFor={id}
+        style={{ backgroundColor: hexCode }}
         className="text-xs border border-gray-200 rounded-sm h-5 w-5 flex items-center justify-center cursor-pointer shadow-sm"
-      ></label>
+      />
     </div>
   );
 }
 
 export default function ColorFilter() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleColorChanged: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    const { name, value } = event.target;
+
+    searchParams.set(name, value);
+    setSearchParams(searchParams);
+  };
+
   return (
     <div className="pt-4">
       <h3 className="text-xl text-gray-800 mb-3 uppercase font-medium">
         color
       </h3>
       <div className="flex items-center gap-2">
-        {COLORS.map((color) => (
-          <ColorItem key={color.name} color={color} />
+        {Object.entries(COLORS).map(([colorName, hexCode]) => (
+          <ColorItem
+            key={colorName}
+            colorName={colorName}
+            hexCode={hexCode}
+            onChange={handleColorChanged}
+          />
         ))}
       </div>
     </div>

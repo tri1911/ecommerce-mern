@@ -1,4 +1,12 @@
-import { SIZES } from "../components/Filters/SizeFilter";
+export const SIZES = ["xs", "s", "m", "l", "xl"] as const;
+export const COLORS = {
+  red: "#fc3d57",
+  white: "#fff",
+  black: "#000",
+} as const;
+
+export type Size = typeof SIZES[number];
+export type Color = keyof typeof COLORS;
 
 export interface Product {
   _id: string;
@@ -8,6 +16,7 @@ export interface Product {
   brand: string;
   category: string;
   size: Size;
+  color: Color;
   price: number;
   rating: number;
   reviews: number;
@@ -30,5 +39,3 @@ export type RequestStatus = {
   status: "idle" | "loading" | "succeeded" | "failed";
   error?: string;
 };
-
-export type Size = typeof SIZES[number];

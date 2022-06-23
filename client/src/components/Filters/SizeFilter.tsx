@@ -1,12 +1,10 @@
 import { useSearchParams } from "react-router-dom";
-import { Size } from "../../types";
-
-export const SIZES = ["xs", "s", "m", "l", "xl"] as const;
+import { Size, SIZES } from "../../types";
 
 function SizeItem({
   size,
-  onChange,
   checked,
+  onChange,
 }: {
   size: Size;
   checked?: boolean;
@@ -33,7 +31,8 @@ function SizeItem({
   );
 }
 
-// NOTE: where should I put onChangeHandler?
+// TODO: clicking on the currently-active button should de-active it
+// NOTE: should put onChangeHandler here?
 export default function SizeFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -50,14 +49,18 @@ export default function SizeFilter() {
     <div className="pt-4">
       <h3 className="text-xl text-gray-800 mb-3 uppercase font-medium">size</h3>
       <div className="flex items-center gap-2">
-        {SIZES.map((size) => (
-          <SizeItem
-            key={size}
-            size={size}
-            checked={searchParams.get("size") === size}
-            onChange={handleSizeChanged}
-          />
-        ))}
+        {SIZES.map((size) => {
+          const isSelected = searchParams.get("size") === size;
+
+          return (
+            <SizeItem
+              key={size}
+              size={size}
+              checked={isSelected}
+              onChange={handleSizeChanged}
+            />
+          );
+        })}
       </div>
     </div>
   );

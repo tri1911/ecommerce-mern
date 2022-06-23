@@ -3,7 +3,6 @@ import { useFilterCheckboxHandler } from "../../app/hooks";
 import { Brand } from "../../types";
 import FilterCheckBox from "./FilterCheckBox";
 
-// TODO: abstract the CategoryFilter & BrandFilter into a generic one
 export default function BrandFilter({ items }: { items: Brand[] }) {
   const [searchParams] = useSearchParams();
   const handleBrandSelected = useFilterCheckboxHandler();
