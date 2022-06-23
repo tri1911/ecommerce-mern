@@ -1,5 +1,5 @@
 import { Brand } from "../../types";
-import { FilterItem } from "./CategoryFilter";
+import FilterCheckBox from "./FilterCheckBox";
 
 export default function BrandFilter({ items }: { items: Brand[] }) {
   return (
@@ -9,7 +9,12 @@ export default function BrandFilter({ items }: { items: Brand[] }) {
       </h3>
       <div className="space-y-2">
         {items.map(({ name, quantity }) => (
-          <FilterItem key={name} name={name} quantity={quantity} />
+          <FilterCheckBox
+            slug={"#"}
+            key={name}
+            name={name}
+            productsCount={quantity}
+          />
         ))}
       </div>
     </div>

@@ -1,26 +1,6 @@
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Category } from "../../types";
-
-export function FilterItem({
-  name,
-  quantity,
-}: {
-  name: string;
-  quantity: number;
-}) {
-  return (
-    <div className="flex items-center">
-      <input
-        type="checkbox"
-        id={name}
-        className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-      />
-      <label htmlFor={name} className="text-gray-600 ml-3 cursor-pointer">
-        {name}
-      </label>
-      <div className="ml-auto text-gray-600 text-sm">({quantity})</div>
-    </div>
-  );
-}
+import FilterCheckBox from "./FilterCheckBox";
 
 function CloseFilterButton() {
   return (
@@ -31,6 +11,31 @@ function CloseFilterButton() {
 }
 
 export default function CategoryFilter({ items }: { items: Category[] }) {
+  const [searchParams] = useSearchParams();
+
+  const navigate = useNavigate();
+
+  // make the filter checkbox to be additive (clicking `cat1` and then `cat2` adds both categories to the search params) instead of replacing the brand
+  const handleBoxChecked: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    const { checked, name } = event.target;
+
+    if (checked) {
+      // setSearchParams({ category: name });
+      searchParams.append("category", name);
+      navigate(`/shop?${searchParams.toString()}`);
+    } else {
+      // setSearchParams({});
+      const newParams = new URLSearchParams(
+        Array.from(searchParams).filter(
+          ([key, value]) => key !== "category" || value !== name
+        )
+      );
+      navigate(`/shop?${newParams.toString()}`);
+    }
+  };
+
   return (
     <div className="relative">
       <CloseFilterButton />
@@ -38,8 +43,15 @@ export default function CategoryFilter({ items }: { items: Category[] }) {
         Categories
       </h3>
       <div className="space-y-2">
-        {items.map(({ name, quantity }) => (
-          <FilterItem key={name} name={name} quantity={quantity} />
+        {items.map(({ slug, name, quantity }) => (
+          <FilterCheckBox
+            key={name}
+            name={name}
+            slug={slug}
+            productsCount={quantity}
+            checked={searchParams.getAll("category").includes(slug)}
+            onChange={handleBoxChecked}
+          />
         ))}
       </div>
     </div>

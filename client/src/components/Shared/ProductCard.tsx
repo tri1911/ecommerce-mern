@@ -30,11 +30,11 @@ function ProductContent({
 }) {
   return (
     <div className="pt-4 pb-3 px-4">
-      <a href={`/products/${_id}`}>
+      <Link to={`/products/${_id}`}>
         <h4 className="truncate uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
           {name}
         </h4>
-      </a>
+      </Link>
       <div className="flex items-baseline mb-1 space-x-2">
         <p className="text-xl text-primary font-semibold">
           ${price.toFixed(2)}

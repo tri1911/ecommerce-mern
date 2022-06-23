@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import Spinner from "../components/Shared/Spinner";
@@ -14,8 +15,19 @@ import {
 } from "../slices/productsSlice";
 
 export default function ShopPage() {
+  const [searchParams] = useSearchParams();
+
   const products = useAppSelector(selectAllProducts);
   const status = useAppSelector(selectProductsRequestStatus);
+
+  const selectedCategories = searchParams.getAll("category") ?? "";
+  // console.log("selectedCategories:", selectedCategories);
+
+  const filteredProducts = products.filter((product) =>
+    selectedCategories.length === 0
+      ? true
+      : selectedCategories.includes(product.category)
+  );
 
   const dispatch = useAppDispatch();
 
@@ -39,7 +51,9 @@ export default function ShopPage() {
             <ProductsDisplayControl />
           </div>
           {status === "loading" && <Spinner />}
-          {status === "succeeded" && <ProductsList products={products} />}
+          {status === "succeeded" && (
+            <ProductsList products={filteredProducts} />
+          )}
         </section>
       </div>
     </div>

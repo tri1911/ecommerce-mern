@@ -9,7 +9,7 @@ export default function NotFoundPage() {
         <div className="w-2/3 mx-auto">
           <img
             className="w-full object-contain"
-            src="images/svg/404.svg"
+            src="/images/svg/404.svg"
             alt="page not found"
           />
         </div>

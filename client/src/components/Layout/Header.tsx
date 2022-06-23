@@ -1,7 +1,7 @@
 function Logo() {
   return (
     <a href="/" className="block w-32">
-      <img src="images/svg/logo.svg" alt="my logo" className="w-full" />
+      <img src="/images/svg/logo.svg" alt="my logo" className="w-full" />
     </a>
   );
 }

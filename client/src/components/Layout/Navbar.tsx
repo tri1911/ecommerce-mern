@@ -28,18 +28,22 @@ function CategoriesDropdown() {
       </span>
       <span className="ml-2 text-white capitalize">All Categories</span>
       <div className="absolute left-0 top-full w-full bg-white shadow-md py-3 invisible opacity-0 group-hover:opacity-100 group-hover:visible transition duration-300 z-50 divide-y divide-gray-300 divide-dashed">
-        <CategoryItem href="#" image="images/icons/bed.svg" text="Bedroom" />
-        <CategoryItem href="#" image="images/icons/sofa.svg" text="Sofa" />
-        <CategoryItem href="#" image="images/icons/office.svg" text="Office" />
+        <CategoryItem href="#" image="/images/icons/bed.svg" text="Bedroom" />
+        <CategoryItem href="#" image="/images/icons/sofa.svg" text="Sofa" />
+        <CategoryItem href="#" image="/images/icons/office.svg" text="Office" />
         <CategoryItem
           href="#"
-          image="images/icons/terrace.svg"
+          image="/images/icons/terrace.svg"
           text="Outdoor"
         />
-        <CategoryItem href="#" image="images/icons/bed-2.svg" text="Mattress" />
         <CategoryItem
           href="#"
-          image="images/icons/restaurant.svg"
+          image="/images/icons/bed-2.svg"
+          text="Mattress"
+        />
+        <CategoryItem
+          href="#"
+          image="/images/icons/restaurant.svg"
           text="Restaurant"
         />
       </div>
