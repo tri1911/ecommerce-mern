@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import FormSubmitButton from "./FormSubmitButton";
-import InputField from "./InputField";
+import FormSubmitButton from "../Shared/FormSubmitButton";
+import InputField from "../Shared/InputField";
 
 export default function LoginForm() {
   return (
@@ -36,7 +36,9 @@ export default function LoginForm() {
             Forgot Password?
           </Link>
         </div>
-        <FormSubmitButton label="Login" />
+        <div className="mt-4">
+          <FormSubmitButton label="Login" fluid />
+        </div>
       </div>
     </form>
   );

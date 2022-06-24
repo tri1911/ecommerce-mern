@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import FormSubmitButton from "./FormSubmitButton";
-import InputField from "./InputField";
+import FormSubmitButton from "../Shared/FormSubmitButton";
+import InputField from "../Shared/InputField";
 
 export default function RegisterForm() {
   return (
@@ -47,7 +47,9 @@ export default function RegisterForm() {
           </Link>
         </label>
       </div>
-      <FormSubmitButton label="Create Account" />
+      <div className="mt-4">
+        <FormSubmitButton label="Create Account" fluid />
+      </div>
     </form>
   );
 }

@@ -1,5 +1,5 @@
-import FormSubmitButton from "./FormSubmitButton";
-import InputField from "./InputField";
+import FormSubmitButton from "../Shared/FormSubmitButton";
+import InputField from "../Shared/InputField";
 
 export default function ResetPasswordForm() {
   return (
@@ -10,7 +10,7 @@ export default function ResetPasswordForm() {
         placeholder="Enter your Email Address"
         required
       />
-      <div className="w-2/5">
+      <div className="mt-4">
         <FormSubmitButton label="Reset Password" />
       </div>
     </form>

@@ -65,7 +65,11 @@ function SubLink({ href, text }: { href: string; text: string }) {
   return (
     <NavLink
       to={href}
-      className="block capitalize hover:text-primary transition"
+      className={({ isActive }) =>
+        classNames("block capitalize hover:text-primary transition", {
+          "text-primary": isActive,
+        })
+      }
     >
       {text}
     </NavLink>
