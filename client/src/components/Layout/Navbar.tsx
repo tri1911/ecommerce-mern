@@ -10,13 +10,13 @@ function CategoryItem({
   text: string;
 }) {
   return (
-    <a
-      href={href}
+    <Link
+      to={href}
       className="px-6 py-3 flex items-center hover:bg-gray-100 transition"
     >
       <img src={image} alt="" className="w-5 h-5 object-contain" />
       <span className="ml-6 text-gray-600 text-sm">{text}</span>
-    </a>
+    </Link>
   );
 }
 
@@ -53,7 +53,7 @@ function CategoriesDropdown() {
 
 function NavItem({ href, text }: { href: string; text: string }) {
   return (
-    <Link to={href} className="text-gray-200 hover:text-white transition">
+    <Link to={href} className="text-gray-200 hover:text-primary transition">
       {text}
     </Link>
   );
@@ -69,12 +69,15 @@ function NavMenu() {
         <NavItem href="/about" text="About us" />
         <NavItem href="/contact" text="Contact us" />
       </div>
-      <a
-        href="/login"
-        className="ml-auto justify-self-end text-gray-200 hover:text-white transition"
-      >
-        Login / Register
-      </a>
+      <div className="ml-auto justify-self-end text-gray-200">
+        <Link to="/login" className=" hover:text-primary transition">
+          Login
+        </Link>
+        <span> / </span>
+        <Link to="/register" className="hover:text-primary transition">
+          Register
+        </Link>
+      </div>
     </div>
   );
 }

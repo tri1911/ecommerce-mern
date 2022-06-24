@@ -7,8 +7,10 @@ import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/ShopPage";
-import NotFoundPage from "./pages/NotFoundPage";
+import LoginPage from "./pages/LoginPage";
 import SingleProductPage from "./pages/SingleProductPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import RegisterPage from "./pages/RegisterPage";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -20,7 +22,9 @@ root.render(
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
           <Route path="shop" element={<ShopPage />} />
-          <Route path="/products/:productId" element={<SingleProductPage />} />
+          <Route path="products/:productId" element={<SingleProductPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
