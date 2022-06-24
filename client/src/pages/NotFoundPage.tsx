@@ -4,7 +4,7 @@ import Breadcrumbs from "../components/Shared/Breadcrumbs";
 export default function NotFoundPage() {
   return (
     <div>
-      <Breadcrumbs locationName="404" />
+      <Breadcrumbs paths={["404"]} />
       <div className="container pt-4 pb-16">
         <div className="w-2/3 mx-auto">
           <img

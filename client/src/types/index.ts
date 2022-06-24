@@ -37,6 +37,8 @@ export interface Product {
   price: number;
   rating: number;
   reviews: number;
+  countInStock: number;
+  sku: string;
   createdAt: string;
 }
 

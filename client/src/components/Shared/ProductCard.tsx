@@ -1,23 +1,24 @@
 import { Link } from "react-router-dom";
 import { Product } from "../../types";
+import Rating from "./Rating";
 
 function ProductImage({ id, image }: { id: string; image: string }) {
   return (
     <div className="relative">
       <img className="w-full" src={image} alt="" />
       <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
-        <a
-          href={`/products/${id}`}
+        <Link
+          to={`/products/${id}`}
           className="text-white text-lg w-9 h-9 rounded-full bg-primary hover:bg-gray-800 transition flex items-center justify-center"
         >
           <i className="fas fa-search" />
-        </a>
-        <a
-          href={`/wishlist/add/${id}`}
+        </Link>
+        <Link
+          to={`/wishlist/add/${id}`}
           className="text-white text-lg w-9 h-9 rounded-full bg-primary hover:bg-gray-800 transition flex items-center justify-center"
         >
           <i className="far fa-heart" />
-        </a>
+        </Link>
       </div>
     </div>
   );
@@ -44,21 +45,7 @@ function ProductContent({
         </p>
       </div>
       <div className="flex items-center">
-        <div className="flex gap-1 text-sm text-yellow-400">
-          {[...Array(5).keys()].map((key) => (
-            <span key={key}>
-              <i
-                className={
-                  rating >= key + 1
-                    ? "fas fa-star"
-                    : rating >= key + 0.5
-                    ? "fas fa-star-half-alt"
-                    : "far fa-star"
-                }
-              />
-            </span>
-          ))}
-        </div>
+        <Rating rating={rating} />
         <div className="text-xs text-gray-500 ml-3">({reviews})</div>
       </div>
     </div>
