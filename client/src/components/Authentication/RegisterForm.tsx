@@ -1,5 +1,5 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import FormSubmitButton from "./FormSubmitButton";
 import InputField from "./InputField";
 
 export default function RegisterForm() {
@@ -47,14 +47,7 @@ export default function RegisterForm() {
           </Link>
         </label>
       </div>
-      <div className="mt-4">
-        <button
-          type="submit"
-          className="block w-full py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-medium"
-        >
-          Create Account
-        </button>
-      </div>
+      <FormSubmitButton label="Create Account" />
     </form>
   );
 }

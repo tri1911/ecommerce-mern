@@ -16,7 +16,11 @@ export default function RegisterPage() {
         />
         <RegisterForm />
         <SocialLinkButtons text="or sign up with" />
-        <FormFooter text="Already have an account?" action="Login Now" />
+        <FormFooter
+          text="Already have an account?"
+          action="Login Now"
+          href="/login"
+        />
       </FormWrapper>
     </div>
   );

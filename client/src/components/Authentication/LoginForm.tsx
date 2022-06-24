@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import FormSubmitButton from "./FormSubmitButton";
 import InputField from "./InputField";
 
 export default function LoginForm() {
@@ -31,18 +32,11 @@ export default function LoginForm() {
               Remember Me
             </label>
           </div>
-          <Link to="#" className="text-primary">
+          <Link to="/forgot-password" className="text-primary">
             Forgot Password?
           </Link>
         </div>
-        <div className="mt-4">
-          <button
-            type="submit"
-            className="block w-full py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-medium"
-          >
-            Login
-          </button>
-        </div>
+        <FormSubmitButton label="Login" />
       </div>
     </form>
   );

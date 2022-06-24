@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import SingleProductPage from "./pages/SingleProductPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -25,6 +26,7 @@ root.render(
           <Route path="products/:productId" element={<SingleProductPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

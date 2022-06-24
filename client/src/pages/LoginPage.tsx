@@ -13,7 +13,11 @@ export default function LoginPage() {
         <FormHeader title="Login" text="Login if you already have one" />
         <LoginForm />
         <SocialLinkButtons text="or login with" />
-        <FormFooter text="Don't have an account?" action="Register Now" />
+        <FormFooter
+          text="Don't have an account?"
+          action="Register Now"
+          href="/register"
+        />
       </FormWrapper>
     </div>
   );
