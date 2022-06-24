@@ -16,6 +16,10 @@ module.exports = {
       colors: {
         primary: "#FD3D57",
       },
+      fontFamily: {
+        poppins: "'Poppins', sans-serif",
+        roboto: "'Roboto', sans-serif",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],

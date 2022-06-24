@@ -5,6 +5,7 @@ import { ColorItem } from "../components/Filters/ColorFilter";
 import { SizeItem } from "../components/Filters/SizeFilter";
 import ProductSection from "../components/Home/ProductSection";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
+import QuantitySelector from "../components/Shared/QuantitySelector";
 import Rating from "../components/Shared/Rating";
 import { selectAllProducts, selectProductById } from "../slices/productsSlice";
 import { COLORS, Product, SIZES } from "../types";
@@ -141,15 +142,7 @@ function ProductQuantity() {
   return (
     <div className="mt-4">
       <h3 className="text-base text-gray-800 mb-1">Quantity</h3>
-      <div className="flex border border-gray-300 text-gray-600 divide-x divide-gray-300 w-max">
-        <div className="h-8 w-8 text-xl flex items-center justify-center cursor-pointer select-none">
-          -
-        </div>
-        <div className="h-8 w-10 flex items-center justify-center">4</div>
-        <div className="h-8 w-8 text-xl flex items-center justify-center cursor-pointer select-none">
-          +
-        </div>
-      </div>
+      <QuantitySelector />
     </div>
   );
 }

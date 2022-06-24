@@ -26,6 +26,8 @@ export default function ShopPage() {
   const products = useAppSelector(selectAllProducts);
   const status = useAppSelector(selectProductsRequestStatus);
 
+  // TODO: refactor to `filter` object (later, after finishing the ui prototype part)
+
   /* Filtering */
 
   const selectedCategories = searchParams.getAll("category") ?? [];

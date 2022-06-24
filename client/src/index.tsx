@@ -1,4 +1,3 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
@@ -12,6 +11,7 @@ import SingleProductPage from "./pages/SingleProductPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import CartPage from "./pages/CartPage";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -24,6 +24,7 @@ root.render(
           <Route index element={<HomePage />} />
           <Route path="shop" element={<ShopPage />} />
           <Route path="products/:productId" element={<SingleProductPage />} />
+          <Route path="cart" element={<CartPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />

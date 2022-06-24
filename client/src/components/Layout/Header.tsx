@@ -14,7 +14,7 @@ function SearchBar() {
       </span>
       <input
         type="text"
-        className="w-full border border-r-0 border-primary rounded-l-md pl-12 py-3 pr-3 focus:outline-none"
+        className="w-full border border-r-0 border-primary rounded-l-md pl-12 py-3 pr-3 focus:ring-primary focus:border-primary"
         placeholder="Search Products"
       />
       <button

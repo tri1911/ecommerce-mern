@@ -11,7 +11,7 @@ function CategoryItem({
       <img className="w-full" src={image} alt={name} />
       <a
         href={`/category/${slug}`}
-        className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-50 flex items-center justify-center text-xl text-white font-medium tracking-wide transition"
+        className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-50 flex items-center justify-center text-xl text-white font-roboto font-medium tracking-wide transition"
       >
         {name}
       </a>

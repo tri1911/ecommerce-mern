@@ -37,10 +37,10 @@ function ProductContent({
         </h4>
       </Link>
       <div className="flex items-baseline mb-1 space-x-2">
-        <p className="text-xl text-primary font-semibold">
+        <p className="text-xl text-primary font-roboto font-semibold">
           ${price.toFixed(2)}
         </p>
-        <p className="text-sm text-gray-400 line-through">
+        <p className="text-sm text-gray-400 font-roboto line-through">
           ${(price * 1.25).toFixed(2)}
         </p>
       </div>
