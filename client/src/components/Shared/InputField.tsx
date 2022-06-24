@@ -1,3 +1,6 @@
+import classNames from "classnames";
+
+// TODO: handle the toggle hide/show password properly
 export default function InputField({
   label,
   type = "text",
@@ -16,13 +19,23 @@ export default function InputField({
       <label className="text-gray-600 mb-2 block">
         {label} {required && <span className="text-primary">*</span>}
       </label>
-      <input
-        type={type}
-        className="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
-        value={value}
-        placeholder={placeholder}
-        required={required}
-      />
+      <div className="relative">
+        <span
+          className={classNames(
+            { hidden: type !== "password" },
+            "absolute right-3 top-3 text-sm text-gray-500 cursor-pointer"
+          )}
+        >
+          <i className="far fa-eye-slash" />
+        </span>
+        <input
+          type={type}
+          className="default-input"
+          value={value}
+          placeholder={placeholder}
+          required={required}
+        />
+      </div>
     </div>
   );
 }

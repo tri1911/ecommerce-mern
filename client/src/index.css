@@ -21,6 +21,10 @@
 
 @layer components {
   .default-btn {
-    @apply bg-primary border border-primary text-white px-8 py-3 font-medium rounded-md uppercase hover:bg-transparent hover:text-primary transition;
+    @apply px-8 py-3 border border-primary rounded bg-primary text-white text-center font-roboto font-medium uppercase hover:bg-transparent hover:text-primary transition;
+  }
+
+  .default-input {
+    @apply w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400;
   }
 }

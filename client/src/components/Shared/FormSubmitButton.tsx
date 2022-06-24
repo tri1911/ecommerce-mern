@@ -11,11 +11,7 @@ export default function FormSubmitButton({
   return (
     <button
       type="submit"
-      className={classNames(
-        "block py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-roboto font-medium",
-        { "w-full": fluid },
-        { "px-6": !fluid }
-      )}
+      className={classNames("default-btn", "py-2", { "w-full": fluid })}
     >
       {label}
     </button>

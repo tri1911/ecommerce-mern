@@ -15,6 +15,8 @@ import MyAccountPage from "./pages/MyAccountPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ManageAccount from "./components/Account/ManageAccount";
 import ProfileInfo from "./components/Account/ProfileInfo";
+import AddressInfo from "./components/Account/AddressInfo";
+import UpdatePassword from "./components/Account/UpdatePassword";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -34,6 +36,8 @@ root.render(
           <Route path="account" element={<MyAccountPage />}>
             <Route index element={<ManageAccount />} />
             <Route path="profile" element={<ProfileInfo />} />
+            <Route path="address" element={<AddressInfo />} />
+            <Route path="password" element={<UpdatePassword />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
