@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Logo() {
   return (
     <a href="/" className="block w-32">
@@ -41,8 +43,8 @@ function SingleNavIcon({
   badgeRight?: string;
 }) {
   return (
-    <a
-      href={href}
+    <Link
+      to={href}
       className="block text-center text-gray-700 hover:text-primary transition relative"
     >
       {badgeValue && (
@@ -56,7 +58,7 @@ function SingleNavIcon({
         <i className={icon} />
       </div>
       <div className="text-xs leading-3">{label}</div>
-    </a>
+    </Link>
   );
 }
 

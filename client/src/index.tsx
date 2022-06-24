@@ -6,12 +6,14 @@ import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/ShopPage";
-import LoginPage from "./pages/LoginPage";
 import SingleProductPage from "./pages/SingleProductPage";
-import NotFoundPage from "./pages/NotFoundPage";
+import CartPage from "./pages/CartPage";
+import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import CartPage from "./pages/CartPage";
+import MyAccountPage from "./pages/MyAccountPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import ManageAccount from "./components/Account/ManageAccount";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -28,6 +30,12 @@ root.render(
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="account" element={<MyAccountPage />}>
+            <Route index element={<ManageAccount />} />
+            {/* <Route path="profile" element={<ProfileInfo />} />
+            <Route path="address" element={<AddressInfo />} />
+            <Route path="update-password" element={<UpdatePassword />} /> */}
+          </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
