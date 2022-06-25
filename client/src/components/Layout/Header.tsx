@@ -66,7 +66,7 @@ function NavIcons() {
   return (
     <div className="flex items-center space-x-4">
       <SingleNavIcon
-        href="/wishlist"
+        href="/account/wishlist"
         icon="far fa-heart"
         label="Wish List"
         badgeValue={5}
@@ -78,7 +78,11 @@ function NavIcons() {
         badgeValue={3}
         badgeRight="-right-3"
       />
-      <SingleNavIcon href="/account" icon="far fa-user" label="Account" />
+      <SingleNavIcon
+        href="/account/manage"
+        icon="far fa-user"
+        label="Account"
+      />
     </div>
   );
 }

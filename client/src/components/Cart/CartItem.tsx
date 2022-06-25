@@ -3,7 +3,7 @@ import QuantitySelector from "../Shared/QuantitySelector";
 
 function CartItemImage() {
   return (
-    <div className="w-32 flex-shrink-0">
+    <div className="w-32 shrink-0">
       <img
         src="/images/products/product9.jpg"
         className="w-full"

@@ -86,9 +86,9 @@ function OrderStatusItem({ status = "in progress" }: { status?: OrderStatus }) {
       <p
         className={classNames(
           "capitalize",
-          { "text-yellow-500": status === "in progress" },
-          { "text-green-500": status === "delivered" },
-          { "text-red-500": status === "canceled" }
+          { "text-yellow-600": status === "in progress" },
+          { "text-green-600": status === "delivered" },
+          { "text-red-600": status === "canceled" }
         )}
       >
         {status}

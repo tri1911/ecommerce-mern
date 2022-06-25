@@ -17,6 +17,7 @@ import ManageAccount from "./components/Account/ManageAccount";
 import ProfileInfo from "./components/Account/ProfileInfo";
 import AddressInfo from "./components/Account/AddressInfo";
 import UpdatePassword from "./components/Account/UpdatePassword";
+import Wishlist from "./components/Account/Wishlist";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -34,10 +35,12 @@ root.render(
           <Route path="register" element={<RegisterPage />} />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route path="account" element={<MyAccountPage />}>
-            <Route index element={<ManageAccount />} />
+            {/* <Route index element={<ManageAccount />} /> */}
+            <Route path="manage" element={<ManageAccount />} />
             <Route path="profile" element={<ProfileInfo />} />
             <Route path="address" element={<AddressInfo />} />
             <Route path="password" element={<UpdatePassword />} />
+            <Route path="wishlist" element={<Wishlist />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>

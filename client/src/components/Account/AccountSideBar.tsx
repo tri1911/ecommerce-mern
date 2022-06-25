@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 function WelcomeCard({ name }: { name: string }) {
   return (
     <div className="px-4 py-3 shadow flex items-center gap-4">
-      <div className="flex-shrink-0">
+      <div className="shrink-0">
         <img
           src="/images/avatar.png"
           alt="avatar"
@@ -83,7 +83,7 @@ export default function AccountSideBar() {
       <div className="mt-6 bg-white text-gray-600 shadow rounded p-4 divide-y divide-gray-200 space-y-4">
         <LinksGroupWrapper isFirstGroup>
           <MainLink
-            href="/account"
+            href="/account/manage"
             text="Manage Account"
             icon="far fa-address-card"
           />

@@ -7,7 +7,7 @@ import PriceFilter from "../Filters/PriceFilter";
 import SizeFilter from "../Filters/SizeFilter";
 import ColorFilter from "../Filters/ColorFilter";
 
-export default function ShopSidebar() {
+export default function ShopSideBar() {
   return (
     <div className="divide-gray-200 divide-y space-y-5 relative">
       <CategoryFilter items={categories} />
