@@ -61,3 +61,5 @@ export type RequestStatus = {
   status: "idle" | "loading" | "succeeded" | "failed";
   error?: string;
 };
+
+export type ShopDisplayMode = "grid" | "list";

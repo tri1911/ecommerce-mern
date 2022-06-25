@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import Spinner from "../components/Shared/Spinner";
 import FilterToggle from "../components/Shop/FilterToggle";
 import ProductsDisplayControl from "../components/Shop/ProductsDisplayControl";
-import ProductsList from "../components/Shop/ProductsList";
+import ProductsGridView from "../components/Shop/ProductsGridView";
+import ProductsListView from "../components/Shop/ProductsListView";
 import ProductSorter from "../components/Shop/ProductSorter";
 import ShopSideBar from "../components/Shop/ShopSideBar";
 import {
@@ -18,6 +19,7 @@ import { SORT_OPTIONS } from "../types";
 export default function ShopPage() {
   /* importing hooks */
 
+  const [displayMode, setDisplayMode] = useState<"grid" | "list">("grid");
   const dispatch = useAppDispatch();
   const [searchParams] = useSearchParams();
 
@@ -26,7 +28,7 @@ export default function ShopPage() {
   const products = useAppSelector(selectAllProducts);
   const status = useAppSelector(selectProductsRequestStatus);
 
-  // TODO: refactor to `filter` object (later, after finishing the ui prototype part)
+  // TODO: refactor to `filter` object (later, after finishing the ui prototype part) & use `useMemo` as well
 
   /* Filtering */
 
@@ -81,12 +83,18 @@ export default function ShopPage() {
           <div className="mb-4 flex items-center">
             <FilterToggle />
             <ProductSorter />
-            <ProductsDisplayControl />
+            <ProductsDisplayControl
+              displayMode={displayMode}
+              setDisplayMode={setDisplayMode}
+            />
           </div>
           {status === "loading" && <Spinner />}
-          {status === "succeeded" && (
-            <ProductsList products={processedProducts} />
-          )}
+          {status === "succeeded" &&
+            (displayMode === "grid" ? (
+              <ProductsGridView products={processedProducts} />
+            ) : (
+              <ProductsListView products={processedProducts} />
+            ))}
         </section>
       </div>
     </div>
