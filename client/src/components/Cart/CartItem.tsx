@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import QuantitySelector from "../Shared/QuantitySelector";
 
 function CartItemImage() {
@@ -15,10 +16,12 @@ function CartItemImage() {
 
 function CartItemContent() {
   return (
-    <div className="md:w-1/3 w-full">
-      <h2 className="text-gray-800 mb-3 xl:text-xl text-lg font-medium uppercase">
-        Italian L Shape Sofa
-      </h2>
+    <div className="md:w-fit w-full">
+      <Link to="/products/id">
+        <h2 className="text-gray-800 mb-3 xl:text-xl text-lg font-medium uppercase hover:text-primary transition">
+          Italian L Shape Sofa
+        </h2>
+      </Link>
       <p className="text-primary font-semibold">$45.00</p>
       <p className="text-gray-500">Size: M</p>
     </div>

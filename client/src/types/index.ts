@@ -42,11 +42,13 @@ export interface Product {
   createdAt: string;
 }
 
+// NOTE: should save the product ids OR just the number of products
 export interface Category {
   slug: string;
   name: string;
   image: string;
   quantity: number;
+  icon?: string;
 }
 
 export interface Brand {

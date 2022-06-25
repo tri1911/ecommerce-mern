@@ -58,7 +58,7 @@ function CheckoutBtn() {
 export default function CartSummary() {
   return (
     <section className="xl:col-span-3 lg:col-span-4 border border-gray-200 px-4 py-4 rounded mt-6 lg:mt-0">
-      <h4 className="mb-4 text-lg font-medium text-gray-800 uppercase">
+      <h4 className="mb-4 text-lg font-semibold text-gray-800 uppercase">
         Order Summary
       </h4>
       <CartTotal />

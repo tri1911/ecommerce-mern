@@ -1,12 +1,14 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { selectAllCategories } from "../../slices/categoriesSlice";
 
 function CategoryItem({
   href,
-  image,
+  icon,
   text,
 }: {
   href: string;
-  image: string;
+  icon: string;
   text: string;
 }) {
   return (
@@ -14,13 +16,17 @@ function CategoryItem({
       to={href}
       className="px-6 py-3 flex items-center hover:bg-gray-100 transition"
     >
-      <img src={image} alt="" className="w-5 h-5 object-contain" />
+      <img src={icon} alt="" className="w-5 h-5 object-contain" />
       <span className="ml-6 text-gray-600 text-sm">{text}</span>
     </Link>
   );
 }
 
+// NOTE: should pass `categories` props here OR just get data from store? (I chose get data from store because I don't re-use this component with different `categories` set)
 function CategoriesDropdown() {
+  const categories = useSelector(selectAllCategories);
+
+  // NOTE: it's better to save the icon by category's slug
   return (
     <div className="px-8 py-4 bg-primary flex items-center cursor-pointer group relative">
       <span className="text-white">
@@ -28,24 +34,14 @@ function CategoriesDropdown() {
       </span>
       <span className="ml-2 text-white capitalize">All Categories</span>
       <div className="absolute left-0 top-full w-full bg-white shadow-md py-3 invisible opacity-0 group-hover:opacity-100 group-hover:visible transition duration-300 z-50 divide-y divide-gray-300 divide-dashed">
-        <CategoryItem href="#" image="/images/icons/bed.svg" text="Bedroom" />
-        <CategoryItem href="#" image="/images/icons/sofa.svg" text="Sofa" />
-        <CategoryItem href="#" image="/images/icons/office.svg" text="Office" />
-        <CategoryItem
-          href="#"
-          image="/images/icons/terrace.svg"
-          text="Outdoor"
-        />
-        <CategoryItem
-          href="#"
-          image="/images/icons/bed-2.svg"
-          text="Mattress"
-        />
-        <CategoryItem
-          href="#"
-          image="/images/icons/restaurant.svg"
-          text="Restaurant"
-        />
+        {categories.map(({ slug, icon, name }) => (
+          <CategoryItem
+            key={slug}
+            href={`/shop?category=${slug}`}
+            icon={`/images/icons/${icon}.svg`}
+            text={name}
+          />
+        ))}
       </div>
     </div>
   );
