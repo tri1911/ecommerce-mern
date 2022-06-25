@@ -21,7 +21,7 @@
 
 @layer components {
   .default-btn {
-    @apply block px-8 py-3 border border-primary rounded bg-primary text-white text-center font-roboto font-medium uppercase hover:bg-transparent hover:text-primary transition;
+    @apply px-8 py-3 border border-primary rounded bg-primary text-white text-center font-roboto font-medium uppercase hover:bg-transparent hover:text-primary transition;
   }
 
   .default-input {

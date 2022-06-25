@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import AccountSideBar from "../components/Account/AccountSideBar";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 
+// TODO: Dropdown menu in mobile screen & hide the sidebar
 export default function MyAccountPage() {
   return (
     <div>

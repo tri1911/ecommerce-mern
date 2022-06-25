@@ -18,7 +18,7 @@ function WishlistItem() {
       <div className="__price w-full md:w-fit">
         <p className="text-primary text-lg font-semibold">$320.00</p>
       </div>
-      <Link to="/cart/id" className="__add-btn default-btn px-6 py-2">
+      <Link to="/cart/id" className="__add-btn default-btn block px-6 py-2">
         Add to cart
       </Link>
       <div className="__delete-btn absolute md:static top-2 right-3 text-gray-600 hover:text-primary cursor-pointer">
