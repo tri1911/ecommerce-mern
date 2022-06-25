@@ -14,7 +14,7 @@ export default function NotFoundPage() {
           />
         </div>
         <div className="text-center mt-5">
-          <h4 className="mb-8 text-center text-3xl font-semibold uppercase">
+          <h4 className="my-8 text-2xl font-medium uppercase">
             The page you've requested is not available
           </h4>
           <Link to="/" className="default-btn">

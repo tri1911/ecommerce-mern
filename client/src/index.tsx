@@ -19,6 +19,7 @@ import AddressInfo from "./components/Account/AddressInfo";
 import UpdatePassword from "./components/Account/UpdatePassword";
 import Wishlist from "./components/Account/Wishlist";
 import CheckoutPage from "./pages/CheckoutPage";
+import OrderCompletePage from "./pages/OrderCompletePage";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -44,6 +45,7 @@ root.render(
             <Route path="wishlist" element={<Wishlist />} />
           </Route>
           <Route path="checkout" element={<CheckoutPage />} />
+          <Route path="order-complete" element={<OrderCompletePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
