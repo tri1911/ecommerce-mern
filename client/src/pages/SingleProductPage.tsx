@@ -1,14 +1,14 @@
+import classNames from "classnames";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
-import { ColorItem } from "../components/Filters/ColorFilter";
-import { SizeItem } from "../components/Filters/SizeFilter";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import ProductSection from "../components/Home/ProductSection";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import QuantitySelector from "../components/Shared/QuantitySelector";
 import Rating from "../components/Shared/Rating";
+import { addCartItem } from "../slices/cartSlice";
 import { selectAllProducts, selectProductById } from "../slices/productsSlice";
-import { COLORS, Product, SIZES } from "../types";
+import { CartItem, Color, COLORS, Fn, Product, Size, SIZES } from "../types";
 
 /* Product Image */
 
@@ -109,56 +109,114 @@ function ProductPrice({ price }: { price: number }) {
   );
 }
 
-// TODO: pass checked, onChange attributes as well
-function ProductSizeSelector() {
+function ProductSizeSelector({
+  selectedSize,
+  setSelectedSize,
+}: {
+  selectedSize: Size | undefined;
+  setSelectedSize: Fn<[Size | undefined], void>;
+}) {
   return (
     <div className="mt-4">
       <h3 className="text-base text-gray-800 mb-1">Size</h3>
       <div className="flex items-center gap-2">
         {SIZES.map((value) => (
-          <SizeItem key={value} value={value} />
+          // <SizeItem key={value} value={value} />
+          <div
+            key={value}
+            className={classNames("product-size-box", {
+              "bg-primary text-white": selectedSize === value,
+            })}
+            onClick={() => setSelectedSize(value)}
+          >
+            {value.toUpperCase()}
+          </div>
         ))}
       </div>
     </div>
   );
 }
 
-// TODO: pass checked, onChange attributes as well
-function ProductColorSelector() {
+function ProductColorSelector({
+  selectedColor,
+  setSelectedColor,
+}: {
+  selectedColor: Color | undefined;
+  setSelectedColor: Fn<[Color | undefined], void>;
+}) {
   return (
     <div className="mt-4">
       <h3 className="text-base text-gray-800 mb-1">Color</h3>
       <div className="flex items-center gap-2">
         {Object.entries(COLORS).map(([colorName, hexCode]) => (
-          <ColorItem key={colorName} colorName={colorName} hexCode={hexCode} />
+          // <ColorItem key={colorName} colorName={colorName} hexCode={hexCode} />
+          <div
+            key={colorName}
+            className={classNames("product-color-box", {
+              "ring-2 ring-primary": selectedColor === colorName,
+            })}
+            style={{ backgroundColor: hexCode }}
+            onClick={() => setSelectedColor(colorName as Color)}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-// TODO: pass `onChange` for buttons `+` & `-`
-function ProductQuantity() {
+function ProductQuantity({
+  countInStock,
+  selectedQuantity,
+  setSelectedQuantity,
+}: {
+  countInStock: number;
+  selectedQuantity: number;
+  setSelectedQuantity: Fn<[number], void>;
+}) {
+  const increaseQuantity = () => {
+    if (selectedQuantity < countInStock) {
+      setSelectedQuantity(selectedQuantity + 1);
+    }
+  };
+
+  const decreaseQuantity = () => {
+    if (selectedQuantity > 0) {
+      setSelectedQuantity(selectedQuantity - 1);
+    }
+  };
+
   return (
     <div className="mt-4">
       <h3 className="text-base text-gray-800 mb-1">Quantity</h3>
-      <QuantitySelector />
+      <QuantitySelector
+        value={selectedQuantity}
+        handleAdd={increaseQuantity}
+        handleRemove={decreaseQuantity}
+      />
     </div>
   );
 }
 
-function ProductCTAButtons() {
+function ProductCTAButtons({
+  canAddItem,
+  onAddToCartClicked,
+}: {
+  canAddItem: boolean;
+  onAddToCartClicked: Fn<[], void>;
+}) {
   return (
     <div className="flex gap-3 border-b border-gray-200 pb-5 mt-6">
-      <Link
-        to="/cart/id-here"
-        className="bg-primary border border-primary text-white px-8 py-2 font-medium rounded uppercase hover:bg-transparent hover:text-primary transition text-sm flex items-center"
+      <button
+        type="button"
+        className="bg-primary border border-primary text-white px-8 py-2 font-medium rounded uppercase hover:bg-transparent hover:text-primary transition text-sm flex items-center disabled:opacity-75 disabled:cursor-not-allowed"
+        onClick={onAddToCartClicked}
+        disabled={!canAddItem}
       >
         <span className="mr-2">
           <i className="fas fa-shopping-bag" />
         </span>{" "}
         Add to cart
-      </Link>
+      </button>
       <Link
         to="/wishlist/id-here"
         className="border border-gray-300 text-gray-600 px-8 py-2 font-medium rounded uppercase hover:bg-transparent hover:text-primary transition text-sm"
@@ -197,11 +255,49 @@ function SocialShareIcons() {
   );
 }
 
-function ProductContent({
-  product: { name, rating, reviews, countInStock, brand, category, sku, price },
-}: {
-  product: Product;
-}) {
+function ProductContent({ product }: { product: Product }) {
+  const [size, setSize] = useState<Size | undefined>(undefined);
+  const [color, setColor] = useState<Color | undefined>(undefined);
+  const [quantity, setQuantity] = useState(1);
+
+  const {
+    name,
+    image,
+    description,
+    rating,
+    reviews,
+    countInStock,
+    brand,
+    category,
+    sku,
+    price,
+  } = product;
+
+  const toCartItem = (product: Product): CartItem | undefined => {
+    if (size && color) {
+      return {
+        productId: product._id,
+        name,
+        image,
+        price,
+        countInStock,
+        size,
+        color,
+        quantity,
+      };
+    }
+  };
+
+  const dispatch = useAppDispatch();
+
+  const canAddItem = [size, color, quantity].every((value) => Boolean(value));
+
+  const handleAddToCart = () => {
+    if (canAddItem) {
+      dispatch(addCartItem(toCartItem(product)));
+    }
+  };
+
   return (
     <div>
       <h2 className="md:text-3xl text-2xl font-medium uppercase mb-2">
@@ -215,14 +311,18 @@ function ProductContent({
         sku={sku}
       />
       <ProductPrice price={price} />
-      <p className="mt-4 text-gray-600">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
-        exercitationem quaerat excepturi labore blanditiis
-      </p>
-      <ProductSizeSelector />
-      <ProductColorSelector />
-      <ProductQuantity />
-      <ProductCTAButtons />
+      <p className="mt-4 text-gray-600">{description.substring(0, 100)}</p>
+      <ProductSizeSelector selectedSize={size} setSelectedSize={setSize} />
+      <ProductColorSelector selectedColor={color} setSelectedColor={setColor} />
+      <ProductQuantity
+        countInStock={countInStock}
+        selectedQuantity={quantity}
+        setSelectedQuantity={setQuantity}
+      />
+      <ProductCTAButtons
+        canAddItem={canAddItem}
+        onAddToCartClicked={handleAddToCart}
+      />
       <SocialShareIcons />
     </div>
   );
@@ -257,28 +357,30 @@ function ProductInfo() {
           </p>
         </div>
         <table className="table-auto border-collapse w-full text-left text-gray-600 text-sm mt-6">
-          <tr>
-            <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
-              Color
-            </th>
-            <td className="py-2 px-4 border border-gray-300">
-              Black, Brown, Red
-            </td>
-          </tr>
-          <tr>
-            <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
-              Material
-            </th>
-            <td className="py-2 px-4 border border-gray-300">
-              Artificial Leather
-            </td>
-          </tr>
-          <tr>
-            <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
-              Weight
-            </th>
-            <td className="py-2 px-4 border border-gray-300">55kg</td>
-          </tr>
+          <tbody>
+            <tr>
+              <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
+                Color
+              </th>
+              <td className="py-2 px-4 border border-gray-300">
+                Black, Brown, Red
+              </td>
+            </tr>
+            <tr>
+              <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
+                Material
+              </th>
+              <td className="py-2 px-4 border border-gray-300">
+                Artificial Leather
+              </td>
+            </tr>
+            <tr>
+              <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
+                Weight
+              </th>
+              <td className="py-2 px-4 border border-gray-300">55kg</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </>

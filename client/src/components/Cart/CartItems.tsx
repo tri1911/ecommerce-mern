@@ -1,5 +1,7 @@
 import React from "react";
-import CartItem from "./CartItem";
+import { useAppSelector } from "../../app/hooks";
+import { selectAllCartItems } from "../../slices/cartSlice";
+import CartItemRow from "./CartItemRow";
 
 function CartHeading() {
   return (
@@ -14,12 +16,15 @@ function CartHeading() {
 }
 
 export default function CartItemsSection() {
+  const allCartItems = useAppSelector(selectAllCartItems);
+
   return (
     <section className="xl:col-span-9 lg:col-span-8">
       <CartHeading />
       <div className="space-y-4">
-        <CartItem />
-        <CartItem />
+        {allCartItems.map((item) => (
+          <CartItemRow key={item.productId} cartItem={item} />
+        ))}
       </div>
     </section>
   );

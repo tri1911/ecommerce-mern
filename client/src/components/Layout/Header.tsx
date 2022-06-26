@@ -1,4 +1,7 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
+import { selectAllCartItems } from "../../slices/cartSlice";
 
 function Logo() {
   return (
@@ -47,7 +50,7 @@ function SingleNavIcon({
       to={href}
       className="block text-center text-gray-700 hover:text-primary transition relative"
     >
-      {badgeValue && (
+      {badgeValue !== undefined && (
         <span
           className={`absolute -right-0 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs ${badgeRight}`}
         >
@@ -63,6 +66,13 @@ function SingleNavIcon({
 }
 
 function NavIcons() {
+  const allCartItems = useAppSelector(selectAllCartItems);
+
+  const computeTotalQuantities = useMemo(
+    () => allCartItems.reduce((sum, item) => sum + item.quantity, 0),
+    [allCartItems]
+  );
+
   return (
     <div className="flex items-center space-x-4">
       <SingleNavIcon
@@ -75,7 +85,7 @@ function NavIcons() {
         href="/cart"
         icon="fas fa-shopping-bag"
         label="Cart"
-        badgeValue={3}
+        badgeValue={computeTotalQuantities}
         badgeRight="-right-3"
       />
       <SingleNavIcon

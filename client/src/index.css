@@ -27,4 +27,16 @@
   .default-input {
     @apply w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400;
   }
+
+  .product-size-box {
+    @apply text-xs border border-gray-200 rounded-sm h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600;
+  }
+
+  .product-color-box {
+    @apply text-xs border border-gray-200 rounded-sm h-5 w-5 flex items-center justify-center cursor-pointer shadow-sm;
+  }
+
+  .product-quantity-btn {
+    @apply h-8 w-8 text-xl flex items-center justify-center cursor-pointer select-none;
+  }
 }

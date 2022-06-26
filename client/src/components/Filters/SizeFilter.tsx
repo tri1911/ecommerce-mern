@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useFilterRadioHandler } from "../../app/hooks";
 import { Size, SIZES } from "../../types";
 
-export function SizeItem({
+function SizeItem({
   value,
   checked,
   onChange,
@@ -12,10 +12,9 @@ export function SizeItem({
   checked?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }) {
-  const labelClassName = classNames(
-    "text-xs border border-gray-200 rounded-sm h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600",
-    { "bg-primary text-white": checked }
-  );
+  const labelClassName = classNames("product-size-box", {
+    "bg-primary text-white": checked,
+  });
 
   return (
     <div>

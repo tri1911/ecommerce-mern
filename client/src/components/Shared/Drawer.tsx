@@ -1,6 +1,6 @@
 import classNames from "classnames";
-import { Fn } from "../../utils";
 import React from "react";
+import { Fn } from "../../types";
 
 type Props = {
   children: React.ReactNode;

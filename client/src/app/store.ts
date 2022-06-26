@@ -4,11 +4,13 @@ import categoriesReducer, {
   categoriesReceived,
 } from "../slices/categoriesSlice";
 import { categories } from "../data/categories";
+import cartReducer from "../slices/cartSlice";
 
 export const store = configureStore({
   reducer: {
     products: productsReducer,
     categories: categoriesReducer,
+    cart: cartReducer,
   },
 });
 

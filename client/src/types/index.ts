@@ -1,3 +1,6 @@
+export type Fn<A extends any[], R> = (...args: A) => R;
+export const noop = () => {};
+
 export const SIZES = ["xs", "s", "m", "l", "xl"] as const;
 export const COLORS = {
   red: "#fc3d57",
@@ -63,3 +66,14 @@ export type RequestStatus = {
 };
 
 export type ShopDisplayMode = "grid" | "list";
+
+export interface CartItem {
+  productId: string;
+  name: string;
+  image: string;
+  price: number;
+  countInStock: number;
+  size: Size;
+  color: Color;
+  quantity: number;
+}

@@ -16,10 +16,9 @@ export function ColorItem({
 }) {
   const id = `color-${colorName}`;
 
-  const labelClassName = classNames(
-    "text-xs border border-gray-200 rounded-sm h-5 w-5 flex items-center justify-center cursor-pointer shadow-sm",
-    { "ring-2 ring-primary": checked }
-  );
+  const labelClassName = classNames("product-color-box", {
+    "ring-2 ring-primary": checked,
+  });
 
   return (
     <div>

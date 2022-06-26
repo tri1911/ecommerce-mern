@@ -1,4 +1,3 @@
-import React from "react";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import CartItems from "../components/Cart/CartItems";
 import CartSummary from "../components/Cart/CartSummary";
