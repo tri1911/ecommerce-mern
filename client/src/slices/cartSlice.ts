@@ -10,7 +10,7 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: cartAdapter.getInitialState(),
   reducers: {
-    cartItemAdded: cartAdapter.addOne,
+    cartItemAdded: cartAdapter.upsertOne,
     cartItemUpdated: cartAdapter.updateOne,
   },
 });

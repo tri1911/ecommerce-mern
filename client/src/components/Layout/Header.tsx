@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import { selectAllCartItems } from "../../slices/cartSlice";
+import { selectAllWishlistItems } from "../../slices/wishlistSlice";
 
 function Logo() {
   return (
@@ -66,11 +67,12 @@ function SingleNavIcon({
 }
 
 function NavIcons() {
-  const allCartItems = useAppSelector(selectAllCartItems);
+  const cartItems = useAppSelector(selectAllCartItems);
+  const wishlistItems = useAppSelector(selectAllWishlistItems);
 
   const computeTotalQuantities = useMemo(
-    () => allCartItems.reduce((sum, item) => sum + item.quantity, 0),
-    [allCartItems]
+    () => cartItems.reduce((sum, item) => sum + item.quantity, 0),
+    [cartItems]
   );
 
   return (
@@ -79,7 +81,7 @@ function NavIcons() {
         href="/account/wishlist"
         icon="far fa-heart"
         label="Wish List"
-        badgeValue={5}
+        badgeValue={wishlistItems.length}
       />
       <SingleNavIcon
         href="/cart"

@@ -8,7 +8,8 @@ import QuantitySelector from "../components/Shared/QuantitySelector";
 import Rating from "../components/Shared/Rating";
 import { cartItemAdded } from "../slices/cartSlice";
 import { selectAllProducts, selectProductById } from "../slices/productsSlice";
-import { CartItem, Color, COLORS, Fn, Product, Size, SIZES } from "../types";
+import { wishlistItemAdded } from "../slices/wishlistSlice";
+import { Color, COLORS, Fn, Product, Size, SIZES } from "../types";
 
 /* Product Image */
 
@@ -200,9 +201,11 @@ function ProductQuantity({
 function ProductCTAButtons({
   canAddItem,
   onAddToCartClicked,
+  onWishlistClicked,
 }: {
   canAddItem: boolean;
   onAddToCartClicked: Fn<[], void>;
+  onWishlistClicked: Fn<[], void>;
 }) {
   return (
     <div className="flex gap-3 border-b border-gray-200 pb-5 mt-6">
@@ -217,15 +220,15 @@ function ProductCTAButtons({
         </span>{" "}
         Add to cart
       </button>
-      <Link
-        to="/wishlist/id-here"
+      <button
         className="border border-gray-300 text-gray-600 px-8 py-2 font-medium rounded uppercase hover:bg-transparent hover:text-primary transition text-sm"
+        onClick={onWishlistClicked}
       >
         <span className="mr-2">
           <i className="far fa-heart" />
         </span>{" "}
         Wishlist
-      </Link>
+      </button>
     </div>
   );
 }
@@ -261,6 +264,7 @@ function ProductContent({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
 
   const {
+    _id,
     name,
     image,
     description,
@@ -273,28 +277,31 @@ function ProductContent({ product }: { product: Product }) {
     price,
   } = product;
 
-  const toCartItem = (product: Product): CartItem => {
-    return {
-      productId: product._id,
-      name,
-      image,
-      price,
-      countInStock,
-      size: size as Size,
-      color: color as Color,
-      quantity,
-    };
-  };
-
   const dispatch = useAppDispatch();
 
   const canAddItem = [size, color, quantity].every((value) => Boolean(value));
 
   const handleAddToCart = () => {
     if (canAddItem) {
-      const itemToAdd = toCartItem(product);
-      dispatch(cartItemAdded(itemToAdd));
+      dispatch(
+        cartItemAdded({
+          productId: _id,
+          name,
+          image,
+          price,
+          countInStock,
+          size: size as Size,
+          color: color as Color,
+          quantity,
+        })
+      );
     }
+  };
+
+  const handleAddToWishlist = () => {
+    dispatch(
+      wishlistItemAdded({ productId: _id, name, image, price, countInStock })
+    );
   };
 
   return (
@@ -321,6 +328,7 @@ function ProductContent({ product }: { product: Product }) {
       <ProductCTAButtons
         canAddItem={canAddItem}
         onAddToCartClicked={handleAddToCart}
+        onWishlistClicked={handleAddToWishlist}
       />
       <SocialShareIcons />
     </div>

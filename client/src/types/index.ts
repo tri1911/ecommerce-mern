@@ -28,6 +28,7 @@ export const SORT_OPTIONS: {
   },
 };
 
+// NOTE: size, color property in Product is different for size, color in CartItem -> should be Size[], Color[] - available colors, sizes
 export interface Product {
   _id: string;
   name: string;
@@ -44,6 +45,17 @@ export interface Product {
   sku: string;
   createdAt: string;
 }
+
+export interface BaseProduct
+  extends Pick<Product, "name" | "image" | "price" | "countInStock"> {
+  productId: Product["_id"];
+}
+
+export type AdditionalItemInfo = { size: Size; color: Color; quantity: number };
+
+export type CartItem = BaseProduct & AdditionalItemInfo;
+
+export type WishlistItem = BaseProduct;
 
 // NOTE: should save the product ids OR just the number of products
 export interface Category {
@@ -66,14 +78,3 @@ export type RequestStatus = {
 };
 
 export type ShopDisplayMode = "grid" | "list";
-
-export interface CartItem {
-  productId: string;
-  name: string;
-  image: string;
-  price: number;
-  countInStock: number;
-  size: Size;
-  color: Color;
-  quantity: number;
-}

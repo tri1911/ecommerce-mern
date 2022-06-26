@@ -5,12 +5,14 @@ import categoriesReducer, {
 } from "../slices/categoriesSlice";
 import { categories } from "../data/categories";
 import cartReducer from "../slices/cartSlice";
+import wishlistReducer from "../slices/wishlistSlice";
 
 export const store = configureStore({
   reducer: {
     products: productsReducer,
     categories: categoriesReducer,
     cart: cartReducer,
+    wishlist: wishlistReducer,
   },
 });
 

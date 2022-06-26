@@ -1,11 +1,27 @@
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  selectWishlistIds,
+  wishlistItemAdded,
+  wishlistItemRemoved,
+} from "../../slices/wishlistSlice";
 import { Product } from "../../types";
 import Rating from "./Rating";
 
-function ProductImage({ id, image }: { id: string; image: string }) {
+function ProductCardHeader({
+  id,
+  image,
+  isAddedToWishlist,
+  onWishlistClicked,
+}: {
+  id: string;
+  image: string;
+  isAddedToWishlist: boolean;
+  onWishlistClicked: React.MouseEventHandler<HTMLButtonElement>;
+}) {
   return (
     <div className="relative">
-      <img className="w-full" src={image} alt="" />
+      <img className="w-full" src={image} alt="product thumbnail" />
       <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
         <Link
           to={`/products/${id}`}
@@ -13,18 +29,18 @@ function ProductImage({ id, image }: { id: string; image: string }) {
         >
           <i className="fas fa-search" />
         </Link>
-        <Link
-          to={`/wishlist/add/${id}`}
+        <button
           className="text-white text-lg w-9 h-9 rounded-full bg-primary hover:bg-gray-800 transition flex items-center justify-center"
+          onClick={onWishlistClicked}
         >
-          <i className="far fa-heart" />
-        </Link>
+          <i className={isAddedToWishlist ? "fas fa-heart" : "far fa-heart"} />
+        </button>
       </div>
     </div>
   );
 }
 
-function ProductContent({
+function ProductCardBody({
   product: { _id, name, price, rating, reviews },
 }: {
   product: Product;
@@ -64,10 +80,32 @@ function AddToCartBtn({ id }: { id: string }) {
 }
 
 export default function ProductCard({ product }: { product: Product }) {
+  const { _id, name, image, countInStock, price } = product;
+
+  const wishlistIds = useAppSelector(selectWishlistIds);
+  const isAddedToWishlist = wishlistIds.includes(_id);
+
+  const dispatch = useAppDispatch();
+  // NOTE: consider extract to custom hook (to make it reusable in `SingleProductPage`)
+  const handleAddToWishlist = () => {
+    if (!isAddedToWishlist) {
+      dispatch(
+        wishlistItemAdded({ productId: _id, name, image, price, countInStock })
+      );
+    } else {
+      dispatch(wishlistItemRemoved(_id));
+    }
+  };
+
   return (
     <div className="group rounded bg-white shadow overflow-hidden">
-      <ProductImage id={product._id} image={product.image} />
-      <ProductContent product={product} />
+      <ProductCardHeader
+        id={product._id}
+        image={product.image}
+        isAddedToWishlist={isAddedToWishlist}
+        onWishlistClicked={handleAddToWishlist}
+      />
+      <ProductCardBody product={product} />
       <AddToCartBtn id={product._id} />
     </div>
   );
