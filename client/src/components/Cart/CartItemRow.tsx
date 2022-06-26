@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../../app/hooks";
+import { cartItemUpdated } from "../../slices/cartSlice";
 import { CartItem, Size } from "../../types";
 import QuantitySelector from "../Shared/QuantitySelector";
 
@@ -29,7 +32,7 @@ function CartItemContent({
         </h2>
       </Link>
       <p className="text-primary font-semibold">${price.toFixed(2)}</p>
-      <p className="text-gray-500">Size: {size}</p>
+      <p className="text-gray-500">Size: {size.toUpperCase()}</p>
     </div>
   );
 }
@@ -50,11 +53,39 @@ function CartDeleteButton() {
   );
 }
 
+// TODO: change the layout to grid (since the columns are not line up properly)
 export default function CartItemRow({
-  cartItem: { productId, image, name, price, size, quantity },
+  cartItem: { productId, image, name, price, size, countInStock, quantity },
 }: {
   cartItem: CartItem;
 }) {
+  const [selectedQuantity, updateSelectedQuantity] = useState(quantity);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (selectedQuantity !== quantity && selectedQuantity > 0) {
+      dispatch(
+        cartItemUpdated({
+          id: productId,
+          changes: { quantity: selectedQuantity },
+        })
+      );
+    }
+  }, [quantity, selectedQuantity, productId, dispatch]);
+
+  const increaseQuantity = () => {
+    if (selectedQuantity < countInStock) {
+      updateSelectedQuantity(selectedQuantity + 1);
+    }
+  };
+
+  const decreaseQuantity = () => {
+    if (selectedQuantity > 0) {
+      updateSelectedQuantity(selectedQuantity - 1);
+    }
+  };
+
   return (
     <div className="flex items-center md:justify-between gap-4 md:gap-6 p-4 border border-gray-200 rounded flex-wrap md:flex-nowrap">
       <CartItemImage image={image} />
@@ -64,7 +95,11 @@ export default function CartItemRow({
         price={price}
         size={size}
       />
-      <QuantitySelector value={1} />
+      <QuantitySelector
+        value={selectedQuantity}
+        handleAdd={increaseQuantity}
+        handleRemove={decreaseQuantity}
+      />
       <CartItemPrice totalPrice={(quantity * price).toFixed(2)} />
       <CartDeleteButton />
     </div>

@@ -6,7 +6,7 @@ import ProductSection from "../components/Home/ProductSection";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import QuantitySelector from "../components/Shared/QuantitySelector";
 import Rating from "../components/Shared/Rating";
-import { addCartItem } from "../slices/cartSlice";
+import { cartItemAdded } from "../slices/cartSlice";
 import { selectAllProducts, selectProductById } from "../slices/productsSlice";
 import { CartItem, Color, COLORS, Fn, Product, Size, SIZES } from "../types";
 
@@ -273,19 +273,17 @@ function ProductContent({ product }: { product: Product }) {
     price,
   } = product;
 
-  const toCartItem = (product: Product): CartItem | undefined => {
-    if (size && color) {
-      return {
-        productId: product._id,
-        name,
-        image,
-        price,
-        countInStock,
-        size,
-        color,
-        quantity,
-      };
-    }
+  const toCartItem = (product: Product): CartItem => {
+    return {
+      productId: product._id,
+      name,
+      image,
+      price,
+      countInStock,
+      size: size as Size,
+      color: color as Color,
+      quantity,
+    };
   };
 
   const dispatch = useAppDispatch();
@@ -294,7 +292,8 @@ function ProductContent({ product }: { product: Product }) {
 
   const handleAddToCart = () => {
     if (canAddItem) {
-      dispatch(addCartItem(toCartItem(product)));
+      const itemToAdd = toCartItem(product);
+      dispatch(cartItemAdded(itemToAdd));
     }
   };
 
