@@ -1,13 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { cartItemAdded, cartItemUpdated } from "../slices/cartSlice";
+import {
+  cartItemAdded,
+  cartItemRemoved,
+  cartItemUpdated,
+} from "../slices/cartSlice";
 import {
   selectWishlistIds,
   wishlistItemAdded,
   wishlistItemRemoved,
 } from "../slices/wishlistSlice";
-import { CartItem, Color, Product, Size } from "../types";
+import { BaseProduct, CartItem, Color, Product, Size } from "../types";
 import type { RootState, AppDispatch } from "./store";
 
 // Use throughout app instead of plain `useDispatch` and `useSelector`
@@ -55,7 +59,9 @@ export const useFilterRadioHandler = () => {
   return handleRadioChanged;
 };
 
-export const useWishlist = (product: Product) => {
+/* Wishlist Hooks */
+
+export const useAddWishlistItem = (product: Product) => {
   const dispatch = useAppDispatch();
   const wishlistIds = useAppSelector(selectWishlistIds);
 
@@ -76,13 +82,25 @@ export const useWishlist = (product: Product) => {
   return { isAddedToWishlist, handleAddToWishlist };
 };
 
+export const useRemoveWishlistItem = (productId: string) => {
+  const dispatch = useAppDispatch();
+
+  const handleRemoveWishlistItem = useCallback(() => {
+    dispatch(wishlistItemRemoved(productId));
+  }, [dispatch, productId]);
+
+  return { handleRemoveWishlistItem };
+};
+
+/* Shopping Cart Hooks */
+
 export const useAddCartItem = ({
-  product,
+  item,
   size,
   color,
   quantity,
 }: {
-  product: Product;
+  item: BaseProduct;
   size?: Size;
   color?: Color;
   quantity: number;
@@ -93,7 +111,7 @@ export const useAddCartItem = ({
 
   const handleAddToCart = useCallback(() => {
     if (canAddItem) {
-      const { _id: productId, name, image, price, countInStock } = product;
+      const { productId, name, image, price, countInStock } = item;
 
       dispatch(
         cartItemAdded({
@@ -108,7 +126,7 @@ export const useAddCartItem = ({
         })
       );
     }
-  }, [product, size, color, quantity, dispatch, canAddItem]);
+  }, [item, size, color, quantity, dispatch, canAddItem]);
 
   return { canAddItem, handleAddToCart };
 };
@@ -144,4 +162,14 @@ export const useUpdateCartItemQuantity = (cartItem: CartItem) => {
   }, [selectedQuantity]);
 
   return { selectedQuantity, increaseQuantity, decreaseQuantity };
+};
+
+export const useDeleteCartItem = (productId: string) => {
+  const dispatch = useAppDispatch();
+
+  const handleDeleteCartItem = () => {
+    dispatch(cartItemRemoved(productId));
+  };
+
+  return { handleDeleteCartItem };
 };

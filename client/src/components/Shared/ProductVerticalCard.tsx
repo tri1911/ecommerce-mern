@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAddCartItem, useWishlist } from "../../app/hooks";
+import { useAddCartItem, useAddWishlistItem } from "../../app/hooks";
 import { Product } from "../../types";
 import Rating from "./Rating";
 
@@ -79,16 +79,20 @@ function AddToCartBtn({
 }
 
 export default function ProductVerticalCard({ product }: { product: Product }) {
-  const { isAddedToWishlist, handleAddToWishlist } = useWishlist(product);
+  const { _id, name, image, price, countInStock } = product;
+
+  const { isAddedToWishlist, handleAddToWishlist } =
+    useAddWishlistItem(product);
+
   const { handleAddToCart } = useAddCartItem({
-    product,
+    item: { productId: _id, name, image, price, countInStock },
     size: "m",
     quantity: 1,
     color: "black",
   });
 
   return (
-    <div className="group rounded bg-white shadow overflow-hidden">
+    <div className="group rounded bg-white shadow-md overflow-hidden">
       <ProductCardHeader
         id={product._id}
         image={product.image}

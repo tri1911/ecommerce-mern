@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useUpdateCartItemQuantity } from "../../app/hooks";
+import { useDeleteCartItem, useUpdateCartItemQuantity } from "../../app/hooks";
 import { CartItem, Size } from "../../types";
 import QuantitySelector from "../Shared/QuantitySelector";
 
@@ -60,10 +60,12 @@ function CartDeleteButton({
 
 // TODO: change the layout to grid (since the columns are not line up properly)
 export default function CartItemRow({ cartItem }: { cartItem: CartItem }) {
+  const { productId, image, name, price, size, quantity } = cartItem;
+
   const { selectedQuantity, increaseQuantity, decreaseQuantity } =
     useUpdateCartItemQuantity(cartItem);
 
-  const { productId, image, name, price, size, quantity } = cartItem;
+  const { handleDeleteCartItem } = useDeleteCartItem(productId);
 
   return (
     <div className="flex items-center md:justify-between gap-4 md:gap-6 p-4 border border-gray-200 rounded flex-wrap md:flex-nowrap">
@@ -80,7 +82,7 @@ export default function CartItemRow({ cartItem }: { cartItem: CartItem }) {
         handleRemove={decreaseQuantity}
       />
       <CartItemPrice totalPrice={(quantity * price).toFixed(2)} />
-      <CartDeleteButton />
+      <CartDeleteButton onCartItemRemoved={handleDeleteCartItem} />
     </div>
   );
 }

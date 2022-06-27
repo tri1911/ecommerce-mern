@@ -12,10 +12,12 @@ const cartSlice = createSlice({
   reducers: {
     cartItemAdded: cartAdapter.upsertOne,
     cartItemUpdated: cartAdapter.updateOne,
+    cartItemRemoved: cartAdapter.removeOne,
   },
 });
 
-export const { cartItemAdded, cartItemUpdated } = cartSlice.actions;
+export const { cartItemAdded, cartItemUpdated, cartItemRemoved } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;
 

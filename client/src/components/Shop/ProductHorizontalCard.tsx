@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useWishlist } from "../../app/hooks";
+import { useAddWishlistItem } from "../../app/hooks";
 import { Product } from "../../types";
 import Rating from "../Shared/Rating";
 
@@ -11,7 +11,8 @@ export default function ProductHorizontalCard({
   product: Product;
 }) {
   const { _id, image, name, price, rating, reviews } = product;
-  const { isAddedToWishlist, handleAddToWishlist } = useWishlist(product);
+  const { isAddedToWishlist, handleAddToWishlist } =
+    useAddWishlistItem(product);
 
   return (
     <div className="__wrapper border border-gray-200 rounded bg-white md:grid grid-cols-3 gap-3">

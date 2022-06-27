@@ -1,7 +1,11 @@
 import classNames from "classnames";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useAppSelector, useAddCartItem, useWishlist } from "../app/hooks";
+import {
+  useAppSelector,
+  useAddCartItem,
+  useAddWishlistItem,
+} from "../app/hooks";
 import ProductSection from "../components/Home/ProductSection";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import QuantitySelector from "../components/Shared/QuantitySelector";
@@ -120,7 +124,6 @@ function ProductSizeSelector({
       <h3 className="text-base text-gray-800 mb-1">Size</h3>
       <div className="flex items-center gap-2">
         {SIZES.map((value) => (
-          // <SizeItem key={value} value={value} />
           <div
             key={value}
             className={classNames("product-size-box", {
@@ -172,6 +175,7 @@ function ProductQuantity({
   selectedQuantity: number;
   setSelectedQuantity: Fn<[number], void>;
 }) {
+  // TODO: refactor the duplicates with quantity counter in `CartPage`
   const increaseQuantity = () => {
     if (selectedQuantity < countInStock) {
       setSelectedQuantity(selectedQuantity + 1);
@@ -258,13 +262,21 @@ function SocialShareIcons() {
   );
 }
 
+type Values = {
+  size?: Size;
+  color?: Color;
+  quantity: number;
+};
+
 function ProductContent({ product }: { product: Product }) {
-  const [size, setSize] = useState<Size | undefined>(undefined);
-  const [color, setColor] = useState<Color | undefined>(undefined);
-  const [quantity, setQuantity] = useState(1);
+  const [values, setValues] = useState<Values>(() => ({ quantity: 1 }));
+
+  const { size, color, quantity } = values;
 
   const {
+    _id,
     name,
+    image,
     description,
     rating,
     reviews,
@@ -276,12 +288,11 @@ function ProductContent({ product }: { product: Product }) {
   } = product;
 
   const { canAddItem, handleAddToCart } = useAddCartItem({
-    product,
-    size,
-    quantity,
-    color,
+    item: { productId: _id, name, image, price, countInStock },
+    ...values,
   });
-  const { isAddedToWishlist, handleAddToWishlist } = useWishlist(product);
+  const { isAddedToWishlist, handleAddToWishlist } =
+    useAddWishlistItem(product);
 
   return (
     <div>
@@ -297,12 +308,20 @@ function ProductContent({ product }: { product: Product }) {
       />
       <ProductPrice price={price} />
       <p className="mt-4 text-gray-600">{description.substring(0, 100)}</p>
-      <ProductSizeSelector selectedSize={size} setSelectedSize={setSize} />
-      <ProductColorSelector selectedColor={color} setSelectedColor={setColor} />
+      <ProductSizeSelector
+        selectedSize={size}
+        setSelectedSize={(size) => setValues((prev) => ({ ...prev, size }))}
+      />
+      <ProductColorSelector
+        selectedColor={color}
+        setSelectedColor={(color) => setValues((prev) => ({ ...prev, color }))}
+      />
       <ProductQuantity
         countInStock={countInStock}
         selectedQuantity={quantity}
-        setSelectedQuantity={setQuantity}
+        setSelectedQuantity={(quantity) =>
+          setValues((prev) => ({ ...prev, quantity }))
+        }
       />
       <ProductCTAButtons
         canAddItem={canAddItem}
