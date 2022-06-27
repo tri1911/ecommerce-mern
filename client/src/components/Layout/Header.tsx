@@ -6,9 +6,9 @@ import { selectAllWishlistItems } from "../../slices/wishlistSlice";
 
 function Logo() {
   return (
-    <a href="/" className="block w-32">
+    <Link to="/" className="block w-32">
       <img src="/images/svg/logo.svg" alt="my logo" className="w-full" />
-    </a>
+    </Link>
   );
 }
 

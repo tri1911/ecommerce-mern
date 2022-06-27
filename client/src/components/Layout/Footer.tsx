@@ -1,10 +1,12 @@
 /* Logo & Text */
 
+import { Link } from "react-router-dom";
+
 function SocialLink({ href = "#", icon }: { href?: string; icon: string }) {
   return (
-    <a href={href} className="text-gray-400 hover:text-gray-500">
+    <Link to={href} className="text-gray-400 hover:text-gray-500">
       <i className={icon} />
-    </a>
+    </Link>
   );
 }
 
