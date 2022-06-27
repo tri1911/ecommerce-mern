@@ -1,6 +1,5 @@
-import React from "react";
 import { Product } from "../../types";
-import ProductCard from "../Shared/ProductCard";
+import ProductVerticalCard from "../Shared/ProductVerticalCard";
 
 export default function ProductSection({
   title,
@@ -16,7 +15,7 @@ export default function ProductSection({
       </h2>
       <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-6">
         {products.map((product) => (
-          <ProductCard key={product._id} product={product} />
+          <ProductVerticalCard key={product._id} product={product} />
         ))}
       </div>
     </section>

@@ -1,10 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import {
-  selectWishlistIds,
-  wishlistItemAdded,
-  wishlistItemRemoved,
-} from "../../slices/wishlistSlice";
+import { useWishlist } from "../../app/hooks";
 import { Product } from "../../types";
 import Rating from "./Rating";
 
@@ -79,23 +74,8 @@ function AddToCartBtn({ id }: { id: string }) {
   );
 }
 
-export default function ProductCard({ product }: { product: Product }) {
-  const { _id, name, image, countInStock, price } = product;
-
-  const wishlistIds = useAppSelector(selectWishlistIds);
-  const isAddedToWishlist = wishlistIds.includes(_id);
-
-  const dispatch = useAppDispatch();
-  // NOTE: consider extract to custom hook (to make it reusable in `SingleProductPage`)
-  const handleAddToWishlist = () => {
-    if (!isAddedToWishlist) {
-      dispatch(
-        wishlistItemAdded({ productId: _id, name, image, price, countInStock })
-      );
-    } else {
-      dispatch(wishlistItemRemoved(_id));
-    }
-  };
+export default function ProductVerticalCard({ product }: { product: Product }) {
+  const { isAddedToWishlist, handleAddToWishlist } = useWishlist(product);
 
   return (
     <div className="group rounded bg-white shadow overflow-hidden">

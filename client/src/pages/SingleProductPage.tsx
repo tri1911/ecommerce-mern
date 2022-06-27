@@ -1,14 +1,13 @@
 import classNames from "classnames";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector, useWishlist } from "../app/hooks";
 import ProductSection from "../components/Home/ProductSection";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import QuantitySelector from "../components/Shared/QuantitySelector";
 import Rating from "../components/Shared/Rating";
 import { cartItemAdded } from "../slices/cartSlice";
 import { selectAllProducts, selectProductById } from "../slices/productsSlice";
-import { wishlistItemAdded } from "../slices/wishlistSlice";
 import { Color, COLORS, Fn, Product, Size, SIZES } from "../types";
 
 /* Product Image */
@@ -201,17 +200,19 @@ function ProductQuantity({
 function ProductCTAButtons({
   canAddItem,
   onAddToCartClicked,
+  isAddedToWishlist,
   onWishlistClicked,
 }: {
   canAddItem: boolean;
   onAddToCartClicked: Fn<[], void>;
+  isAddedToWishlist: boolean;
   onWishlistClicked: Fn<[], void>;
 }) {
   return (
     <div className="flex gap-3 border-b border-gray-200 pb-5 mt-6">
       <button
         type="button"
-        className="bg-primary border border-primary text-white px-8 py-2 font-medium rounded uppercase hover:bg-transparent hover:text-primary transition text-sm flex items-center disabled:opacity-75 disabled:cursor-not-allowed"
+        className="px-8 py-2 flex items-center border border-primary text-sm font-medium rounded uppercase text-white bg-primary hover:bg-transparent hover:text-primary transition disabled:opacity-75 disabled:cursor-not-allowed"
         onClick={onAddToCartClicked}
         disabled={!canAddItem}
       >
@@ -221,13 +222,13 @@ function ProductCTAButtons({
         Add to cart
       </button>
       <button
-        className="border border-gray-300 text-gray-600 px-8 py-2 font-medium rounded uppercase hover:bg-transparent hover:text-primary transition text-sm"
+        className="px-8 py-2 border border-primary rounded text-sm font-medium text-primary bg-white uppercase hover:bg-primary hover:text-white transition"
         onClick={onWishlistClicked}
       >
         <span className="mr-2">
-          <i className="far fa-heart" />
-        </span>{" "}
-        Wishlist
+          <i className={isAddedToWishlist ? "fas fa-heart" : "far fa-heart"} />
+        </span>
+        {isAddedToWishlist ? "Added" : "Wishlist"}
       </button>
     </div>
   );
@@ -298,11 +299,7 @@ function ProductContent({ product }: { product: Product }) {
     }
   };
 
-  const handleAddToWishlist = () => {
-    dispatch(
-      wishlistItemAdded({ productId: _id, name, image, price, countInStock })
-    );
-  };
+  const { isAddedToWishlist, handleAddToWishlist } = useWishlist(product);
 
   return (
     <div>
@@ -328,6 +325,7 @@ function ProductContent({ product }: { product: Product }) {
       <ProductCTAButtons
         canAddItem={canAddItem}
         onAddToCartClicked={handleAddToCart}
+        isAddedToWishlist={isAddedToWishlist}
         onWishlistClicked={handleAddToWishlist}
       />
       <SocialShareIcons />

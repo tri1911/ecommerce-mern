@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useWishlist } from "../../app/hooks";
 import { Product } from "../../types";
 import Rating from "../Shared/Rating";
 
@@ -9,34 +10,33 @@ export default function ProductHorizontalCard({
 }: {
   product: Product;
 }) {
+  const { _id, image, name, price, rating, reviews } = product;
+  const { isAddedToWishlist, handleAddToWishlist } = useWishlist(product);
+
   return (
     <div className="__wrapper border border-gray-200 rounded bg-white md:grid grid-cols-3 gap-3">
-      <Link to={`/products/${product._id}`} className="md:col-span-1">
-        <img
-          src={product.image}
-          alt="product thumbnail"
-          className="w-full md:h-full"
-        />
+      <Link to={`/products/${_id}`} className="md:col-span-1">
+        <img src={image} alt="product thumbnail" className="w-full md:h-full" />
       </Link>
       <div className="p-4 space-y-1 md:col-span-2">
         <div className="__content space-y-3 pb-3">
-          <Link to={`/products/${product._id}`}>
+          <Link to={`/products/${_id}`}>
             <h4 className="__title mb-2 capitalize text-xl font-medium text-gray-800 truncate hover:text-primary transition">
-              {product.name}
+              {name}
             </h4>
           </Link>
           <div className="__price flex items-baseline space-x-2">
             <p className="font-roboto text-lg text-primary font-medium">
-              ${product.price}
+              ${price}
             </p>
             <p className="font-roboto text-base font-medium text-gray-500 line-through">
-              ${(product.price * 1.25).toFixed(2)}
+              ${(price * 1.25).toFixed(2)}
             </p>
           </div>
           <div className="__rating flex items-center">
-            <Rating rating={product.rating} />
+            <Rating rating={rating} />
             <div className="font-poppins text-xs text-gray-500 ml-3">
-              ({product.reviews})
+              ({reviews})
             </div>
           </div>
           <p className="__desc text-gray-700">
@@ -44,9 +44,9 @@ export default function ProductHorizontalCard({
             Voluptatem, ipsa.
           </p>
         </div>
-        <div className="__cta-btns flex items-center text-sm space-x-4">
+        <div className="__cta-btn flex items-center text-sm space-x-4">
           <Link
-            to={`/cart/${product._id}`}
+            to={`/cart/${_id}`}
             className="px-4 py-2 border border-primary text-center rounded bg-primary text-white font-medium hover:bg-transparent hover:text-primary transition"
           >
             <span className="mr-2">
@@ -54,15 +54,17 @@ export default function ProductHorizontalCard({
             </span>
             Add to Cart
           </Link>
-          <Link
-            to={`/wishlist/${product._id}`}
+          <button
             className="px-6 py-2 border border-primary text-center rounded bg-white text-primary font-medium hover:bg-primary hover:text-white transition"
+            onClick={handleAddToWishlist}
           >
             <span className="mr-2">
-              <i className="far fa-heart" />
+              <i
+                className={isAddedToWishlist ? "fas fa-heart" : "far fa-heart"}
+              />
             </span>
-            Wishlist
-          </Link>
+            {isAddedToWishlist ? "Added" : "Wishlist"}
+          </button>
         </div>
       </div>
     </div>
