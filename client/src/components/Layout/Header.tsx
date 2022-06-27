@@ -51,7 +51,7 @@ function SingleNavIcon({
       to={href}
       className="block text-center text-gray-700 hover:text-primary transition relative"
     >
-      {badgeValue !== undefined && (
+      {badgeValue !== undefined && badgeValue > 0 && (
         <span
           className={`absolute -right-0 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs ${badgeRight}`}
         >
@@ -70,7 +70,7 @@ function NavIcons() {
   const cartItems = useAppSelector(selectAllCartItems);
   const wishlistItems = useAppSelector(selectAllWishlistItems);
 
-  const computeTotalQuantities = useMemo(
+  const totalQuantitiesInCart = useMemo(
     () => cartItems.reduce((sum, item) => sum + item.quantity, 0),
     [cartItems]
   );
@@ -87,7 +87,7 @@ function NavIcons() {
         href="/cart"
         icon="fas fa-shopping-bag"
         label="Cart"
-        badgeValue={computeTotalQuantities}
+        badgeValue={totalQuantitiesInCart}
         badgeRight="-right-3"
       />
       <SingleNavIcon

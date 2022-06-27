@@ -1,13 +1,14 @@
-import React from "react";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { CartItem } from "../../types";
 
-function CartTotal() {
+function CartTotal({ total }: { total: number }) {
   return (
     <>
       <div className="space-y-1 text-gray-600 pb-3 border-b border-gray-200">
         <div className="flex justify-between font-medium">
           <p>Subtotal</p>
-          <p>$320</p>
+          <p>${total}</p>
         </div>
         <div className="flex justify-between">
           <p>Delivery</p>
@@ -20,7 +21,7 @@ function CartTotal() {
       </div>
       <div className="flex justify-between my-3 text-gray-800 font-semibold uppercase">
         <h4>Total</h4>
-        <h4>$320</h4>
+        <h4>${total}</h4>
       </div>
     </>
   );
@@ -55,13 +56,19 @@ function CheckoutBtn() {
   );
 }
 
-export default function CartSummary() {
+export default function CartSummary({ cartItems }: { cartItems: CartItem[] }) {
+  const priceInTotal = useMemo(
+    () =>
+      cartItems.reduce((sum, { price, quantity }) => sum + price * quantity, 0),
+    [cartItems]
+  );
+
   return (
     <section className="xl:col-span-3 lg:col-span-4 border border-gray-200 px-4 py-4 rounded mt-6 lg:mt-0">
       <h4 className="mb-4 text-lg font-semibold text-gray-800 uppercase">
         Order Summary
       </h4>
-      <CartTotal />
+      <CartTotal total={priceInTotal} />
       <Coupon />
       <CheckoutBtn />
     </section>

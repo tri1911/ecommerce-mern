@@ -1,6 +1,4 @@
-import React from "react";
-import { useAppSelector } from "../../app/hooks";
-import { selectAllCartItems } from "../../slices/cartSlice";
+import { CartItem } from "../../types";
 import CartItemRow from "./CartItemRow";
 
 function CartHeading() {
@@ -15,14 +13,16 @@ function CartHeading() {
   );
 }
 
-export default function CartItemsSection() {
-  const allCartItems = useAppSelector(selectAllCartItems);
-
+export default function CartItemsSection({
+  cartItems,
+}: {
+  cartItems: CartItem[];
+}) {
   return (
     <section className="xl:col-span-9 lg:col-span-8">
       <CartHeading />
       <div className="space-y-4">
-        {allCartItems.map((item) => (
+        {cartItems.map((item) => (
           <CartItemRow key={item.productId} cartItem={item} />
         ))}
       </div>
