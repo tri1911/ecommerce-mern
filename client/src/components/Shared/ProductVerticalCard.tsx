@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useWishlist } from "../../app/hooks";
+import { useAddCartItem, useWishlist } from "../../app/hooks";
 import { Product } from "../../types";
 import Rating from "./Rating";
 
@@ -63,19 +63,29 @@ function ProductCardBody({
   );
 }
 
-function AddToCartBtn({ id }: { id: string }) {
+function AddToCartBtn({
+  onAddToCartClicked,
+}: {
+  onAddToCartClicked?: React.MouseEventHandler<HTMLButtonElement>;
+}) {
   return (
-    <Link
-      to={`/cart/${id}`}
+    <button
       className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition"
+      onClick={onAddToCartClicked}
     >
       Add to Cart
-    </Link>
+    </button>
   );
 }
 
 export default function ProductVerticalCard({ product }: { product: Product }) {
   const { isAddedToWishlist, handleAddToWishlist } = useWishlist(product);
+  const { handleAddToCart } = useAddCartItem({
+    product,
+    size: "m",
+    quantity: 1,
+    color: "black",
+  });
 
   return (
     <div className="group rounded bg-white shadow overflow-hidden">
@@ -86,7 +96,7 @@ export default function ProductVerticalCard({ product }: { product: Product }) {
         onWishlistClicked={handleAddToWishlist}
       />
       <ProductCardBody product={product} />
-      <AddToCartBtn id={product._id} />
+      <AddToCartBtn onAddToCartClicked={handleAddToCart} />
     </div>
   );
 }

@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAppDispatch } from "../../app/hooks";
-import { cartItemUpdated } from "../../slices/cartSlice";
+import { useUpdateCartItemQuantity } from "../../app/hooks";
 import { CartItem, Size } from "../../types";
 import QuantitySelector from "../Shared/QuantitySelector";
 
@@ -45,46 +43,27 @@ function CartItemPrice({ totalPrice }: { totalPrice: string }) {
   );
 }
 
-function CartDeleteButton() {
+function CartDeleteButton({
+  onCartItemRemoved,
+}: {
+  onCartItemRemoved?: React.MouseEventHandler<HTMLButtonElement>;
+}) {
   return (
-    <div className="text-gray-600 hover:text-primary cursor-pointer">
+    <button
+      className="text-gray-600 hover:text-primary cursor-pointer"
+      onClick={onCartItemRemoved}
+    >
       <i className="fas fa-trash" />
-    </div>
+    </button>
   );
 }
 
 // TODO: change the layout to grid (since the columns are not line up properly)
-export default function CartItemRow({
-  cartItem: { productId, image, name, price, size, countInStock, quantity },
-}: {
-  cartItem: CartItem;
-}) {
-  const [selectedQuantity, updateSelectedQuantity] = useState(quantity);
+export default function CartItemRow({ cartItem }: { cartItem: CartItem }) {
+  const { selectedQuantity, increaseQuantity, decreaseQuantity } =
+    useUpdateCartItemQuantity(cartItem);
 
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (selectedQuantity !== quantity && selectedQuantity > 0) {
-      dispatch(
-        cartItemUpdated({
-          id: productId,
-          changes: { quantity: selectedQuantity },
-        })
-      );
-    }
-  }, [quantity, selectedQuantity, productId, dispatch]);
-
-  const increaseQuantity = () => {
-    if (selectedQuantity < countInStock) {
-      updateSelectedQuantity(selectedQuantity + 1);
-    }
-  };
-
-  const decreaseQuantity = () => {
-    if (selectedQuantity > 0) {
-      updateSelectedQuantity(selectedQuantity - 1);
-    }
-  };
+  const { productId, image, name, price, size, quantity } = cartItem;
 
   return (
     <div className="flex items-center md:justify-between gap-4 md:gap-6 p-4 border border-gray-200 rounded flex-wrap md:flex-nowrap">

@@ -1,12 +1,13 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
+import { cartItemAdded, cartItemUpdated } from "../slices/cartSlice";
 import {
   selectWishlistIds,
   wishlistItemAdded,
   wishlistItemRemoved,
 } from "../slices/wishlistSlice";
-import { Product } from "../types";
+import { CartItem, Color, Product, Size } from "../types";
 import type { RootState, AppDispatch } from "./store";
 
 // Use throughout app instead of plain `useDispatch` and `useSelector`
@@ -73,4 +74,74 @@ export const useWishlist = (product: Product) => {
   }, [product, isAddedToWishlist, dispatch]);
 
   return { isAddedToWishlist, handleAddToWishlist };
+};
+
+export const useAddCartItem = ({
+  product,
+  size,
+  color,
+  quantity,
+}: {
+  product: Product;
+  size?: Size;
+  color?: Color;
+  quantity: number;
+}) => {
+  const dispatch = useAppDispatch();
+
+  const canAddItem = [size, color, quantity].every((value) => Boolean(value));
+
+  const handleAddToCart = useCallback(() => {
+    if (canAddItem) {
+      const { _id: productId, name, image, price, countInStock } = product;
+
+      dispatch(
+        cartItemAdded({
+          productId,
+          name,
+          image,
+          price,
+          countInStock,
+          size: size as Size,
+          color: color as Color,
+          quantity,
+        })
+      );
+    }
+  }, [product, size, color, quantity, dispatch, canAddItem]);
+
+  return { canAddItem, handleAddToCart };
+};
+
+export const useUpdateCartItemQuantity = (cartItem: CartItem) => {
+  const { productId, countInStock, quantity } = cartItem;
+
+  const [selectedQuantity, updateSelectedQuantity] = useState(quantity);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (selectedQuantity !== quantity && selectedQuantity > 0) {
+      dispatch(
+        cartItemUpdated({
+          id: productId,
+          changes: { quantity: selectedQuantity },
+        })
+      );
+    }
+  }, [quantity, selectedQuantity, productId, dispatch]);
+
+  const increaseQuantity = useCallback(() => {
+    if (selectedQuantity < countInStock) {
+      updateSelectedQuantity(selectedQuantity + 1);
+    }
+  }, [selectedQuantity, countInStock]);
+
+  const decreaseQuantity = useCallback(() => {
+    if (selectedQuantity > 0) {
+      updateSelectedQuantity(selectedQuantity - 1);
+    }
+  }, [selectedQuantity]);
+
+  return { selectedQuantity, increaseQuantity, decreaseQuantity };
 };

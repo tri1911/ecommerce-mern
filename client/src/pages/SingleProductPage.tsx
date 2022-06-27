@@ -1,12 +1,11 @@
 import classNames from "classnames";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector, useWishlist } from "../app/hooks";
+import { useAppSelector, useAddCartItem, useWishlist } from "../app/hooks";
 import ProductSection from "../components/Home/ProductSection";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import QuantitySelector from "../components/Shared/QuantitySelector";
 import Rating from "../components/Shared/Rating";
-import { cartItemAdded } from "../slices/cartSlice";
 import { selectAllProducts, selectProductById } from "../slices/productsSlice";
 import { Color, COLORS, Fn, Product, Size, SIZES } from "../types";
 
@@ -265,9 +264,7 @@ function ProductContent({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
 
   const {
-    _id,
     name,
-    image,
     description,
     rating,
     reviews,
@@ -278,27 +275,12 @@ function ProductContent({ product }: { product: Product }) {
     price,
   } = product;
 
-  const dispatch = useAppDispatch();
-
-  const canAddItem = [size, color, quantity].every((value) => Boolean(value));
-
-  const handleAddToCart = () => {
-    if (canAddItem) {
-      dispatch(
-        cartItemAdded({
-          productId: _id,
-          name,
-          image,
-          price,
-          countInStock,
-          size: size as Size,
-          color: color as Color,
-          quantity,
-        })
-      );
-    }
-  };
-
+  const { canAddItem, handleAddToCart } = useAddCartItem({
+    product,
+    size,
+    quantity,
+    color,
+  });
   const { isAddedToWishlist, handleAddToWishlist } = useWishlist(product);
 
   return (

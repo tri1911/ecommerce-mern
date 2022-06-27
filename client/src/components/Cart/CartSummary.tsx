@@ -8,7 +8,7 @@ function CartTotal({ total }: { total: number }) {
       <div className="space-y-1 text-gray-600 pb-3 border-b border-gray-200">
         <div className="flex justify-between font-medium">
           <p>Subtotal</p>
-          <p>${total}</p>
+          <p>${total.toFixed(2)}</p>
         </div>
         <div className="flex justify-between">
           <p>Delivery</p>
@@ -21,7 +21,7 @@ function CartTotal({ total }: { total: number }) {
       </div>
       <div className="flex justify-between my-3 text-gray-800 font-semibold uppercase">
         <h4>Total</h4>
-        <h4>${total}</h4>
+        <h4>${total.toFixed(2)}</h4>
       </div>
     </>
   );
