@@ -5,6 +5,7 @@ import FormSubmitButton from "../Shared/FormSubmitButton";
 import { Form, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import CheckBox from "../Form/CheckBox";
+import Password from "../Form/Password";
 
 interface LoginFormValues {
   email: string;
@@ -47,10 +48,9 @@ export default function LoginForm() {
             placeholder="Enter your Email Address"
             required
           />
-          <TextInput
+          <Password
             label="Password"
             name="password"
-            type="password"
             placeholder="Enter your Password"
             required
           />

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import FormSubmitButton from "../Shared/FormSubmitButton";
 import TextInput from "../Form/TextInput";
 import CheckBox from "../Form/CheckBox";
+import Password from "../Form/Password";
 
 interface RegisterFormValues {
   fullName: string;
@@ -68,16 +69,14 @@ export default function RegisterForm() {
             placeholder="Enter your email"
             required
           />
-          <TextInput
+          <Password
             label="Password"
-            type="password"
             name="password"
             placeholder="Enter your password"
             required
           />
-          <TextInput
+          <Password
             label="Confirm Password"
-            type="password"
             name="confirmPassword"
             placeholder="Confirm your Password"
             required

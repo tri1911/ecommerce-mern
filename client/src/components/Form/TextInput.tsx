@@ -1,4 +1,3 @@
-import cn from "classnames";
 import { useField } from "formik";
 
 interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -6,7 +5,6 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
 }
 
-// TODO: handle the toggle hide/show password properly
 export default function TextInput({
   label,
   required,
@@ -19,14 +17,6 @@ export default function TextInput({
         {label} {required && <span className="text-primary">*</span>}
       </label>
       <div className="relative">
-        <span
-          className={cn(
-            { hidden: rest.type !== "password" },
-            "absolute right-3 top-3 text-sm text-gray-500 cursor-pointer"
-          )}
-        >
-          <i className="far fa-eye-slash" />
-        </span>
         <input id={rest.name} className="default-input" {...field} {...rest} />
         {meta.touched && meta.error ? (
           <div className="input-error mb-2">{meta.error}</div>

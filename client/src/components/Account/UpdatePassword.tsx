@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import { Form, Formik, FormikHelpers } from "formik";
-import TextInput from "../Form/TextInput";
 import FormSubmitButton from "../Shared/FormSubmitButton";
+import Password from "../Form/Password";
 
 interface UpdatePasswordFormValue {
   oldPassword: string;
@@ -50,21 +50,18 @@ export default function UpdatePassword() {
             Change Password
           </h3>
           <div className="space-y-4">
-            <TextInput
-              type="password"
+            <Password
               label="Current Password"
               name="oldPassword"
               placeholder="Enter current password"
             />
-            <TextInput
+            <Password
               label="New Password"
-              type="password"
               name="newPassword"
               placeholder="Enter new password"
             />
-            <TextInput
+            <Password
               label="Confirm Password"
-              type="password"
               name="confirmNewPassword"
               placeholder="Enter confirm password"
             />
