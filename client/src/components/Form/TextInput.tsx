@@ -6,6 +6,7 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
 }
 
+// TODO: handle the toggle hide/show password properly
 export default function TextInput({
   label,
   required,

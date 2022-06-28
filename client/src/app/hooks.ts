@@ -11,7 +11,7 @@ import {
   wishlistItemAdded,
   wishlistItemRemoved,
 } from "../slices/wishlistSlice";
-import { BaseProduct, CartItem, Color, Product, Size } from "../types";
+import { SharedProduct, CartItem, Color, Product, Size } from "../types";
 import type { RootState, AppDispatch } from "./store";
 
 // Use throughout app instead of plain `useDispatch` and `useSelector`
@@ -100,7 +100,7 @@ export const useAddCartItem = ({
   color,
   quantity,
 }: {
-  item: BaseProduct;
+  item: SharedProduct;
   size?: Size;
   color?: Color;
   quantity: number;

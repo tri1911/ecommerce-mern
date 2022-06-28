@@ -15,7 +15,7 @@ interface AddressFormValue {
 }
 
 export default function AddressInfo() {
-  const initialValues = {
+  const initialValues: AddressFormValue = {
     fullName: "Elliot Ho",
     phone: "123-456-7891",
     country: "Vietnam",

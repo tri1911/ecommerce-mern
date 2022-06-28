@@ -48,16 +48,16 @@ export interface Product {
   createdAt: string;
 }
 
-export interface BaseProduct
+export interface SharedProduct
   extends Pick<Product, "name" | "image" | "price" | "countInStock"> {
   productId: Product["_id"];
 }
 
 export type AdditionalItemInfo = { size: Size; color: Color; quantity: number };
 
-export type CartItem = BaseProduct & AdditionalItemInfo;
+export type CartItem = SharedProduct & AdditionalItemInfo;
 
-export type WishlistItem = BaseProduct;
+export type WishlistItem = SharedProduct;
 
 // NOTE: should save the product ids OR just the number of products
 export interface Category {
