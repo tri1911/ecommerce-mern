@@ -1,55 +1,97 @@
+import * as Yup from "yup";
+import { Form, Formik, FormikHelpers } from "formik";
 import { Link } from "react-router-dom";
 import FormSubmitButton from "../Shared/FormSubmitButton";
-import InputField from "../Shared/InputField";
+import TextInput from "../Form/TextInput";
+import CheckBox from "../Form/CheckBox";
+
+interface RegisterFormValues {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  acceptedTerms: boolean;
+}
 
 export default function RegisterForm() {
+  const handleSubmit: (
+    values: RegisterFormValues,
+    formikHelpers: FormikHelpers<RegisterFormValues>
+  ) => void | Promise<any> = (values, helpers) => {
+    // do something with form values here
+    console.log(values);
+    helpers.setSubmitting(false);
+  };
+
+  const validationSchema = Yup.object({
+    fullName: Yup.string().required("Please enter your full name"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+    confirmPassword: Yup.string().oneOf(
+      [Yup.ref("password"), null],
+      "Password must match"
+    ),
+  });
+
   return (
-    <form>
-      <div className="space-y-4">
-        <InputField
-          type="text"
-          label="Full Name"
-          placeholder="John Doe"
-          required
-        />
-        <InputField
-          type="email"
-          label="Email Address"
-          placeholder="Enter your email"
-          required
-        />
-        <InputField
-          type="password"
-          label="Password"
-          placeholder="Enter your password"
-          required
-        />
-        <InputField
-          type="password"
-          label="Confirm Password"
-          placeholder="Confirm your Password"
-          required
-        />
-      </div>
-      <div className="flex items-center mt-6">
-        <input
-          type="checkbox"
-          id="agreement"
-          className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-        />
-        <label
-          htmlFor="agreement"
-          className="text-gray-600 ml-3 cursor-pointer"
-        >
-          I have read and agree to the &nbsp;
-          <Link to="#" className="text-primary">
-            terms &amp; conditions
-          </Link>
-        </label>
-      </div>
-      <div className="mt-4">
-        <FormSubmitButton label="Create Account" fluid />
-      </div>
-    </form>
+    <Formik<RegisterFormValues>
+      initialValues={{
+        fullName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        acceptedTerms: false,
+      }}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      <Form>
+        <div className="space-y-4">
+          <TextInput
+            label="Full Name"
+            type="text"
+            name="fullName"
+            placeholder="John Doe"
+            required
+          />
+          <TextInput
+            type="email"
+            label="Email Address"
+            name="email"
+            placeholder="Enter your email"
+            required
+          />
+          <TextInput
+            label="Password"
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+          />
+          <TextInput
+            label="Confirm Password"
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm your Password"
+            required
+          />
+        </div>
+        <div className="mt-6">
+          <CheckBox name="acceptedTerms">
+            I have read and agree to the &nbsp;
+            <Link to="#" className="text-primary">
+              terms &amp; conditions
+            </Link>
+          </CheckBox>
+        </div>
+        <div className="mt-4">
+          <FormSubmitButton label="Create Account" fluid />
+        </div>
+      </Form>
+    </Formik>
   );
 }

@@ -39,4 +39,8 @@
   .product-quantity-btn {
     @apply h-8 w-8 text-xl flex items-center justify-center cursor-pointer select-none;
   }
+
+  .input-error {
+    @apply mt-2 text-red-500 text-sm font-thin;
+  }
 }

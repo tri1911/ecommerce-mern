@@ -29,18 +29,18 @@ function InfoCard({
 function PersonalInfo() {
   return (
     <div className="grid md:grid-cols-3 gap-4">
-      <InfoCard title="Personal Profile" href="profile">
+      <InfoCard title="Personal Profile" href="/account/profile">
         <h4 className="text-gray-700 font-medium">Elliot Ho</h4>
         <p className="text-gray-800">example@mail.com</p>
         <p className="text-gray-800">(123) 456-789</p>
       </InfoCard>
-      <InfoCard title="Shipping Address" href="address">
+      <InfoCard title="Shipping Address" href="/account/address">
         <h4 className="text-gray-700 font-medium">Elliot Ho</h4>
         <p className="text-gray-800">5572 Wales Street</p>
         <p className="text-gray-800">Vancouver, BC, Canada</p>
         <p className="text-gray-800">(123) 456-789</p>
       </InfoCard>
-      <InfoCard title="Billing Address" href="address">
+      <InfoCard title="Billing Address" href="/account/address">
         <h4 className="text-gray-700 font-medium">Elliot Ho</h4>
         <p className="text-gray-800">5572 Wales Street</p>
         <p className="text-gray-800">Vancouver, BC, Canada</p>

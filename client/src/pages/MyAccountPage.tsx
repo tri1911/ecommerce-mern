@@ -1,4 +1,3 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 import AccountSideBar from "../components/Account/AccountSideBar";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
