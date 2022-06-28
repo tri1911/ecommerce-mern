@@ -17,10 +17,10 @@ export default function RegisterForm() {
   const handleSubmit: (
     values: RegisterFormValues,
     formikHelpers: FormikHelpers<RegisterFormValues>
-  ) => void | Promise<any> = (values, helpers) => {
+  ) => void | Promise<any> = (values, actions) => {
     // do something with form values here
     console.log(values);
-    helpers.setSubmitting(false);
+    actions.setSubmitting(false);
   };
 
   const validationSchema = Yup.object({
@@ -35,6 +35,9 @@ export default function RegisterForm() {
       [Yup.ref("password"), null],
       "Password must match"
     ),
+    acceptedTerms: Yup.boolean()
+      .required("Required")
+      .oneOf([true], "You must accept the terms and conditions."),
   });
 
   return (

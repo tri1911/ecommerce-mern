@@ -1,29 +1,79 @@
-import React from "react";
+import * as Yup from "yup";
+import { Form, Formik, FormikHelpers } from "formik";
+import TextInput from "../Form/TextInput";
 import FormSubmitButton from "../Shared/FormSubmitButton";
-import InputField from "../Shared/InputField";
-import AccountFormWrapper from "./ManageAccountForm";
+
+interface UpdatePasswordFormValue {
+  oldPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
 
 export default function UpdatePassword() {
+  const initialValues = {
+    oldPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
+  };
+
+  const handleSubmit: (
+    values: UpdatePasswordFormValue,
+    formikHelpers: FormikHelpers<UpdatePasswordFormValue>
+  ) => void | Promise<any> = (values, actions) => {
+    // do something with form values here
+    console.log(values);
+    actions.setSubmitting(false);
+  };
+
+  const validationSchema = Yup.object({
+    oldPassword: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+    newPassword: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+    confirmNewPassword: Yup.string().oneOf(
+      [Yup.ref("newPassword"), null],
+      "Password must match"
+    ),
+  });
+
   return (
-    <AccountFormWrapper title="Change Password">
-      <InputField
-        type="password"
-        label="Current Password"
-        placeholder="Enter current password"
-      />
-      <InputField
-        type="password"
-        label="New Password"
-        placeholder="Enter new password"
-      />
-      <InputField
-        type="password"
-        label="Confirm Password"
-        placeholder="Enter confirm password"
-      />
-      <div className="mt-6">
-        <FormSubmitButton label="Save Change" />
-      </div>
-    </AccountFormWrapper>
+    <div className="shadow rounded px-6 pt-5 pb-7">
+      <Formik<UpdatePasswordFormValue>
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        <Form>
+          <h3 className="text-lg font-medium capitalize mb-4">
+            Change Password
+          </h3>
+          <div className="space-y-4">
+            <TextInput
+              type="password"
+              label="Current Password"
+              name="oldPassword"
+              placeholder="Enter current password"
+            />
+            <TextInput
+              label="New Password"
+              type="password"
+              name="newPassword"
+              placeholder="Enter new password"
+            />
+            <TextInput
+              label="Confirm Password"
+              type="password"
+              name="confirmNewPassword"
+              placeholder="Enter confirm password"
+            />
+            <div className="mt-6">
+              <FormSubmitButton label="Save Change" />
+            </div>
+          </div>
+        </Form>
+      </Formik>
+    </div>
   );
 }

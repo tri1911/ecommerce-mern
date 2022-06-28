@@ -7,7 +7,6 @@ interface CheckBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export default function CheckBox({ children, ...rest }: CheckBoxProps) {
   const [field, meta] = useField({ ...rest, type: "checkbox" });
-
   return (
     <>
       <div className="flex items-center">

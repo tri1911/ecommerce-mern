@@ -8,6 +8,8 @@ export const COLORS = {
   black: "#000",
 } as const;
 
+export type Gender = "male" | "female" | "other";
+
 export type Size = typeof SIZES[number];
 export type Color = keyof typeof COLORS;
 

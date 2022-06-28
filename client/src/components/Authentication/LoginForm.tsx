@@ -16,10 +16,10 @@ export default function LoginForm() {
   const handleSubmit: (
     values: LoginFormValues,
     formikHelpers: FormikHelpers<LoginFormValues>
-  ) => void | Promise<any> = (values, helpers) => {
+  ) => void | Promise<any> = (values, actions) => {
     // do something with form values
     console.log(values);
-    helpers.setSubmitting(false);
+    actions.setSubmitting(false);
   };
 
   const validationSchema = Yup.object({

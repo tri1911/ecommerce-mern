@@ -12,7 +12,6 @@ export default function TextInput({
   ...rest
 }: TextInputProps) {
   const [field, meta] = useField(rest);
-
   return (
     <div>
       <label htmlFor={rest.name} className="text-gray-600 mb-2 block">
