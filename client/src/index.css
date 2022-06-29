@@ -43,4 +43,21 @@
   .input-error {
     @apply mt-2 text-red-500 text-sm font-thin;
   }
+
+  /* Price number input */
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    @apply appearance-none;
+  }
+
+  /* Price range input */
+
+  input[type="range"] {
+    @apply w-full h-2 absolute -top-2 appearance-none bg-transparent pointer-events-none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    @apply appearance-none h-4 w-4 rounded-full bg-gray-50 shadow-md pointer-events-auto cursor-pointer;
+  }
 }
