@@ -1,6 +1,6 @@
-import classNames from "classnames";
+import cn from "classnames";
 import { useSearchParams } from "react-router-dom";
-import { useFilterRadioHandler } from "../../app/hooks";
+import { useFilterCheckboxHandler } from "../../app/hooks";
 import { Size, SIZES } from "../../types";
 
 function SizeItem({
@@ -12,33 +12,32 @@ function SizeItem({
   checked?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }) {
-  const labelClassName = classNames("product-size-box", {
-    "bg-primary text-white": checked,
-  });
-
   return (
     <div>
       <input
         className="hidden"
-        type="radio"
+        type="checkbox"
         id={`size-${value}`}
         name="size"
         value={value}
         checked={checked}
         onChange={onChange}
       />
-      <label htmlFor={`size-${value}`} className={labelClassName}>
+      <label
+        htmlFor={`size-${value}`}
+        className={cn("product-size-box", {
+          "bg-primary text-white": checked,
+        })}
+      >
         {value.toUpperCase()}
       </label>
     </div>
   );
 }
 
-// TODO: clicking on the currently-active button should de-active it
 export default function SizeFilter() {
   const [searchParams] = useSearchParams();
-  // NOTE: should put onChangeHandler here?
-  const handleSizeChanged = useFilterRadioHandler();
+  const handleSizeChanged = useFilterCheckboxHandler();
 
   return (
     <div className="pt-4">
@@ -48,7 +47,7 @@ export default function SizeFilter() {
           <SizeItem
             key={value}
             value={value}
-            checked={searchParams.get("size") === value}
+            checked={searchParams.getAll("size").includes(value)}
             onChange={handleSizeChanged}
           />
         ))}

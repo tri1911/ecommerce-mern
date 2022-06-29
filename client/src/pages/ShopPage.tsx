@@ -34,8 +34,8 @@ export default function ShopPage() {
 
   const selectedCategories = searchParams.getAll("category") ?? [];
   const selectedBrands = searchParams.getAll("brand") ?? [];
-  const selectedSize = searchParams.get("size") ?? "";
-  const selectedColor = searchParams.get("color") ?? "";
+  const selectedSizes = searchParams.getAll("size") ?? [];
+  const selectedColors = searchParams.getAll("color") ?? [];
 
   let processedProducts = [];
 
@@ -50,9 +50,13 @@ export default function ShopPage() {
         ? true
         : selectedBrands.includes(product.brand)
     )
-    .filter((product) => (!selectedSize ? true : selectedSize === product.size))
     .filter((product) =>
-      !selectedColor ? true : selectedColor === product.color
+      selectedSizes.length === 0 ? true : selectedSizes.includes(product.size)
+    )
+    .filter((product) =>
+      selectedColors.length === 0
+        ? true
+        : selectedColors.includes(product.color)
     );
 
   /* Sorting */

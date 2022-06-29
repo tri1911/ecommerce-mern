@@ -1,6 +1,6 @@
-import classNames from "classnames";
+import cn from "classnames";
 import { useSearchParams } from "react-router-dom";
-import { useFilterRadioHandler } from "../../app/hooks";
+import { useFilterCheckboxHandler } from "../../app/hooks";
 import { COLORS } from "../../types";
 
 export function ColorItem({
@@ -16,15 +16,11 @@ export function ColorItem({
 }) {
   const id = `color-${colorName}`;
 
-  const labelClassName = classNames("product-color-box", {
-    "ring-2 ring-primary": checked,
-  });
-
   return (
     <div>
       <input
         className="hidden"
-        type="radio"
+        type="checkbox"
         id={id}
         name="color"
         value={colorName}
@@ -34,7 +30,9 @@ export function ColorItem({
       <label
         htmlFor={id}
         style={{ backgroundColor: hexCode }}
-        className={labelClassName}
+        className={cn("product-color-box", {
+          "ring-2 ring-primary": checked,
+        })}
       />
     </div>
   );
@@ -42,7 +40,7 @@ export function ColorItem({
 
 export default function ColorFilter() {
   const [searchParams] = useSearchParams();
-  const handleColorChanged = useFilterRadioHandler();
+  const handleColorChanged = useFilterCheckboxHandler();
 
   return (
     <div className="pt-4">
@@ -55,7 +53,7 @@ export default function ColorFilter() {
             key={colorName}
             colorName={colorName}
             hexCode={hexCode}
-            checked={searchParams.get("color") === colorName}
+            checked={searchParams.getAll("color").includes(colorName)}
             onChange={handleColorChanged}
           />
         ))}
