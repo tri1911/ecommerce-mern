@@ -44,7 +44,7 @@
     @apply mt-2 text-red-500 text-sm font-thin;
   }
 
-  /* Price number input */
+  /* Number input */
 
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button {
@@ -58,6 +58,6 @@
   }
 
   input[type="range"]::-webkit-slider-thumb {
-    @apply appearance-none h-4 w-4 rounded-full bg-gray-50 shadow-md pointer-events-auto cursor-pointer;
+    @apply block appearance-none h-4 w-4 rounded-full bg-gray-50 shadow-md border border-solid border-gray-400 pointer-events-auto cursor-pointer;
   }
 }

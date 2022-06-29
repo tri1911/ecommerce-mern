@@ -20,7 +20,7 @@ import UpdatePassword from "./components/Account/UpdatePassword";
 import Wishlist from "./components/Account/Wishlist";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderCompletePage from "./pages/OrderCompletePage";
-import PriceRangeSlider from "./components/experiment/PriceRangeSlider";
+import ExperimentPage from "./components/experiment";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -48,9 +48,9 @@ root.render(
           </Route>
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="order-complete" element={<OrderCompletePage />} />
-          <Route path="experiment" element={<PriceRangeSlider />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
+        <Route path="/experiment" element={<ExperimentPage />} />
       </Routes>
     </BrowserRouter>
   </Provider>
