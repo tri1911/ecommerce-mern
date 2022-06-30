@@ -8,6 +8,7 @@ type Props = {
   setIsOpen: Fn<[boolean], void>;
 };
 
+// NOTE: can write bg-gray-900/25
 export default function Drawer({ children, isOpen, setIsOpen }: Props) {
   return (
     <main

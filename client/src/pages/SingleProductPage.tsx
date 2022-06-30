@@ -16,7 +16,7 @@ import { Color, COLORS, Fn, Product, Size, SIZES } from "../types";
 /* Product Image */
 
 // NOTE: pass the array of product images
-function ProductImage() {
+export function ProductImage() {
   const [selected, setSelected] = useState(0);
 
   return (
@@ -268,7 +268,7 @@ type Values = {
   quantity: number;
 };
 
-function ProductContent({ product }: { product: Product }) {
+export function ProductContent({ product }: { product: Product }) {
   const [values, setValues] = useState<Values>(() => ({ quantity: 1 }));
 
   const { size, color, quantity } = values;
