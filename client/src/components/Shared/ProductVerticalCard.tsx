@@ -1,29 +1,33 @@
+import { Dialog, Transition } from "@headlessui/react";
+import { XCircleIcon } from "@heroicons/react/solid";
+import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAddCartItem, useAddWishlistItem } from "../../app/hooks";
-import { Product } from "../../types";
+import { ProductContent, ProductImage } from "../../pages/SingleProductPage";
+import { Fn, Product } from "../../types";
 import Rating from "./Rating";
 
 function ProductCardHeader({
-  id,
   image,
   isAddedToWishlist,
   onWishlistClicked,
+  openQuickView,
 }: {
-  id: string;
   image: string;
   isAddedToWishlist: boolean;
   onWishlistClicked: React.MouseEventHandler<HTMLButtonElement>;
+  openQuickView: Fn<[], void>;
 }) {
   return (
     <div className="relative">
       <img className="w-full" src={image} alt="product thumbnail" />
       <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition">
-        <Link
-          to={`/products/${id}`}
+        <button
           className="text-white text-lg w-9 h-9 rounded-full bg-primary hover:bg-gray-800 transition flex items-center justify-center"
+          onClick={openQuickView}
         >
           <i className="fas fa-search" />
-        </Link>
+        </button>
         <button
           className="text-white text-lg w-9 h-9 rounded-full bg-primary hover:bg-gray-800 transition flex items-center justify-center"
           onClick={onWishlistClicked}
@@ -76,6 +80,8 @@ function ProductCardContent({
 }
 
 export default function ProductVerticalCard({ product }: { product: Product }) {
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+
   const { _id, name, image, price, countInStock } = product;
 
   const { isAddedToWishlist, handleAddToWishlist } =
@@ -88,18 +94,68 @@ export default function ProductVerticalCard({ product }: { product: Product }) {
     color: "black",
   });
 
+  function closeQuickView() {
+    setIsQuickViewOpen(false);
+  }
+
+  function openQuickView() {
+    setIsQuickViewOpen(true);
+  }
+
   return (
     <div className="group rounded bg-white border border-gray-200 shadow-md overflow-hidden">
       <ProductCardHeader
-        id={product._id}
         image={product.image}
         isAddedToWishlist={isAddedToWishlist}
         onWishlistClicked={handleAddToWishlist}
+        openQuickView={openQuickView}
       />
       <ProductCardContent
         product={product}
         onAddToCartClicked={handleAddToCart}
       />
+      <Transition appear show={isQuickViewOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={closeQuickView}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black/25" />
+          </Transition.Child>
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-50"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-5xl transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl translate-all relative">
+                  <section className="container pt-4 grid lg:grid-cols-2 gap-6">
+                    <ProductImage />
+                    <ProductContent product={product} />
+                  </section>
+
+                  <button
+                    className="absolute top-2 right-2 text-primary hover:text-primary/75 transition"
+                    onClick={closeQuickView}
+                  >
+                    <XCircleIcon className="w-7 h-7" />
+                  </button>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   );
 }
