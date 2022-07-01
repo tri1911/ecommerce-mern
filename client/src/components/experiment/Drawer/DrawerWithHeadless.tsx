@@ -27,7 +27,6 @@ export default function DrawerWithHeadless({
           className="relative z-10"
           onClose={() => setIsOpen(false)}
         >
-          {/* Backdrop */}
           <Transition.Child
             as={Fragment}
             enter="ease-in-out duration-500"
@@ -37,11 +36,17 @@ export default function DrawerWithHeadless({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-gray-500/75 transition-opacity" />
+            {/* The backdrop, rendered as a fixed sibling to the panel container */}
+            <div
+              className="fixed inset-0 bg-black/30 transition-opacity"
+              aria-hidden="true"
+            />
           </Transition.Child>
 
+          {/* Full-screen container to cover the panel */}
           <div className="fixed inset-0 overflow-hidden">
             <div className="absolute inset-0 overflow-hidden">
+              {/* Wrapper */}
               <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
                 <Transition.Child
                   as={Fragment}
@@ -52,6 +57,7 @@ export default function DrawerWithHeadless({
                   leaveFrom="translate-x-0"
                   leaveTo="translate-x-full"
                 >
+                  {/* The actual dialog panel  */}
                   <Dialog.Panel className="pointer-events-auto relative w-screen max-w-md">
                     {/* Close Panel button */}
                     <Transition.Child
@@ -82,7 +88,9 @@ export default function DrawerWithHeadless({
                         </Dialog.Title>
                       </header>
                       <section className="relative mt-6 flex-1 px-4 sm:px-6">
-                        {children}
+                        <div className="absolute inset-0 px-4 sm:px-6">
+                          {children}
+                        </div>
                       </section>
                     </main>
                   </Dialog.Panel>

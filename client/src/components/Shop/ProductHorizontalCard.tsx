@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useAddWishlistItem } from "../../app/hooks";
+import { useAddCartItem, useAddWishlistItem } from "../../app/hooks";
 import { Product } from "../../types";
 import Rating from "../Shared/Rating";
 
@@ -10,9 +10,16 @@ export default function ProductHorizontalCard({
 }: {
   product: Product;
 }) {
-  const { _id, image, name, price, rating, reviews } = product;
+  const { _id, image, name, price, rating, reviews, countInStock } = product;
   const { isAddedToWishlist, handleAddToWishlist } =
     useAddWishlistItem(product);
+
+  const { handleAddToCart } = useAddCartItem({
+    item: { productId: _id, name, image, price, countInStock },
+    size: "m",
+    quantity: 1,
+    color: "black",
+  });
 
   return (
     <div className="__wrapper border border-gray-200 rounded bg-white md:grid grid-cols-3 gap-3">
@@ -46,15 +53,15 @@ export default function ProductHorizontalCard({
           </p>
         </div>
         <div className="__cta-btn flex items-center text-sm space-x-4">
-          <Link
-            to={`/cart/${_id}`}
+          <button
             className="px-4 py-2 border border-primary text-center rounded bg-primary text-white font-medium hover:bg-transparent hover:text-primary transition"
+            onClick={handleAddToCart}
           >
             <span className="mr-2">
               <i className="fas fa-shopping-cart" />
             </span>
             Add to Cart
-          </Link>
+          </button>
           <button
             className="px-6 py-2 border border-primary text-center rounded bg-white text-primary font-medium hover:bg-primary hover:text-white transition"
             onClick={handleAddToWishlist}

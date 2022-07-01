@@ -33,7 +33,6 @@ root.render(
           <Route index element={<HomePage />} />
           <Route path="shop" element={<ShopPage />} />
           <Route path="products/:productId" element={<SingleProductPage />} />
-          <Route path="cart/:productId" element={<CartPage />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />

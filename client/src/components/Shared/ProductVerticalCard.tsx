@@ -80,6 +80,7 @@ function ProductCardContent({
 }
 
 export default function ProductVerticalCard({ product }: { product: Product }) {
+  // NOTE: should place `Quick View` visibility control here? or put it into centralized redux store?
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
   const { _id, name, image, price, countInStock } = product;
@@ -102,6 +103,7 @@ export default function ProductVerticalCard({ product }: { product: Product }) {
     setIsQuickViewOpen(true);
   }
 
+  // NOTE: code duplication here - each product card have one modal
   return (
     <div className="group rounded bg-white border border-gray-200 shadow-md overflow-hidden">
       <ProductCardHeader

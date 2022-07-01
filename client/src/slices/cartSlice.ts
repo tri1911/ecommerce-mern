@@ -1,4 +1,8 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import {
+  createEntityAdapter,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
 import { CartItem } from "../types";
 
@@ -8,16 +12,25 @@ const cartAdapter = createEntityAdapter<CartItem>({
 
 const cartSlice = createSlice({
   name: "cart",
-  initialState: cartAdapter.getInitialState(),
+  initialState: cartAdapter.getInitialState({
+    showCartDrawer: false,
+  }),
   reducers: {
     cartItemAdded: cartAdapter.upsertOne,
     cartItemUpdated: cartAdapter.updateOne,
     cartItemRemoved: cartAdapter.removeOne,
+    setShowCartDrawer: (state, action: PayloadAction<boolean>) => {
+      state.showCartDrawer = action.payload;
+    },
   },
 });
 
-export const { cartItemAdded, cartItemUpdated, cartItemRemoved } =
-  cartSlice.actions;
+export const {
+  cartItemAdded,
+  cartItemUpdated,
+  cartItemRemoved,
+  setShowCartDrawer,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
 

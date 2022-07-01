@@ -5,6 +5,7 @@ import {
   cartItemAdded,
   cartItemRemoved,
   cartItemUpdated,
+  setShowCartDrawer,
 } from "../slices/cartSlice";
 import {
   selectWishlistIds,
@@ -125,6 +126,8 @@ export const useAddCartItem = ({
           quantity,
         })
       );
+
+      dispatch(setShowCartDrawer(true));
     }
   }, [item, size, color, quantity, dispatch, canAddItem]);
 
@@ -164,10 +167,10 @@ export const useUpdateCartItemQuantity = (cartItem: CartItem) => {
   return { selectedQuantity, increaseQuantity, decreaseQuantity };
 };
 
-export const useDeleteCartItem = (productId: string) => {
+export const useDeleteCartItem = () => {
   const dispatch = useAppDispatch();
 
-  const handleDeleteCartItem = () => {
+  const handleDeleteCartItem = (productId: string) => {
     dispatch(cartItemRemoved(productId));
   };
 

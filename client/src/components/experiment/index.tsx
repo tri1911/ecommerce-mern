@@ -11,12 +11,10 @@ export default function ExperimentPage() {
       {/* <SingleProductModal /> */}
       {/* <Drawer>Shopping Cart</Drawer> */}
       <DrawerWithHeadless title="Shopping Cart">
-        <div className="absolute inset-0 px-4 sm:px-6">
-          <div
-            className="h-full border-2 border-dashed border-gray-200"
-            aria-hidden="true"
-          />
-        </div>
+        <div
+          className="h-full border-2 border-dashed border-gray-200"
+          aria-hidden="true"
+        />
       </DrawerWithHeadless>
     </div>
   );

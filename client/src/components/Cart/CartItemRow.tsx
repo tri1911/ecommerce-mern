@@ -65,7 +65,7 @@ export default function CartItemRow({ cartItem }: { cartItem: CartItem }) {
   const { selectedQuantity, increaseQuantity, decreaseQuantity } =
     useUpdateCartItemQuantity(cartItem);
 
-  const { handleDeleteCartItem } = useDeleteCartItem(productId);
+  const { handleDeleteCartItem } = useDeleteCartItem();
 
   return (
     <div className="flex items-center md:justify-between gap-4 md:gap-6 p-4 border border-gray-200 rounded flex-wrap md:flex-nowrap">
@@ -82,7 +82,9 @@ export default function CartItemRow({ cartItem }: { cartItem: CartItem }) {
         handleRemove={decreaseQuantity}
       />
       <CartItemPrice totalPrice={(quantity * price).toFixed(2)} />
-      <CartDeleteButton onCartItemRemoved={handleDeleteCartItem} />
+      <CartDeleteButton
+        onCartItemRemoved={() => handleDeleteCartItem(productId)}
+      />
     </div>
   );
 }
