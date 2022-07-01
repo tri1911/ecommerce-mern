@@ -101,16 +101,16 @@ function ViewOrderBtn() {
   return (
     <Link
       to="/orders/id"
-      className="py-2 px-4 bg-white border border-primary rounded font-roboto text-base text-primary font-medium hover:bg-primary hover:text-white transition"
+      className="default-btn bg-white text-primary hover:bg-primary hover:text-white"
     >
       View Order
     </Link>
   );
 }
 
-function OrderSummaryCard() {
+export function OrderSummaryCard() {
   return (
-    <div className="__wrapper grid grid-cols-2 md:grid-cols-5 gap-y-4 md:gap-y-6 p-4 border border-gray-200 rounded">
+    <li className="__wrapper grid grid-cols-2 md:grid-cols-5 gap-y-4 md:gap-y-6 p-5 border border-gray-200 rounded">
       <div className="__images col-span-2 md:col-span-4 flex items-center justify-start">
         <OrderThumbnail />
         <OrderThumbnail />
@@ -133,7 +133,7 @@ function OrderSummaryCard() {
       <div>
         <OrderStatusItem status="delivered" />
       </div>
-    </div>
+    </li>
   );
 }
 
@@ -143,10 +143,10 @@ function RecentOrders() {
       <h3 className="font-medium capitalize text-gray-800 text-lg">
         Recent Orders
       </h3>
-      <div className="mt-6 space-y-6">
+      <ul className="mt-6 space-y-6">
         <OrderSummaryCard />
         <OrderSummaryCard />
-      </div>
+      </ul>
     </div>
   );
 }

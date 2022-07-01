@@ -235,7 +235,7 @@ function ProductCTAButtons({
         <span className="mr-2">
           <i className={isAddedToWishlist ? "fas fa-heart" : "far fa-heart"} />
         </span>
-        {isAddedToWishlist ? "Added" : "Wishlist"}
+        {isAddedToWishlist ? "Remove from Wishlist" : "Wishlist"}
       </button>
     </div>
   );
@@ -368,7 +368,7 @@ export default function SingleProductPage() {
                 key={tab}
                 className={({ selected }) =>
                   classNames(
-                    "px-4 py-2 border border-b-0 rounded-t-md font-roboto text-base font-medium",
+                    "px-4 py-2 border border-b-0 rounded-t-md font-roboto text-base font-medium focus:outline-none",
                     selected
                       ? "text-primary border-primary"
                       : "text-gray-700 border-gray-700 "

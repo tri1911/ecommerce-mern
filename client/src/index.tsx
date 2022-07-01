@@ -21,6 +21,8 @@ import Wishlist from "./components/Account/Wishlist";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderCompletePage from "./pages/OrderCompletePage";
 import ExperimentPage from "./components/experiment";
+import OrderHistory from "./components/Account/OrderHistory";
+import OrderCancellations from "./components/Account/OrderCancellations";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -43,6 +45,8 @@ root.render(
             <Route path="profile" element={<ProfileInfo />} />
             <Route path="address" element={<AddressInfo />} />
             <Route path="password" element={<UpdatePassword />} />
+            <Route path="order-history" element={<OrderHistory />} />
+            <Route path="order-cancel" element={<OrderCancellations />} />
             <Route path="wishlist" element={<Wishlist />} />
           </Route>
           <Route path="checkout" element={<CheckoutPage />} />

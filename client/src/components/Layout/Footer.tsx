@@ -97,7 +97,7 @@ function CopyRight() {
     <div className="bg-gray-800 py-4">
       <div className="container flex items-center justify-between">
         <p className="text-white">&copy; Elliot - All Rights Reserved</p>
-        <img className="h-5" src="images/methods.png" alt="" />
+        <img className="h-5" src="/images/methods.png" alt="" />
       </div>
     </div>
   );

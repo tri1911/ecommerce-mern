@@ -93,7 +93,7 @@ export default function AccountSideBar() {
         </LinksGroupWrapper>
         <LinksGroupWrapper>
           <MainLink
-            href="/account/order"
+            href="/account/order-history"
             text="My Order History"
             icon="fas fa-gift"
           />
