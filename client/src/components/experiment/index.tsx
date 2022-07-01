@@ -1,8 +1,9 @@
 // import SingleProductModal from "./Modal/SingleProductModal";
 // import PriceRangeSlider from "./PriceRangeSlider";
 // import Drawer from "./Drawer/VanillaDrawer";
+// import DrawerWithHeadless from "./Drawer/DrawerWithHeadless";
 
-import DrawerWithHeadless from "./Drawer/DrawerWithHeadless";
+import Reviews from "./Reviews";
 
 export default function ExperimentPage() {
   return (
@@ -10,12 +11,13 @@ export default function ExperimentPage() {
       {/* <PriceRangeSlider /> */}
       {/* <SingleProductModal /> */}
       {/* <Drawer>Shopping Cart</Drawer> */}
-      <DrawerWithHeadless title="Shopping Cart">
+      {/* <DrawerWithHeadless title="Shopping Cart">
         <div
           className="h-full border-2 border-dashed border-gray-200"
           aria-hidden="true"
         />
-      </DrawerWithHeadless>
+      </DrawerWithHeadless> */}
+      <Reviews />
     </div>
   );
 }
