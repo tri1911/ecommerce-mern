@@ -108,7 +108,7 @@ export const useAddCartItem = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  const canAddItem = [size, color, quantity].every((value) => Boolean(value));
+  const canAddItem = [size, color, quantity].every(Boolean);
 
   const handleAddToCart = useCallback(() => {
     if (canAddItem) {

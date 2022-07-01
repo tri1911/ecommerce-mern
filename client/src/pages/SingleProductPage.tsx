@@ -1,3 +1,4 @@
+import { Tab } from "@headlessui/react";
 import classNames from "classnames";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -7,6 +8,9 @@ import {
   useAddWishlistItem,
 } from "../app/hooks";
 import ProductSection from "../components/Home/ProductSection";
+import ProductInfo from "../components/Product/ProductInfo";
+import QA from "../components/Product/QA";
+import Reviews from "../components/Product/Reviews";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import QuantitySelector from "../components/Shared/QuantitySelector";
 import Rating from "../components/Shared/Rating";
@@ -334,65 +338,6 @@ export function ProductContent({ product }: { product: Product }) {
   );
 }
 
-function ProductInfo() {
-  return (
-    <>
-      <h3 className="border-b border-gray-200 font-roboto text-gray-800 pb-3 font-medium">
-        Product Details
-      </h3>
-      <div className="lg:w-4/5 xl:w-3/5 pt-6">
-        <div className="space-y-3 text-gray-600">
-          <p>
-            Incredible graphics performanceMacBook Air can take on more
-            graphics-intensive projects than ever. For the first time, content
-            creators can edit and seamlessly play back multiple streams of
-            full‑quality 4K video without dropping a frame.
-          </p>
-          <p>
-            Incredible graphics performanceMacBook Air can take on more
-            graphics-intensive projects than ever. For the first time, content
-            creators can edit and seamlessly play back multiple streams of
-            full‑quality 4K video without dropping a frame.
-          </p>
-          <p>
-            Apps on MacBook Air can use machine learning (ML) to automatically
-            retouch photos like a pro, make smart tools such as magic wands and
-            audio filters more accurate at auto‑detection, and so much more.
-            That’s not just brain power — that’s the power of a full stack of ML
-            technologies.
-          </p>
-        </div>
-        <table className="table-auto border-collapse w-full text-left text-gray-600 text-sm mt-6">
-          <tbody>
-            <tr>
-              <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
-                Color
-              </th>
-              <td className="py-2 px-4 border border-gray-300">
-                Black, Brown, Red
-              </td>
-            </tr>
-            <tr>
-              <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
-                Material
-              </th>
-              <td className="py-2 px-4 border border-gray-300">
-                Artificial Leather
-              </td>
-            </tr>
-            <tr>
-              <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
-                Weight
-              </th>
-              <td className="py-2 px-4 border border-gray-300">55kg</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </>
-  );
-}
-
 export default function SingleProductPage() {
   const { productId } = useParams();
 
@@ -406,6 +351,8 @@ export default function SingleProductPage() {
     return null;
   }
 
+  const tabs = ["Product Info", "Question & Answers", "Review (10)"];
+
   return (
     <div>
       <Breadcrumbs paths={["Shop", product?.name ?? "unknown"]} />
@@ -414,7 +361,36 @@ export default function SingleProductPage() {
         <ProductContent product={product} />
       </section>
       <section className="container pb-16">
-        <ProductInfo />
+        <Tab.Group>
+          <Tab.List className="border-b border-gray-200 space-x-2">
+            {tabs.map((tab) => (
+              <Tab
+                key={tab}
+                className={({ selected }) =>
+                  classNames(
+                    "px-4 py-2 border border-b-0 rounded-t-md font-roboto text-base font-medium",
+                    selected
+                      ? "text-primary border-primary"
+                      : "text-gray-700 border-gray-700 "
+                  )
+                }
+              >
+                {tab}
+              </Tab>
+            ))}
+          </Tab.List>
+          <Tab.Panels>
+            <Tab.Panel className="lg:w-4/5 xl:w-3/5 pt-6">
+              <ProductInfo />
+            </Tab.Panel>
+            <Tab.Panel className="pt-6">
+              <QA />
+            </Tab.Panel>
+            <Tab.Panel className="pt-6">
+              <Reviews />
+            </Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
       </section>
       <ProductSection
         title="related products"

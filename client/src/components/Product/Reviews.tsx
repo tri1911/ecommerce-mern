@@ -1,5 +1,5 @@
 import { StarIcon } from "@heroicons/react/solid";
-import cn from "classnames";
+import classNames from "classnames";
 
 function SingleRatingRate({
   rating,
@@ -14,7 +14,7 @@ function SingleRatingRate({
       <StarIcon className="w-4 h-4 text-yellow-400" />
       <div className="__indicator relative h-3 w-full rounded-md bg-gray-200">
         <div
-          className={cn(
+          className={classNames(
             "absolute left-0 bg-yellow-400 h-full rounded-md",
             rightOffset
           )}
@@ -72,7 +72,7 @@ export default function Reviews() {
   const rating = 4;
 
   return (
-    <div className="container sm:grid sm:grid-cols-5 sm:space-x-14 bg-white rounded-md border-t border-gray-200 py-5">
+    <div className="sm:grid sm:grid-cols-5 sm:space-x-14 bg-white rounded-md">
       <div className="__left sm:col-span-2 space-y-8">
         <div className="__summary-wrp flex-col space-y-4">
           <h4 className="__heading text-xl text-gray-900 font-semibold">
