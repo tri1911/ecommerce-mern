@@ -1,5 +1,6 @@
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import Spinner from "../components/Shared/Spinner";
@@ -15,6 +16,85 @@ import {
   selectProductsRequestStatus,
 } from "../slices/productsSlice";
 import { SORT_OPTIONS } from "../types";
+
+function PageItem({ active, page }: { active?: boolean; page: number }) {
+  // bg-indigo-50 text-indigo-600 border-indigo-500
+  const activeStyle =
+    "z-10 relative inline-flex items-center px-4 py-2 text-sm font-medium border bg-primary text-white border-primary";
+  const defaultStyle =
+    "relative inline-flex items-center px-4 py-2 bg-white text-gray-500 text-sm font-medium border border-gray-300 hover:bg-gray-50";
+
+  return (
+    <Link
+      to={`/shop?page=${page}`}
+      aria-current={active && "page"}
+      className={active ? activeStyle : defaultStyle}
+    >
+      {page}
+    </Link>
+  );
+}
+
+function Pagination() {
+  return (
+    <div className="__pagination-wrapper bg-white py-3 flex items-center justify-between">
+      <div className="__mobile-pagination flex-1 flex justify-between sm:hidden">
+        <Link
+          to="/shop?page=previous"
+          className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+        >
+          Previous
+        </Link>
+        <Link
+          to="/shop?page=next"
+          className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+        >
+          Next
+        </Link>
+      </div>
+      <div className="__main-pagination hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+        <div className="__current-page-desc">
+          <p className="text-sm text-gray-700">
+            Showing <span className="font-medium">1</span> to{" "}
+            <span className="font-medium">10</span> of{" "}
+            <span className="font-medium">97</span> results
+          </p>
+        </div>
+        <div className="__pages-control">
+          <nav
+            className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+            aria-label="Pagination"
+          >
+            <Link
+              to="/shop?page=previous"
+              className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:text-gray-50"
+            >
+              <span className="sr-only">Previous</span>
+              <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+            </Link>
+            {/* Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" */}
+            <PageItem active page={1} />
+            <PageItem page={2} />
+            <PageItem page={3} />
+            <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+              ...
+            </span>
+            <PageItem page={8} />
+            <PageItem page={9} />
+            <PageItem page={10} />
+            <Link
+              to="/shop?page=previous"
+              className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:text-gray-50"
+            >
+              <span className="sr-only">Next</span>
+              <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+            </Link>
+          </nav>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function ShopPage() {
   /* importing hooks */
@@ -92,13 +172,18 @@ export default function ShopPage() {
               setDisplayMode={setDisplayMode}
             />
           </div>
-          {status === "loading" && <Spinner />}
-          {status === "succeeded" &&
-            (displayMode === "grid" ? (
-              <ProductsGridView products={processedProducts} />
-            ) : (
-              <ProductsListView products={processedProducts} />
-            ))}
+          <div className="">
+            {status === "loading" && <Spinner />}
+            {status === "succeeded" &&
+              (displayMode === "grid" ? (
+                <ProductsGridView products={processedProducts} />
+              ) : (
+                <ProductsListView products={processedProducts} />
+              ))}
+          </div>
+          <div className="__pagination-container mt-4">
+            <Pagination />
+          </div>
         </section>
       </div>
     </div>
