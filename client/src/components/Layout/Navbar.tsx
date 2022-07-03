@@ -65,6 +65,7 @@ function NavMenu() {
         <NavItem href="/track-order" text="Track Order" />
         <NavItem href="/about" text="About us" />
         <NavItem href="/contact" text="Contact us" />
+        <NavItem href="/faq" text="FAQ" />
       </div>
       <div className="ml-auto justify-self-end text-gray-200">
         <Link to="/login" className=" hover:text-primary transition">
