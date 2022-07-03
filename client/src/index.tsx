@@ -30,6 +30,7 @@ import OrderDetails from "./components/Account/OrderDetails";
 import MyReturns from "./components/Account/MyReturns";
 import OrderReturnDetails from "./components/Account/OrderReturnDetails";
 import FAQPage from "./pages/FAQPage";
+import PaymentPage from "./pages/PaymentPage";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -68,6 +69,7 @@ root.render(
             <Route path="wishlist" element={<Wishlist />} />
           </Route>
           <Route path="checkout" element={<CheckoutPage />} />
+          <Route path="payment" element={<PaymentPage />} />
           <Route path="order-complete" element={<OrderCompletePage />} />
           <Route path="track-order" element={<TrackOrderPage />} />
           <Route path="faq" element={<FAQPage />} />
