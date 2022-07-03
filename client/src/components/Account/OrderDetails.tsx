@@ -8,15 +8,19 @@ export default function OrderDetails() {
         <h4 className="text-lg leading-6 font-medium mb-6">Order Details</h4>
         <div className="flex items-center justify-between flex-wrap">
           <div>
-            <h5 className="text-base font-medium text-gray-800">Sold By</h5>
+            <h5 className="text-base font-medium text-gray-800 mb-1">
+              Sold By
+            </h5>
             <p className="text-primary text-sm">Apple</p>
           </div>
           <div>
-            <h5 className="text-base font-medium text-gray-800">Order By</h5>
+            <h5 className="text-base font-medium text-gray-800 mb-1">
+              Order By
+            </h5>
             <p className="text-sm text-gray-700">789ER4S324</p>
           </div>
           <div>
-            <h5 className="text-base font-medium text-gray-800">
+            <h5 className="text-base font-medium text-gray-800 mb-1">
               Shipped Date
             </h5>
             <p className="text-sm text-gray-700">01 March 2021</p>
@@ -48,7 +52,7 @@ export default function OrderDetails() {
               <p className="mt-1 text-base">Delivered</p>
             </div>
           </div>
-          <div className="relative flex flex-col items-start justify-between border border-gray-200 py-3 px-6 mt-7 bg-white max-w-3xl shadow text-sm text-gray-800">
+          <div className="relative max-w-2xl flex flex-col items-start justify-between border border-gray-200 py-3 px-6 mt-7 bg-white shadow text-sm text-gray-800">
             <p className="mb-2">23 Jul 2021.18.56</p>
             <p>
               Your package has been delivered. Thank you for shopping at Elliot

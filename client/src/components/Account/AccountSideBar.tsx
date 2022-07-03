@@ -48,7 +48,7 @@ function MainLink({
       to={href}
       className={({ isActive }) =>
         classNames(
-          "relative block text-base font-medium capitalize hover:text-primary transition",
+          "relative block font-roboto text-base font-medium capitalize hover:text-primary transition",
           { "text-primary": isActive }
         )
       }
@@ -66,9 +66,12 @@ function SubLink({ href, text }: { href: string; text: string }) {
     <NavLink
       to={href}
       className={({ isActive }) =>
-        classNames("block capitalize hover:text-primary transition", {
-          "text-primary": isActive,
-        })
+        classNames(
+          "block font-roboto capitalize hover:text-primary transition",
+          {
+            "text-primary": isActive,
+          }
+        )
       }
     >
       {text}

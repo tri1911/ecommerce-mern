@@ -21,12 +21,14 @@ import Wishlist from "./components/Account/Wishlist";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderCompletePage from "./pages/OrderCompletePage";
 import ExperimentPage from "./components/experiment";
-import OrderHistory from "./components/Account/OrderHistory";
+import MyOrders from "./components/Account/MyOrders";
 import OrderCancellations from "./components/Account/OrderCancellations";
 import MyReviews from "./components/Account/MyReviews";
 import ReviewDetails from "./components/Account/ReviewDetails";
 import TrackOrderPage from "./pages/TrackOrderPage";
 import OrderDetails from "./components/Account/OrderDetails";
+import MyReturns from "./components/Account/MyReturns";
+import OrderReturnDetails from "./components/Account/OrderReturnDetails";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -49,11 +51,19 @@ root.render(
             <Route path="profile" element={<ProfileInfo />} />
             <Route path="address" element={<AddressInfo />} />
             <Route path="password" element={<UpdatePassword />} />
-            <Route path="order" element={<OrderHistory />} />
-            <Route path="order/details" element={<OrderDetails />} />
+            <Route path="order">
+              <Route index element={<MyOrders />} />
+              <Route path="details" element={<OrderDetails />} />
+            </Route>
+            <Route path="order-return">
+              <Route index element={<MyReturns />} />
+              <Route path="details" element={<OrderReturnDetails />} />
+            </Route>
             <Route path="order-cancel" element={<OrderCancellations />} />
-            <Route path="reviews" element={<MyReviews />} />
-            <Route path="reviews/details" element={<ReviewDetails />} />
+            <Route path="reviews">
+              <Route index element={<MyReviews />} />
+              <Route path="details" element={<ReviewDetails />} />
+            </Route>
             <Route path="wishlist" element={<Wishlist />} />
           </Route>
           <Route path="checkout" element={<CheckoutPage />} />

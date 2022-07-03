@@ -1,14 +1,17 @@
-import { StarIcon } from "@heroicons/react/solid";
+import classNames from "classnames";
 import { Link } from "react-router-dom";
 
-function OrderReviewRow({
+// NOTE: similar to Rows in MyReviews page
+function SingleReturnRow({
   name,
   image,
-  action,
+  price,
+  status,
 }: {
   name: string;
   image: string;
-  action: string;
+  price: number;
+  status: "successful" | "processing";
 }) {
   return (
     <div className="__single-order px-6 py-7 shadow md:flex md:items-start md:justify-between">
@@ -24,15 +27,7 @@ function OrderReviewRow({
           <h5 className="mb-1 font-roboto text-base leading-5 font-medium">
             {name}
           </h5>
-          {action === "Edit Review" ? (
-            <div className="flex gap-1 text-sm text-yellow-400">
-              {[...Array(5).keys()].map((key) => (
-                <StarIcon key={key} className="w-4 h-4" />
-              ))}
-            </div>
-          ) : (
-            <p className="text-xs sm:text-sm text-gray-500">Not Review Yet</p>
-          )}
+          <p className="text-sm font-medium text-gray-800">${price}</p>
         </div>
       </div>
       <div className="mt-4 flex items-start justify-between md:justify-around md:mt-0 md:grow">
@@ -44,16 +39,23 @@ function OrderReviewRow({
         </div>
         <div>
           <h5 className="mb-1 font-roboto text-sm sm:text-base leading-5 font-medium">
-            Purchased
+            Return status
           </h5>
-          <p className="text-xs sm:text-sm">16 Dec 2020</p>
+          <p
+            className={classNames(
+              "text-xs sm:text-sm capitalize",
+              status === "successful" ? "text-green-500" : "text-yellow-500"
+            )}
+          >
+            {status}
+          </p>
         </div>
         <div className="flex items-center">
           <Link
             to="details"
             className="default-btn capitalize px-4 py-2 text-xs sm:text-sm bg-white text-primary hover:bg-primary hover:text-white"
           >
-            {action}
+            View Order
           </Link>
         </div>
       </div>
@@ -61,24 +63,29 @@ function OrderReviewRow({
   );
 }
 
-export default function MyReviews() {
+export default function MyReturns() {
   return (
-    <div className="space-y-6">
-      <OrderReviewRow
-        name="Xbox One Wireless Controller"
-        image="x-box.png"
-        action="Write a Review"
-      />
-      <OrderReviewRow
-        name="Herschel Leather Duffle Bag"
-        image="bag-2.png"
-        action="Edit Review"
-      />
-      <OrderReviewRow
-        name="Sound Intone I65 Earphone"
-        image="headphone-3.png"
-        action="Edit Review"
-      />
+    <div>
+      <div className="space-y-6">
+        <SingleReturnRow
+          name="Xbox One Wireless Controller"
+          image="x-box.png"
+          price={55}
+          status="successful"
+        />
+        <SingleReturnRow
+          name="Herschel Leather Duffle Bag"
+          image="bag-2.png"
+          price={200}
+          status="successful"
+        />
+        <SingleReturnRow
+          name="Sound Intone I65 Earphone"
+          image="headphone-3.png"
+          price={59}
+          status="processing"
+        />
+      </div>
     </div>
   );
 }
