@@ -85,7 +85,7 @@ function OrderStatusItem({ status = "in progress" }: { status?: OrderStatus }) {
       </h5>
       <p
         className={classNames(
-          "capitalize",
+          "font-roboto capitalize",
           { "text-yellow-600": status === "in progress" },
           { "text-green-600": status === "delivered" },
           { "text-red-600": status === "canceled" }

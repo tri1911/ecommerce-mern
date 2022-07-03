@@ -25,6 +25,7 @@ import OrderHistory from "./components/Account/OrderHistory";
 import OrderCancellations from "./components/Account/OrderCancellations";
 import MyReviews from "./components/Account/MyReviews";
 import ReviewDetails from "./components/Account/ReviewDetails";
+import TrackOrderPage from "./pages/TrackOrderPage";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -55,6 +56,7 @@ root.render(
           </Route>
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="order-complete" element={<OrderCompletePage />} />
+          <Route path="track-order" element={<TrackOrderPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
         <Route path="/experiment" element={<ExperimentPage />} />

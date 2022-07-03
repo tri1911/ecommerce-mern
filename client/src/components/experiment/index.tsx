@@ -2,13 +2,15 @@
 // import PriceRangeSlider from "./PriceRangeSlider";
 // import Drawer from "./Drawer/VanillaDrawer";
 // import DrawerWithHeadless from "./Drawer/DrawerWithHeadless";
-import Reviews from "./Reviews";
-import Tabs from "./Tabs";
+// import Reviews from "./Reviews";
+// import Tabs from "./Tabs";
+
+import Timeline from "./Timeline";
 
 export default function ExperimentPage() {
   return (
     <div className="__container flex items-center justify-center min-h-screen bg-teal-400/50">
-      <div className=" space-y-5">
+      <div className="space-y-5">
         {/* <PriceRangeSlider /> */}
         {/* <SingleProductModal /> */}
         {/* <Drawer>Shopping Cart</Drawer> */}
@@ -18,8 +20,9 @@ export default function ExperimentPage() {
           aria-hidden="true"
         />
       </DrawerWithHeadless> */}
-        <Reviews />
-        <Tabs />
+        {/* <Reviews />
+        <Tabs /> */}
+        <Timeline />
       </div>
     </div>
   );
