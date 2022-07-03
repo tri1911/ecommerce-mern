@@ -2,13 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 
-function InfoCard({
+export function InfoCard({
   title,
   href,
   children,
 }: {
   title: string;
-  href: string;
+  href?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -17,9 +17,11 @@ function InfoCard({
         <h3 className="font-medium capitalize text-gray-800 text-lg">
           {title}
         </h3>
-        <Link to={href} className="text-primary">
-          Edit
-        </Link>
+        {href && (
+          <Link to={href} className="text-primary">
+            Edit
+          </Link>
+        )}
       </div>
       <div className="space-y-1">{children}</div>
     </div>
@@ -100,8 +102,8 @@ function OrderStatusItem({ status = "in progress" }: { status?: OrderStatus }) {
 function ViewOrderBtn() {
   return (
     <Link
-      to="/orders/id"
-      className="default-btn bg-white text-primary hover:bg-primary hover:text-white"
+      to="/account/order/details"
+      className="default-btn w-fit text-sm px-4 py-2 bg-white text-primary hover:bg-primary hover:text-white"
     >
       View Order
     </Link>

@@ -26,6 +26,7 @@ import OrderCancellations from "./components/Account/OrderCancellations";
 import MyReviews from "./components/Account/MyReviews";
 import ReviewDetails from "./components/Account/ReviewDetails";
 import TrackOrderPage from "./pages/TrackOrderPage";
+import OrderDetails from "./components/Account/OrderDetails";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -48,7 +49,8 @@ root.render(
             <Route path="profile" element={<ProfileInfo />} />
             <Route path="address" element={<AddressInfo />} />
             <Route path="password" element={<UpdatePassword />} />
-            <Route path="order-history" element={<OrderHistory />} />
+            <Route path="order" element={<OrderHistory />} />
+            <Route path="order/details" element={<OrderDetails />} />
             <Route path="order-cancel" element={<OrderCancellations />} />
             <Route path="reviews" element={<MyReviews />} />
             <Route path="reviews/details" element={<ReviewDetails />} />
