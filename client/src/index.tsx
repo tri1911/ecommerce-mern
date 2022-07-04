@@ -31,6 +31,9 @@ import MyReturns from "./components/Account/MyReturns";
 import OrderReturnDetails from "./components/Account/OrderReturnDetails";
 import FAQPage from "./pages/FAQPage";
 import PaymentPage from "./pages/PaymentPage";
+import PaymentMethods from "./components/Account/PaymentMethods";
+import PaymentDetails from "./components/Account/PaymentDetails";
+import Voucher from "./components/Account/Voucher";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -66,6 +69,11 @@ root.render(
               <Route index element={<MyReviews />} />
               <Route path="details" element={<ReviewDetails />} />
             </Route>
+            <Route path="payment-method">
+              <Route index element={<PaymentMethods />} />
+              <Route path="details" element={<PaymentDetails />} />
+            </Route>
+            <Route path="voucher" element={<Voucher />} />
             <Route path="wishlist" element={<Wishlist />} />
           </Route>
           <Route path="checkout" element={<CheckoutPage />} />

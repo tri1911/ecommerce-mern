@@ -24,6 +24,10 @@
     @apply px-8 py-3 border border-primary rounded bg-primary text-white text-center font-roboto font-medium uppercase hover:bg-transparent hover:text-primary transition;
   }
 
+  .default-btn-secondary {
+    @apply border border-primary rounded bg-white text-primary text-center font-roboto font-medium uppercase hover:bg-primary hover:text-white transition;
+  }
+
   .default-input {
     @apply w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400;
   }

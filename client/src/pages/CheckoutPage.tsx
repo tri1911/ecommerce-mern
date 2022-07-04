@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import { Form, Formik, FormikHelpers } from "formik";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import TextInput from "../components/Form/TextInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CheckBox from "../components/Form/CheckBox";
 import { CartItem } from "../types";
 import { useAppSelector } from "../app/hooks";
@@ -55,6 +55,8 @@ export default function CheckoutPage() {
     acceptedTerms: false,
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit: (
     values: CheckoutFormValues,
     formikHelpers: FormikHelpers<CheckoutFormValues>
@@ -62,6 +64,7 @@ export default function CheckoutPage() {
     // do something with form values here
     console.log(values);
     actions.setSubmitting(false);
+    navigate("/payment");
   };
 
   const phoneRegExp =
@@ -216,7 +219,7 @@ export default function CheckoutPage() {
                 </CheckBox>
               </div>
               <button type="submit" className="block default-btn">
-                Place Order
+                Make a Payment
               </button>
             </section>
           </div>
