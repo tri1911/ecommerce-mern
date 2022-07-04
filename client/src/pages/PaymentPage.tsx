@@ -14,6 +14,7 @@ function MethodTabButton({ name, image }: { name: string; image: string }) {
         <div
           className={classNames(
             "relative w-full max-w-[148px] border border-gray-200 rounded-md text-center space-y-2 p-3 md:p-5",
+            "focus:outline-none",
             { "border-primary": selected }
           )}
         >
