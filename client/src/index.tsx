@@ -34,6 +34,7 @@ import PaymentPage from "./pages/PaymentPage";
 import PaymentMethods from "./components/Account/PaymentMethods";
 import PaymentDetails from "./components/Account/PaymentDetails";
 import Voucher from "./components/Account/Voucher";
+import ContactPage from "./pages/ContactPage";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -80,6 +81,7 @@ root.render(
           <Route path="payment" element={<PaymentPage />} />
           <Route path="order-complete" element={<OrderCompletePage />} />
           <Route path="track-order" element={<TrackOrderPage />} />
+          <Route path="contact" element={<ContactPage />} />
           <Route path="faq" element={<FAQPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
