@@ -4,7 +4,6 @@
 
 import { faker } from "@faker-js/faker";
 import { BaseProduct, Product } from "./product.interface";
-import { Products } from "./products.interface";
 
 /**
  * In-Memory Store
@@ -16,11 +15,11 @@ import products from "./products.data";
  * Service Methods
  */
 
-export const findAll = async (): Promise<Product[]> => Object.values(products);
+export const findAll = (): Product[] => Object.values(products);
 
-export const find = async (id: string): Promise<Product> => products[id];
+export const find = (id: string): Product => products[id];
 
-export const create = async (newProduct: BaseProduct): Promise<Product> => {
+export const create = (newProduct: BaseProduct): Product => {
   const id = faker.database.mongodbObjectId();
 
   products[id] = {
@@ -31,11 +30,11 @@ export const create = async (newProduct: BaseProduct): Promise<Product> => {
   return products[id];
 };
 
-export const update = async (
+export const update = (
   id: string,
   productUpdate: BaseProduct
-): Promise<Product | undefined> => {
-  const product = await find(id);
+): Product | undefined => {
+  const product = find(id);
 
   if (!product) {
     return undefined;
@@ -46,8 +45,8 @@ export const update = async (
   return products[id];
 };
 
-export const remove = async (id: string): Promise<undefined | void> => {
-  const product = await find(id);
+export const remove = (id: string): undefined | void => {
+  const product = find(id);
 
   if (!product) {
     return undefined;

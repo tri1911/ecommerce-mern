@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { Product } from "./product.interface";
 import { Products } from "./products.interface";
 
-let products: Products = {};
+const products: Products = {};
 
 function createRandomProduct(): Product {
   return {
