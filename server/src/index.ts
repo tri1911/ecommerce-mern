@@ -2,27 +2,20 @@
  * Required External Modules
  */
 
-import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import connectDb from "./utils/connect-db.util";
+import morgan from "morgan";
+import config from "./utils/config.util";
+import logger from "./utils/logger.util";
+import connectDB from "./utils/connect-db.util";
 import errorHandler from "./middlewares/error-handler.middleware";
 import notFoundHandler from "./middlewares/not-found.middleware";
 import userRouter from "./routes/user.router";
-import morgan from "morgan";
-
-dotenv.config();
 
 /**
  * App Variables
  */
-
-if (!process.env.PORT) {
-  process.exit(1);
-}
-
-const PORT: number = parseInt(process.env.PORT, 10);
 
 const app = express();
 
@@ -46,7 +39,9 @@ app.use(notFoundHandler);
  * Server Activation
  */
 
-app.listen(PORT, async () => {
-  console.log(`Listening on port ${PORT}`);
-  await connectDb();
+const port = config.PORT || 3001;
+
+app.listen(port, async () => {
+  logger.info(`Listening on port ${port}`);
+  await connectDB();
 });

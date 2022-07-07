@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
-import { ApplicationError } from "./custom-errors.util";
+import config from "./config.util";
 
 const generateToken = (id: string): string => {
-  if (!process.env.JWT_SECRET) {
-    throw new ApplicationError("jwt secret is missing", 500);
+  const secret = config.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT_SECRET is missing");
   }
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+  return jwt.sign({ id }, secret, { expiresIn: "30d" });
 };
 
 export default generateToken;

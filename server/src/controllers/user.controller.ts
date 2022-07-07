@@ -4,15 +4,13 @@
 
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import UserModel, { IUser } from "../models/user.model";
-import { ApplicationError } from "../utils/custom-errors.util";
+import UserModel from "../models/user.model";
+import {
+  userLoginSchema,
+  userRegistrationSchema,
+} from "../schemas/user.schema";
+import { HttpException } from "../utils/custom-errors.util";
 import generateToken from "../utils/generate-token.util";
-
-type CustomRequest<T> = Request<
-  Record<string, never>,
-  Record<string, never>,
-  T
->;
 
 /**
  * Controller Definition
@@ -22,13 +20,14 @@ type CustomRequest<T> = Request<
 // @route POST /api/users
 // @access Public
 export const registerUser = asyncHandler(
-  async (request: CustomRequest<Omit<IUser, "_id">>, response: Response) => {
-    const { name, email, password } = request.body;
+  async (request: Request, response: Response) => {
+    const { body } = userRegistrationSchema.parse(request);
+    const { name, email, password } = body;
 
     const existingUser = await UserModel.findOne({ email });
 
     if (existingUser) {
-      throw new ApplicationError("Email already exists", 400);
+      throw new HttpException("Email already exists", 409);
     }
 
     const newUser = await UserModel.create({ name, email, password });
@@ -38,7 +37,7 @@ export const registerUser = asyncHandler(
       const token = generateToken(_id.toString());
       response.status(201).json({ _id, name, email, isAdmin, token });
     } else {
-      throw new ApplicationError("Invalid user information", 400);
+      throw new HttpException("Invalid user information", 400);
     }
   }
 );
@@ -47,12 +46,9 @@ export const registerUser = asyncHandler(
 // @route POST /api/users/login
 // @access Public
 export const authenticateUser = asyncHandler(
-  async (request: CustomRequest<Partial<IUser>>, response: Response) => {
-    const { email, password } = request.body;
-
-    if (!email || !password) {
-      throw new ApplicationError("Important info missing", 400);
-    }
+  async (request: Request, response: Response) => {
+    const { body } = userLoginSchema.parse(request);
+    const { email, password } = body;
 
     const user = await UserModel.findOne({ email });
 
@@ -61,7 +57,7 @@ export const authenticateUser = asyncHandler(
       const token = generateToken(_id.toString());
       response.json({ _id, name, email, isAdmin, token });
     } else {
-      throw new ApplicationError("Invalid email or password", 401);
+      throw new HttpException("Invalid email or password", 401);
     }
   }
 );

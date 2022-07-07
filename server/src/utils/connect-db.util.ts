@@ -1,22 +1,23 @@
 import mongoose from "mongoose";
+import config from "./config.util";
+import logger from "./logger.util";
 
-const connectDb = async () => {
-  if (!process.env.MONGODB_URI) {
-    console.log("MongoDB uri is missing");
-    process.exit(1);
+const connectDB = async () => {
+  const uri = config.MONGODB_URI;
+
+  if (!uri) {
+    throw new Error("MONGODB_URI is missing");
   }
 
-  const dbUri = process.env.MONGODB_URI;
-
-  console.log(`Connecting to ${dbUri}...`);
+  logger.info("Connecting to mongo db...");
 
   try {
-    await mongoose.connect(dbUri);
-    console.log("Connected to MongoDB");
+    const result = await mongoose.connect(uri);
+    logger.info(`MongoDB connected: ${result.connection.host}`);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     process.exit(1);
   }
 };
 
-export default connectDb;
+export default connectDB;

@@ -9,7 +9,7 @@ export interface IUser {
   isAdmin?: boolean;
 }
 
-export interface UserMethods {
+interface UserMethods {
   matchPassword(password: string): Promise<boolean>;
 }
 
@@ -27,10 +27,7 @@ userSchema.methods.matchPassword = async function (this: IUser, password) {
 };
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    console.log("Password is not modified! So, don't need to do hashing");
-  } else {
-    console.log(`Hashing the password...`);
+  if (this.isModified("password")) {
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
     this.password = await bcrypt.hash(this.password, salt);

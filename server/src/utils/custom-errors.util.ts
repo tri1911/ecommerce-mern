@@ -1,15 +1,12 @@
-export class ApplicationError extends Error {
+export class HttpException extends Error {
   message: string;
-  status: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  extra?: any;
+  statusCode: number;
 
-  constructor(message: string, status: number, extra = {}) {
+  constructor(message: string, statusCode?: number) {
     super(message);
     Error.captureStackTrace(this, this.constructor);
     this.name = this.constructor.name;
-    this.message = message || "Something went wrong. Please try again.";
-    this.status = status || 500;
-    this.extra = extra;
+    this.message = message;
+    this.statusCode = statusCode || 500;
   }
 }
