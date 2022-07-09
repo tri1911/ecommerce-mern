@@ -80,3 +80,11 @@ export type RequestStatus = {
 };
 
 export type ShopDisplayMode = "grid" | "list";
+
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+  token: string;
+}

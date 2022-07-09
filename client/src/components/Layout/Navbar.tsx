@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
 import { selectAllCategories } from "../../slices/categoriesSlice";
 
 function CategoryItem({
@@ -57,6 +58,8 @@ function NavItem({ href, text }: { href: string; text: string }) {
 
 // TODO: implement mobile menubar
 function NavMenu() {
+  const user = useAppSelector((state) => state.auth.user);
+
   return (
     <div className="flex items-center justify-between flex-grow pl-12">
       <div className="flex items-center space-x-6 text-base capitalize">
@@ -67,15 +70,19 @@ function NavMenu() {
         <NavItem href="/contact" text="Contact us" />
         <NavItem href="/faq" text="FAQ" />
       </div>
-      <div className="ml-auto justify-self-end text-gray-200">
-        <Link to="/login" className=" hover:text-primary transition">
-          Login
-        </Link>
-        <span> / </span>
-        <Link to="/register" className="hover:text-primary transition">
-          Register
-        </Link>
-      </div>
+      {user ? (
+        <div className="text-gray-200">Hello, {user.name}</div>
+      ) : (
+        <div className="ml-auto justify-self-end text-gray-200">
+          <Link to="/login" className=" hover:text-primary transition">
+            Login
+          </Link>
+          <span> / </span>
+          <Link to="/register" className="hover:text-primary transition">
+            Register
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

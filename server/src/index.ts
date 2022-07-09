@@ -11,7 +11,7 @@ import logger from "./utils/logger.util";
 import connectDB from "./utils/connect-db.util";
 import errorHandler from "./middlewares/error-handler.middleware";
 import notFoundHandler from "./middlewares/not-found.middleware";
-import userRouter from "./routes/user.router";
+import userRouter from "./routes/auth.router";
 
 /**
  * App Variables
@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === "development") {
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use("/api/users", userRouter);
+app.use("/api/auth", userRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);

@@ -1,6 +1,8 @@
 import React from "react";
 import classNames from "classnames";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../app/hooks";
+import { logout } from "../../slices/auth.slice";
 
 function WelcomeCard({ name }: { name: string }) {
   return (
@@ -80,6 +82,9 @@ function SubLink({ href, text }: { href: string; text: string }) {
 }
 
 export default function AccountSideBar() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   return (
     <>
       <WelcomeCard name="Elliot Ho" />
@@ -120,11 +125,18 @@ export default function AccountSideBar() {
           />
         </LinksGroupWrapper>
         <LinksGroupWrapper>
-          <MainLink
-            href="/account/logout"
-            text="Log Out"
-            icon="fas fa-sign-out-alt"
-          />
+          <button
+            className="relative block font-roboto text-base font-medium capitalize hover:text-primary transition"
+            onClick={() => {
+              dispatch(logout());
+              navigate("/", { replace: true });
+            }}
+          >
+            <span className="absolute -left-8 top-0 text-base">
+              <i className="fas fa-sign-out-alt" />
+            </span>
+            Log Out
+          </button>
         </LinksGroupWrapper>
       </div>
     </>

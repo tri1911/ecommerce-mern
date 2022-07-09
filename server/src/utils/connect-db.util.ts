@@ -9,13 +9,15 @@ const connectDB = async () => {
     throw new Error("MONGODB_URI is missing");
   }
 
-  logger.info("Connecting to mongo db...");
+  logger.info("Connecting to MongoDB...");
 
   try {
     const result = await mongoose.connect(uri);
     logger.info(`MongoDB connected: ${result.connection.host}`);
   } catch (error) {
-    logger.error(error);
+    if (error instanceof Error) {
+      logger.error("Error connecting to MongoDB: ", error.message);
+    }
     process.exit(1);
   }
 };
