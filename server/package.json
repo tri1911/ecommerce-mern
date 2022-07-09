@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=development ts-node-dev --respawn --pretty --transpile-only src/index.ts",
-    "lint": "eslint --ext .ts"
+    "lint": "eslint --ext .ts",
+    "data:import": "ts-node src/seeder.ts",
+    "data:destroy": "ts-node src/seeder.ts -d"
   },
   "keywords": [],
   "author": "Elliot Ho",

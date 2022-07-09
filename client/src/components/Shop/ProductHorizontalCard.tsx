@@ -10,12 +10,20 @@ export default function ProductHorizontalCard({
 }: {
   product: Product;
 }) {
-  const { _id, image, name, price, rating, reviews, countInStock } = product;
+  const {
+    _id,
+    image,
+    name,
+    price,
+    rating,
+    reviews,
+    inStockQty: countInStock,
+  } = product;
   const { isAddedToWishlist, handleAddToWishlist } =
     useAddWishlistItem(product);
 
   const { handleAddToCart } = useAddCartItem({
-    item: { productId: _id, name, image, price, countInStock },
+    item: { productId: _id, name, image, price, inStockQty: countInStock },
     size: "m",
     quantity: 1,
     color: "black",

@@ -69,11 +69,17 @@ export const useAddWishlistItem = (product: Product) => {
   const isAddedToWishlist = wishlistIds.includes(product._id);
 
   const handleAddToWishlist = useCallback(() => {
-    const { _id, name, image, countInStock, price } = product;
+    const { _id, name, image, inStockQty, price } = product;
 
     if (!isAddedToWishlist) {
       dispatch(
-        wishlistItemAdded({ productId: _id, name, image, price, countInStock })
+        wishlistItemAdded({
+          productId: _id,
+          name,
+          image,
+          price,
+          inStockQty,
+        })
       );
     } else {
       dispatch(wishlistItemRemoved(_id));
@@ -112,7 +118,7 @@ export const useAddCartItem = ({
 
   const handleAddToCart = useCallback(() => {
     if (canAddItem) {
-      const { productId, name, image, price, countInStock } = item;
+      const { productId, name, image, price, inStockQty: countInStock } = item;
 
       dispatch(
         cartItemAdded({
@@ -120,7 +126,7 @@ export const useAddCartItem = ({
           name,
           image,
           price,
-          countInStock,
+          inStockQty: countInStock,
           size: size as Size,
           color: color as Color,
           quantity,
@@ -135,7 +141,7 @@ export const useAddCartItem = ({
 };
 
 export const useUpdateCartItemQuantity = (cartItem: CartItem) => {
-  const { productId, countInStock, quantity } = cartItem;
+  const { productId, inStockQty: countInStock, quantity } = cartItem;
 
   const [selectedQuantity, updateSelectedQuantity] = useState(quantity);
 

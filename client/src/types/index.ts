@@ -43,13 +43,13 @@ export interface Product {
   price: number;
   rating: number;
   reviews: number;
-  countInStock: number;
+  inStockQty: number;
   sku: string;
   createdAt: string;
 }
 
 export interface SharedProduct
-  extends Pick<Product, "name" | "image" | "price" | "countInStock"> {
+  extends Pick<Product, "name" | "image" | "price" | "inStockQty"> {
   productId: Product["_id"];
 }
 

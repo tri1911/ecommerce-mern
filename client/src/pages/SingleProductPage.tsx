@@ -284,7 +284,7 @@ export function ProductContent({ product }: { product: Product }) {
     description,
     rating,
     reviews,
-    countInStock,
+    inStockQty: countInStock,
     brand,
     category,
     sku,
@@ -292,7 +292,7 @@ export function ProductContent({ product }: { product: Product }) {
   } = product;
 
   const { canAddItem, handleAddToCart } = useAddCartItem({
-    item: { productId: _id, name, image, price, countInStock },
+    item: { productId: _id, name, image, price, inStockQty: countInStock },
     ...values,
   });
   const { isAddedToWishlist, handleAddToWishlist } =

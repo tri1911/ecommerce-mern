@@ -83,13 +83,13 @@ export default function ProductVerticalCard({ product }: { product: Product }) {
   // NOTE: should place `Quick View` visibility control here? or put it into centralized redux store?
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
-  const { _id, name, image, price, countInStock } = product;
+  const { _id, name, image, price, inStockQty: countInStock } = product;
 
   const { isAddedToWishlist, handleAddToWishlist } =
     useAddWishlistItem(product);
 
   const { handleAddToCart } = useAddCartItem({
-    item: { productId: _id, name, image, price, countInStock },
+    item: { productId: _id, name, image, price, inStockQty: countInStock },
     size: "m",
     quantity: 1,
     color: "black",

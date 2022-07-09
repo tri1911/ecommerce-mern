@@ -4,7 +4,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
-import { products } from "../data/products";
+import productService from "../services/product.service";
 import { Product, RequestStatus } from "../types";
 
 const productsAdapter = createEntityAdapter<Product>({
@@ -12,9 +12,16 @@ const productsAdapter = createEntityAdapter<Product>({
   sortComparer: (a, b) => a.name.localeCompare(b.name),
 });
 
+interface ProductsState {
+  status: RequestStatus["status"];
+  error?: string;
+  page?: number;
+  pages?: number;
+}
+
 const initialState = productsAdapter.getInitialState({
   status: "idle",
-} as RequestStatus);
+} as ProductsState);
 
 const productsSlice = createSlice({
   name: "products",
@@ -25,21 +32,22 @@ const productsSlice = createSlice({
       .addCase(fetchProducts.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        productsAdapter.setAll(state, action.payload);
-      });
+      .addCase(
+        fetchProducts.fulfilled,
+        (state, { payload: { products, page, pages } }) => {
+          state.status = "succeeded";
+          state.page = page;
+          state.pages = pages;
+          productsAdapter.setAll(state, products);
+        }
+      );
   },
 });
 
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
-  async () => {
-    // simulate asynchronously fetching products from external server
-    const result = await new Promise<Product[]>((resolve) => {
-      setTimeout(() => resolve(products), 2000);
-    });
-    return result;
+  async ({ page }: { page?: string }) => {
+    return await productService.getProducts({ page });
   }
 );
 

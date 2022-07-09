@@ -8,7 +8,7 @@ import { selectAllWishlistItems } from "../../slices/wishlistSlice";
 import { WishlistItem } from "../../types";
 
 function WishlistItemRow({ item }: { item: WishlistItem }) {
-  const { productId, image, name, price, countInStock } = item;
+  const { productId, image, name, price, inStockQty: countInStock } = item;
 
   // NOTE: determine the default values for size & color
   const { handleAddToCart } = useAddCartItem({

@@ -20,7 +20,7 @@ export default function HomePage() {
 
   useEffect(() => {
     if (status === "idle") {
-      dispatch(fetchProducts());
+      dispatch(fetchProducts({}));
     }
   }, [dispatch, status]);
 

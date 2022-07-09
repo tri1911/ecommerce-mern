@@ -35,7 +35,13 @@ function PageItem({ active, page }: { active?: boolean; page: number }) {
   );
 }
 
-function Pagination() {
+function Pagination({
+  current = 1,
+  pages,
+}: {
+  current?: number;
+  pages: number;
+}) {
   return (
     <div className="__pagination-wrapper bg-white py-3 flex items-center justify-between">
       <div className="__mobile-pagination flex-1 flex justify-between sm:hidden">
@@ -73,9 +79,9 @@ function Pagination() {
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
             </Link>
             {/* Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" */}
-            <PageItem active page={1} />
-            <PageItem page={2} />
-            <PageItem page={3} />
+            <PageItem active={current === 1} page={1} />
+            <PageItem active={current === 2} page={2} />
+            <PageItem active={current === 3} page={3} />
             <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
               ...
             </span>
@@ -107,6 +113,11 @@ export default function ShopPage() {
 
   const products = useAppSelector(selectAllProducts);
   const status = useAppSelector(selectProductsRequestStatus);
+
+  const currentPage = useAppSelector((state) => state.products.page);
+  const pagesInTotal = useAppSelector((state) => state.products.pages);
+
+  const pageQuery = searchParams.get("page") || undefined;
 
   // TODO: refactor to `filter` object (later, after finishing the ui prototype part) & use `useMemo` as well
 
@@ -151,10 +162,16 @@ export default function ShopPage() {
   /* Fetching data when the page was mounted */
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchProducts());
+    if (
+      status === "idle" ||
+      (status !== "loading" &&
+        currentPage !== undefined &&
+        pageQuery !== undefined &&
+        parseInt(pageQuery) !== currentPage)
+    ) {
+      dispatch(fetchProducts({ page: pageQuery }));
     }
-  }, [status, dispatch]);
+  }, [dispatch, status, currentPage, pageQuery]);
 
   return (
     <div>
@@ -181,9 +198,11 @@ export default function ShopPage() {
                 <ProductsListView products={processedProducts} />
               ))}
           </div>
-          <div className="__pagination-container mt-4">
-            <Pagination />
-          </div>
+          {pagesInTotal && (
+            <div className="__pagination-container mt-4">
+              <Pagination current={currentPage} pages={pagesInTotal} />
+            </div>
+          )}
         </section>
       </div>
     </div>
