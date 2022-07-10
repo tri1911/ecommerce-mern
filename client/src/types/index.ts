@@ -88,3 +88,7 @@ export interface User {
   isAdmin: boolean;
   token: string;
 }
+
+export interface RejectErrorPayload {
+  errorMessage: string;
+}

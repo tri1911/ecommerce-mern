@@ -1,11 +1,12 @@
 import { Tab } from "@headlessui/react";
 import classNames from "classnames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   useAppSelector,
   useAddCartItem,
   useAddWishlistItem,
+  useAppDispatch,
 } from "../app/hooks";
 import ProductSection from "../components/Home/ProductSection";
 import ProductInfo from "../components/Product/ProductInfo";
@@ -14,7 +15,12 @@ import Reviews from "../components/Product/Reviews";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import QuantitySelector from "../components/Shared/QuantitySelector";
 import Rating from "../components/Shared/Rating";
-import { selectAllProducts, selectProductById } from "../slices/productsSlice";
+import Spinner from "../components/Shared/Spinner";
+import {
+  fetchSingleProduct,
+  selectProductDetails,
+} from "../slices/product.slice";
+import { selectAllProducts } from "../slices/products.slice";
 import { Color, COLORS, Fn, Product, Size, SIZES } from "../types";
 
 /* Product Image */
@@ -341,14 +347,28 @@ export function ProductContent({ product }: { product: Product }) {
 export default function SingleProductPage() {
   const { productId } = useParams();
 
-  const product = useAppSelector((state) =>
-    selectProductById(state, productId!)
-  );
+  const dispatch = useAppDispatch();
+
+  // const product = useAppSelector((state) =>
+  //   selectProductById(state, productId!)
+  // );
+
+  const { status, product } = useAppSelector(selectProductDetails);
+
+  useEffect(() => {
+    if (productId && productId !== product?._id) {
+      dispatch(fetchSingleProduct(productId));
+    }
+  }, [dispatch, productId, product]);
 
   const products = useAppSelector(selectAllProducts);
 
   if (!product) {
     return null;
+  }
+
+  if (status === "loading") {
+    return <Spinner />;
   }
 
   const tabs = ["Product Info", "Question & Answers", "Review (10)"];

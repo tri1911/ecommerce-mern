@@ -10,7 +10,7 @@ import {
   fetchProducts,
   selectAllProducts,
   selectProductsRequestStatus,
-} from "../slices/productsSlice";
+} from "../slices/products.slice";
 
 export default function HomePage() {
   const dispatch = useAppDispatch();

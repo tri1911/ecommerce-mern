@@ -20,6 +20,11 @@ const getProducts = async ({ page }: ProductFilter) => {
   return response.data;
 };
 
-const productService = { getProducts };
+const getProductById = async (id: string) => {
+  const response = await axios.get<Product>(`${baseUrl}/${id}`);
+  return response.data;
+};
+
+const productService = { getProducts, getProductById };
 
 export default productService;

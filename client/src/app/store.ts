@@ -1,5 +1,5 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import productsReducer from "../slices/productsSlice";
+import productsReducer from "../slices/products.slice";
 import categoriesReducer, {
   categoriesReceived,
 } from "../slices/categoriesSlice";
@@ -7,10 +7,12 @@ import { categories } from "../data/categories";
 import cartReducer from "../slices/cartSlice";
 import wishlistReducer from "../slices/wishlistSlice";
 import authReducer from "../slices/auth.slice";
+import productReducer from "../slices/product.slice";
 
 export const store = configureStore({
   reducer: {
     products: productsReducer,
+    product: productReducer,
     categories: categoriesReducer,
     cart: cartReducer,
     wishlist: wishlistReducer,

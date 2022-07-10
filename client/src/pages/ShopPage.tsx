@@ -14,7 +14,7 @@ import {
   fetchProducts,
   selectAllProducts,
   selectProductsRequestStatus,
-} from "../slices/productsSlice";
+} from "../slices/products.slice";
 import { SORT_OPTIONS } from "../types";
 
 function PageItem({ active, page }: { active?: boolean; page: number }) {

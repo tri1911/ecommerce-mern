@@ -4,22 +4,20 @@ import AuthService, {
   UserCredential,
   UserRegistrationInfo,
 } from "../services/auth.service";
-import { RequestStatus, User } from "../types";
-
-interface ErrorPayload {
-  errorMessage: string;
-}
+import { RejectErrorPayload, RequestStatus, User } from "../types";
 
 export const login = createAsyncThunk<
   User,
   UserCredential,
-  { rejectValue: ErrorPayload }
+  { rejectValue: RejectErrorPayload }
 >("auth/login", async (credential, thunkApi) => {
   try {
     return await AuthService.login(credential);
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      return thunkApi.rejectWithValue(error.response?.data as ErrorPayload);
+      return thunkApi.rejectWithValue(
+        error.response?.data as RejectErrorPayload
+      );
     } else {
       throw error;
     }
@@ -29,13 +27,15 @@ export const login = createAsyncThunk<
 export const register = createAsyncThunk<
   User,
   UserRegistrationInfo,
-  { rejectValue: ErrorPayload }
+  { rejectValue: RejectErrorPayload }
 >("auth/register", async (newUser, thunkApi) => {
   try {
     return await AuthService.register(newUser);
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      return thunkApi.rejectWithValue(error.response?.data as ErrorPayload);
+      return thunkApi.rejectWithValue(
+        error.response?.data as RejectErrorPayload
+      );
     } else {
       throw error;
     }
