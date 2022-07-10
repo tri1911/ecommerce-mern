@@ -1,25 +1,54 @@
 import { model, Model, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 
+export enum Gender {
+  Male = "male",
+  Female = "female",
+  Other = "other",
+}
+
+export enum Role {
+  Admin = "admin",
+  Customer = "customer",
+}
+
 export interface IUser {
-  name: string;
   email: string;
+  firstName: string;
+  lastName: string;
+  birthday?: Date;
+  gender?: Gender;
+  phone: string;
   password: string;
-  isAdmin?: boolean;
+  role: Role;
 }
 
 interface UserMethods {
   matchPassword(password: string): Promise<boolean>;
 }
 
-type UserModelType = Model<IUser, Record<string, never>, UserMethods>;
+type UserModelType = Model<IUser, unknown, UserMethods>;
 
-const userSchema = new Schema<IUser, UserModelType, UserMethods>({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  isAdmin: { type: Boolean, default: false },
-});
+const userSchema = new Schema<IUser, UserModelType, UserMethods>(
+  {
+    email: { type: String, required: true, unique: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    birthday: { type: Date },
+    gender: {
+      type: String,
+      enum: Object.values(Gender),
+    },
+    phone: { type: String, required: true },
+    password: { type: String, required: true },
+    role: {
+      type: String,
+      enum: Object.values(Role),
+      default: Role.Customer,
+    },
+  },
+  { timestamps: true }
+);
 
 userSchema.methods.matchPassword = async function (this: IUser, password) {
   return await bcrypt.compare(password, this.password);

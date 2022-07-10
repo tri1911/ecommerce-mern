@@ -71,7 +71,7 @@ export default function RegisterForm() {
           <Password
             label="Password"
             name="password"
-            placeholder="Enter your password"
+            placeholder="At least 6 characters"
             required
           />
           <Password

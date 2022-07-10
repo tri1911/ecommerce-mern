@@ -118,7 +118,7 @@ export const useAddCartItem = ({
 
   const handleAddToCart = useCallback(() => {
     if (canAddItem) {
-      const { productId, name, image, price, inStockQty: countInStock } = item;
+      const { productId, name, image, price, inStockQty } = item;
 
       dispatch(
         cartItemAdded({
@@ -126,7 +126,7 @@ export const useAddCartItem = ({
           name,
           image,
           price,
-          inStockQty: countInStock,
+          inStockQty,
           size: size as Size,
           color: color as Color,
           quantity,
@@ -141,7 +141,7 @@ export const useAddCartItem = ({
 };
 
 export const useUpdateCartItemQuantity = (cartItem: CartItem) => {
-  const { productId, inStockQty: countInStock, quantity } = cartItem;
+  const { productId, inStockQty, quantity } = cartItem;
 
   const [selectedQuantity, updateSelectedQuantity] = useState(quantity);
 
@@ -159,10 +159,10 @@ export const useUpdateCartItemQuantity = (cartItem: CartItem) => {
   }, [quantity, selectedQuantity, productId, dispatch]);
 
   const increaseQuantity = useCallback(() => {
-    if (selectedQuantity < countInStock) {
+    if (selectedQuantity < inStockQty) {
       updateSelectedQuantity(selectedQuantity + 1);
     }
-  }, [selectedQuantity, countInStock]);
+  }, [selectedQuantity, inStockQty]);
 
   const decreaseQuantity = useCallback(() => {
     if (selectedQuantity > 0) {
