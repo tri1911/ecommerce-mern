@@ -13,6 +13,8 @@ import errorHandler from "./middlewares/error-handler.middleware";
 import notFoundHandler from "./middlewares/not-found.middleware";
 import authRouter from "./routes/auth.router";
 import productRouter from "./routes/product.router";
+import addressRouter from "./routes/address.router";
+import userExtractor from "./middlewares/extract-user.middleware";
 
 /**
  * App Variables
@@ -33,6 +35,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
+app.use("/api/addresses", userExtractor, addressRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);

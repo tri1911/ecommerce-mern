@@ -1,4 +1,4 @@
-import { model, Model, Schema } from "mongoose";
+import { model, Schema, InferSchemaType } from "mongoose";
 import bcrypt from "bcrypt";
 
 export enum Gender {
@@ -12,29 +12,12 @@ export enum Role {
   Customer = "customer",
 }
 
-export interface IUser {
-  email: string;
-  firstName: string;
-  lastName: string;
-  birthday?: Date;
-  gender?: Gender;
-  phone: string;
-  password: string;
-  role: Role;
-}
-
-interface UserMethods {
-  matchPassword(password: string): Promise<boolean>;
-}
-
-type UserModelType = Model<IUser, unknown, UserMethods>;
-
-const userSchema = new Schema<IUser, UserModelType, UserMethods>(
+const userSchema = new Schema(
   {
     email: { type: String, required: true, unique: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    birthday: { type: Date },
+    birthday: Date,
     gender: {
       type: String,
       enum: Object.values(Gender),
@@ -47,12 +30,15 @@ const userSchema = new Schema<IUser, UserModelType, UserMethods>(
       default: Role.Customer,
     },
   },
-  { timestamps: true }
+  {
+    methods: {
+      async matchPassword(password: string) {
+        return await bcrypt.compare(password, this.password);
+      },
+    },
+    timestamps: true,
+  }
 );
-
-userSchema.methods.matchPassword = async function (this: IUser, password) {
-  return await bcrypt.compare(password, this.password);
-};
 
 userSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
@@ -63,6 +49,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-const UserModel = model<IUser, UserModelType>("User", userSchema);
+export type User = InferSchemaType<typeof userSchema>;
 
-export default UserModel;
+export default model("User", userSchema);

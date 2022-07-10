@@ -20,6 +20,8 @@ const errorHandler = (
     return response.status(400).json({ errorMessage: "mal-formatted id" });
   } else if (error.name === "ValidationError") {
     return response.status(400).json({ errorMessage: error.message });
+  } else if (error.name === "JsonWebTokenError") {
+    return response.status(401).json({ errorMessage: "Invalid Token" });
   } else {
     return response.status(500).json({ errorMessage: error.message });
   }
