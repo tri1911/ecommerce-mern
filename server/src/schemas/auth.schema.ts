@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { Gender } from "../models/user.model";
 
 export const userRegistrationRequestSchema = z.object({
   body: z.object({
@@ -23,24 +22,5 @@ export const userLoginRequestSchema = z.object({
     password: z
       .string({ required_error: "Password is required" })
       .min(6, { message: "Must be 6 or more characters long" }),
-  }),
-});
-
-export const profileUpdateRequestSchema = z.object({
-  body: z.object({
-    firstName: z.optional(z.string()),
-    lastName: z.optional(z.string()),
-    birthday: z.optional(
-      z.preprocess((arg) => {
-        if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
-      }, z.date())
-    ),
-    gender: z.optional(z.nativeEnum(Gender)),
-    email: z.optional(
-      z.string().email({
-        message: "Invalid email address",
-      })
-    ),
-    phone: z.optional(z.string()),
   }),
 });

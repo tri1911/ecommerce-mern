@@ -3,7 +3,7 @@ import UserModel from "../models/user.model";
 import {
   userLoginRequestSchema,
   userRegistrationRequestSchema,
-} from "../schemas/user.schema";
+} from "../schemas/auth.schema";
 import { HttpException } from "../utils/custom-errors.util";
 import generateToken from "../utils/generate-token.util";
 

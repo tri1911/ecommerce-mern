@@ -1,28 +1,18 @@
 import { z } from "zod";
-import { Types } from "mongoose";
+import { userInRequestSchema } from "./common";
 
 export const getAllAddressesRequestSchema = z.object({
-  user: z.object(
-    { _id: z.instanceof(Types.ObjectId) },
-    { required_error: "User is required" }
-  ),
+  user: userInRequestSchema,
 });
 
 export const getAddressByIdRequestSchema = z.object({
-  user: z.object(
-    { _id: z.instanceof(Types.ObjectId) },
-    { required_error: "User is required" }
-  ),
   params: z.object({
     id: z.string({ required_error: "Address Id is required" }),
   }),
 });
 
 export const createAddressRequestSchema = z.object({
-  user: z.object(
-    { _id: z.instanceof(Types.ObjectId) },
-    { required_error: "User is required" }
-  ),
+  user: userInRequestSchema,
   body: z.object({
     fullName: z.string({ required_error: "Full Name is required" }),
     phone: z.string({ required_error: "Phone Number is required" }),
