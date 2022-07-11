@@ -46,7 +46,10 @@ export const updatePassword = asyncHandler(async (request, response) => {
   const user = await UserModel.findById(userId);
 
   if (!user) {
-    throw new HttpException("User is not found", 404);
+    throw new HttpException(
+      `User profile with id '${userId}' is not found`,
+      404
+    );
   }
 
   const isPasswordMatched = await user.matchPassword(currentPassword);
@@ -54,8 +57,8 @@ export const updatePassword = asyncHandler(async (request, response) => {
   if (isPasswordMatched) {
     user.password = newPassword;
     await user.save();
-    response.status(200).json({ message: "Updated password successfully" });
+    response.status(201).json({ message: "Updated password successfully" });
   } else {
-    throw new HttpException("The current password does not match", 401);
+    throw new HttpException("The current password does not match", 400);
   }
 });

@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { fetchProfileInfo } from "../../slices/profile.slice";
+import Spinner from "../Shared/Spinner";
 
 export function InfoCard({
   title,
@@ -29,12 +32,37 @@ export function InfoCard({
 }
 
 function PersonalInfo() {
+  const dispatch = useAppDispatch();
+
+  const loggedUser = useAppSelector((state) => state.auth.user);
+
+  const { data: profileInfo, status: profileRequestStatus } = useAppSelector(
+    (state) => state.profile
+  );
+
+  useEffect(() => {
+    if (
+      loggedUser &&
+      (!profileInfo || loggedUser.email !== profileInfo.email)
+    ) {
+      dispatch(fetchProfileInfo(loggedUser.token));
+    }
+  }, [dispatch, loggedUser, profileInfo]);
+
+  if (!profileInfo) {
+    return profileRequestStatus === "loading" ? <Spinner /> : null;
+  }
+
+  const { firstName, lastName, email, phone } = profileInfo;
+
   return (
     <div className="grid md:grid-cols-3 gap-4">
       <InfoCard title="Personal Profile" href="/account/profile">
-        <h4 className="text-gray-700 font-medium">Elliot Ho</h4>
-        <p className="text-gray-800">example@mail.com</p>
-        <p className="text-gray-800">(123) 456-789</p>
+        <h4 className="text-gray-700 font-medium">
+          {firstName} {lastName}
+        </h4>
+        <p className="text-gray-800">{email}</p>
+        <p className="text-gray-800">{phone}</p>
       </InfoCard>
       <InfoCard title="Shipping Address" href="/account/address">
         <h4 className="text-gray-700 font-medium">Elliot Ho</h4>

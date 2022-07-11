@@ -12,7 +12,12 @@ export default function Select({ label, ...rest }: SelectProps) {
       <label htmlFor={rest.name} className="text-gray-600 mb-2 block">
         {label}
       </label>
-      <select id={rest.name} className="default-input" {...field} {...rest} />
+      <select
+        id={rest.name}
+        className="default-input capitalize"
+        {...field}
+        {...rest}
+      />
       {meta.touched && meta.error ? (
         <div className="input-error">{meta.error}</div>
       ) : null}

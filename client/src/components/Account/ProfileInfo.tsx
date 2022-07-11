@@ -1,36 +1,23 @@
-import { Form, Formik, FormikHelpers } from "formik";
+import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import FormSubmitButton from "../Shared/FormSubmitButton";
 import TextInput from "../Form/TextInput";
 import Select from "../Form/Select";
-import { Gender } from "../../types";
-
-interface ProfileFormValue {
-  firstName: string;
-  lastName: string;
-  birthday: string;
-  gender?: Gender;
-  email: string;
-  phone: string;
-}
+import { Gender, UserProfile } from "../../types";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { updateProfile } from "../../slices/profile.slice";
 
 export default function ProfileInfo() {
-  const initialValues = {
-    firstName: "Elliot",
-    lastName: "Ho",
-    birthday: "1999-11-19",
-    gender: undefined,
-    email: "sample@email.com",
-    phone: "123-456-7891",
-  };
+  const dispatch = useAppDispatch();
+  const profileInfo = useAppSelector((state) => state.profile.data);
 
-  const handleSubmit: (
-    values: ProfileFormValue,
-    formikHelpers: FormikHelpers<ProfileFormValue>
-  ) => void | Promise<any> = (values, actions) => {
-    // do something with form values here
-    console.log(values);
-    actions.setSubmitting(false);
+  const initialValues = {
+    firstName: profileInfo?.firstName ?? "",
+    lastName: profileInfo?.lastName ?? "",
+    birthday: profileInfo?.birthday?.split("T")[0],
+    gender: profileInfo?.gender,
+    email: profileInfo?.email ?? "",
+    phone: profileInfo?.phone ?? "",
   };
 
   const phoneRegExp =
@@ -39,22 +26,30 @@ export default function ProfileInfo() {
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Please enter your first name"),
     lastName: Yup.string().required("Please enter your last name"),
-    birthday: Yup.date().default(() => new Date()),
-    gender: Yup.string()
-      .oneOf(["male", "female", "other"], "Invalid gender")
-      .required("Please choose your gender"),
+    birthday: Yup.date(),
+    gender: Yup.string().oneOf(Object.values(Gender), "Invalid gender"),
     email: Yup.string()
       .email("Invalid email address")
-      .required("Email is required"),
+      .required("Email address is required"),
     phone: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
   });
 
   return (
     <div className="shadow rounded px-6 pt-5 pb-7">
-      <Formik<ProfileFormValue>
+      <Formik<UserProfile>
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={async (values) => {
+          try {
+            await dispatch(updateProfile(values)).unwrap();
+          } catch (error: any) {
+            if (error.errorMessage) {
+              console.error(error.errorMessage);
+            } else {
+              console.error("there is something wrong");
+            }
+          }
+        }}
       >
         <Form>
           <h3 className="text-lg font-medium capitalize mb-4">
@@ -84,9 +79,11 @@ export default function ProfileInfo() {
               />
               <Select label="Gender" name="gender">
                 <option>Select your gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                {Object.values(Gender).map((gender) => (
+                  <option key={gender} value={gender}>
+                    {gender}
+                  </option>
+                ))}
               </Select>
             </div>
             <div className="grid sm:grid-cols-2 gap-4">

@@ -4,10 +4,10 @@ import AuthService, {
   UserCredential,
   UserRegistrationInfo,
 } from "../services/auth.service";
-import { RejectErrorPayload, RequestStatus, User } from "../types";
+import { RejectErrorPayload, RequestStatus, AuthInfo } from "../types";
 
 export const login = createAsyncThunk<
-  User,
+  AuthInfo,
   UserCredential,
   { rejectValue: RejectErrorPayload }
 >("auth/login", async (credential, thunkApi) => {
@@ -25,7 +25,7 @@ export const login = createAsyncThunk<
 });
 
 export const register = createAsyncThunk<
-  User,
+  AuthInfo,
   UserRegistrationInfo,
   { rejectValue: RejectErrorPayload }
 >("auth/register", async (newUser, thunkApi) => {
@@ -46,7 +46,7 @@ export const logout = createAsyncThunk("auth/logout", () => {
   AuthService.logout();
 });
 
-type AuthState = RequestStatus & { user?: User };
+type AuthState = RequestStatus & { user?: AuthInfo };
 
 const userSlice = createSlice({
   name: "auth",

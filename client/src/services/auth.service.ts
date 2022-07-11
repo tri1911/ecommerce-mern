@@ -1,5 +1,5 @@
 import axios from "axios";
-import { User } from "../types";
+import { AuthInfo } from "../types";
 
 const BASE_URL = "http://localhost:3001/api/auth/";
 const USER_KEY = "user";
@@ -9,8 +9,8 @@ export interface UserCredential {
   password: string;
 }
 
-const login = async (credential: UserCredential): Promise<User> => {
-  const { data } = await axios.post<User>(BASE_URL + "login", credential);
+const login = async (credential: UserCredential): Promise<AuthInfo> => {
+  const { data } = await axios.post<AuthInfo>(BASE_URL + "login", credential);
   localStorage.setItem(USER_KEY, JSON.stringify(data));
   return data;
 };
@@ -21,8 +21,8 @@ export interface UserRegistrationInfo {
   password: string;
 }
 
-const register = async (newUser: UserRegistrationInfo): Promise<User> => {
-  const { data } = await axios.post<User>(BASE_URL + "register", newUser);
+const register = async (newUser: UserRegistrationInfo): Promise<AuthInfo> => {
+  const { data } = await axios.post<AuthInfo>(BASE_URL + "register", newUser);
   localStorage.setItem(USER_KEY, JSON.stringify(data));
   return data;
 };

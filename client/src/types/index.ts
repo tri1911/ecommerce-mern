@@ -8,7 +8,7 @@ export const COLORS = {
   black: "#000",
 } as const;
 
-export type Gender = "male" | "female" | "other";
+// export type Gender = "male" | "female" | "other";
 
 export type Size = typeof SIZES[number];
 export type Color = keyof typeof COLORS;
@@ -81,12 +81,32 @@ export type RequestStatus = {
 
 export type ShopDisplayMode = "grid" | "list";
 
-export interface User {
+export type AuthInfo = {
   _id: string;
   name: string;
   email: string;
-  isAdmin: boolean;
+  role: Role;
   token: string;
+};
+
+export enum Gender {
+  Male = "male",
+  Female = "female",
+  Other = "other",
+}
+
+export enum Role {
+  Admin = "admin",
+  Customer = "customer",
+}
+
+export interface UserProfile {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  birthday?: string;
+  gender?: Gender;
 }
 
 export interface RejectErrorPayload {
