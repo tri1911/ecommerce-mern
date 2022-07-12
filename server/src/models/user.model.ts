@@ -49,6 +49,17 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+/*
+  userSchema.set("toJSON", {
+    transform: (_document, returnedObject) => {
+      returnedObject.id = returnedObject._id.toString();
+      delete returnedObject._id;
+      delete returnedObject.__v;
+      delete returnedObject.password;
+    },
+  });
+ */
+
 export type User = InferSchemaType<typeof userSchema>;
 
 export default model("User", userSchema);

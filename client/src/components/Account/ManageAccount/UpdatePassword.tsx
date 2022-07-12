@@ -96,7 +96,7 @@ export default function UpdatePassword() {
               name="confirmNewPassword"
               placeholder="Enter confirm password"
             />
-            <div className="mt-6">
+            <div>
               <button
                 type="submit"
                 className="default-btn py-2 flex justify-center disabled:cursor-not-allowed disabled:bg-primary/80 disabled:text-white"

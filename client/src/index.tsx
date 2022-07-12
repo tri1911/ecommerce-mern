@@ -15,7 +15,6 @@ import MyAccountPage from "./pages/MyAccountPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ManageAccount from "./components/Account/ManageAccount";
 import ProfileInfo from "./components/Account/ManageAccount/ProfileInfo";
-import AddressInfo from "./components/Account/ManageAccount/AddressInfo";
 import UpdatePassword from "./components/Account/ManageAccount/UpdatePassword";
 import Wishlist from "./components/Account/Wishlist";
 import CheckoutPage from "./pages/CheckoutPage";
@@ -36,6 +35,8 @@ import PaymentDetails from "./components/Account/PaymentDetails";
 import Voucher from "./components/Account/Voucher";
 import ContactPage from "./pages/ContactPage";
 import AboutUsPage from "./pages/AboutUsPage";
+import AddressesList from "./components/Account/ManageAccount/AddressesList";
+import AddressEditForm from "./components/Account/ManageAccount/AddressEditForm";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -52,7 +53,8 @@ root.render(
             {/* <Route index element={<ManageAccount />} /> */}
             <Route path="manage" element={<ManageAccount />} />
             <Route path="profile" element={<ProfileInfo />} />
-            <Route path="address" element={<AddressInfo />} />
+            <Route path="address" element={<AddressesList />} />
+            <Route path="address/edit" element={<AddressEditForm />} />
             <Route path="password" element={<UpdatePassword />} />
             <Route path="order">
               <Route index element={<MyOrders />} />

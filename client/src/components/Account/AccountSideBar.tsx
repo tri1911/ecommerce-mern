@@ -1,10 +1,10 @@
 import React from "react";
 import classNames from "classnames";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { logout } from "../../slices/auth.slice";
 
-function WelcomeCard({ name }: { name: string }) {
+function WelcomeCard({ name }: { name?: string }) {
   return (
     <div className="px-4 py-3 shadow flex items-center gap-4">
       <div className="shrink-0">
@@ -16,7 +16,9 @@ function WelcomeCard({ name }: { name: string }) {
       </div>
       <div>
         <p className="text-gray-600">Hello, </p>
-        <h4 className="text-gray-800 capitalize font-medium">{name}</h4>
+        <h4 className="text-gray-800 capitalize font-medium">
+          {name || "Unknown User"}
+        </h4>
       </div>
     </div>
   );
@@ -84,10 +86,11 @@ function SubLink({ href, text }: { href: string; text: string }) {
 export default function AccountSideBar() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const loggedUser = useAppSelector((state) => state.auth.user);
 
   return (
     <>
-      <WelcomeCard name="Elliot Ho" />
+      <WelcomeCard name={loggedUser?.name} />
       <div className="mt-6 bg-white text-gray-600 shadow rounded p-4 divide-y divide-gray-200 space-y-4">
         <LinksGroupWrapper isFirstGroup>
           <MainLink

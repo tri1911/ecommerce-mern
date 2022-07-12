@@ -9,13 +9,13 @@ export function InfoCard({
   href,
   children,
 }: {
-  title: string;
+  title?: string;
   href?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="shadow rounded bg-white px-4 pt-6 pb-8">
-      <div className="flex justify-between items center mb-4">
+      <div className="flex justify-between items-center mb-4">
         <h3 className="font-medium capitalize text-gray-800 text-lg">
           {title}
         </h3>

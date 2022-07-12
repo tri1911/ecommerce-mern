@@ -1,4 +1,5 @@
 import { Form, Formik, FormikHelpers } from "formik";
+import { useSearchParams } from "react-router-dom";
 import * as Yup from "yup";
 import Select from "../../Form/Select";
 import TextInput from "../../Form/TextInput";
@@ -14,7 +15,13 @@ interface AddressFormValue {
   address: string;
 }
 
-export default function AddressInfo() {
+export default function AddressEditForm() {
+  const [searchParams] = useSearchParams();
+
+  const addressId = searchParams.get("id");
+
+  console.log(addressId);
+
   const initialValues: AddressFormValue = {
     fullName: "Elliot Ho",
     phone: "123-456-7891",
@@ -55,18 +62,18 @@ export default function AddressInfo() {
         onSubmit={handleSubmit}
       >
         <Form>
-          <h3 className="text-lg font-medium capitalize mb-4">
-            Manage Address
-          </h3>
+          <h3 className="text-lg font-medium capitalize mb-4">Edit Address</h3>
           <div className="space-y-4">
             <div className="grid sm:grid-cols-2 gap-4">
               <TextInput
                 label="Full Name"
+                type="text"
                 name="fullName"
                 placeholder="Enter your full name"
               />
               <TextInput
                 label="Phone Number"
+                type="text"
                 name="phone"
                 placeholder="Enter your phone number"
               />
@@ -106,8 +113,8 @@ export default function AddressInfo() {
                 placeholder="Enter your address"
               />
             </div>
-            <div className="mt-6">
-              <FormSubmitButton label="Save Change" />
+            <div>
+              <FormSubmitButton label="Save Changes" />
             </div>
           </div>
         </Form>

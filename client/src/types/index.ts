@@ -117,3 +117,19 @@ export interface UserProfile {
   birthday?: string;
   gender?: Gender;
 }
+
+/**
+ * User Address
+ */
+
+export interface Address {
+  id: string;
+  phone: string;
+  fullName: string;
+  country: string;
+  province: string;
+  city: string;
+  address: string;
+  postalCode: string;
+  isDefault: boolean;
+}

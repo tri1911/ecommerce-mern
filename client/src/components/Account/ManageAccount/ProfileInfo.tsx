@@ -128,7 +128,7 @@ export default function ProfileInfo() {
                 placeholder="Enter your phone number"
               />
             </div>
-            <div className="mt-6 flex space-x-3">
+            <div>
               <button
                 type="submit"
                 className="default-btn py-2 flex justify-center disabled:cursor-not-allowed disabled:bg-primary/80 disabled:text-white"
@@ -156,7 +156,7 @@ export default function ProfileInfo() {
                     />
                   </svg>
                 ) : (
-                  "Save Change"
+                  "Save Changes"
                 )}
               </button>
             </div>
