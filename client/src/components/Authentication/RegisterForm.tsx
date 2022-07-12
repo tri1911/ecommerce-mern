@@ -16,8 +16,11 @@ interface RegisterFormValues {
 }
 
 export default function RegisterForm() {
-  const registrationStatus = useAppSelector((state) => state.auth.status);
   const dispatch = useAppDispatch();
+
+  const { status } = useAppSelector((state) => state.auth.registerStatus);
+
+  const isRegistering = status === "loading";
 
   const validationSchema = Yup.object({
     fullName: Yup.string().required("Please enter your full name"),
@@ -35,8 +38,6 @@ export default function RegisterForm() {
       .required("Required")
       .oneOf([true], "You must accept the terms and conditions."),
   });
-
-  const isLoading = registrationStatus === "loading";
 
   return (
     <Formik<RegisterFormValues>
@@ -93,9 +94,9 @@ export default function RegisterForm() {
           <button
             type="submit"
             className="default-btn py-2 w-full flex justify-center disabled:cursor-not-allowed disabled:bg-primary/80 disabled:text-white"
-            disabled={isLoading}
+            disabled={isRegistering}
           >
-            {isLoading ? (
+            {isRegistering ? (
               <svg
                 className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                 xmlns="http://www.w3.org/2000/svg"

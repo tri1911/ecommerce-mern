@@ -14,7 +14,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import MyAccountPage from "./pages/MyAccountPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ManageAccount from "./components/Account/ManageAccount";
-import ProfileInfo from "./components/Account/ProfileInfo";
+import ProfileInfo from "./components/Account/ManageAccount/ProfileInfo";
 import AddressInfo from "./components/Account/AddressInfo";
 import UpdatePassword from "./components/Account/UpdatePassword";
 import Wishlist from "./components/Account/Wishlist";
@@ -46,12 +46,8 @@ root.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
-          <Route path="shop" element={<ShopPage />} />
-          <Route path="products/:productId" element={<SingleProductPage />} />
-          <Route path="cart" element={<CartPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
-          <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route path="account" element={<MyAccountPage />}>
             {/* <Route index element={<ManageAccount />} /> */}
             <Route path="manage" element={<ManageAccount />} />
@@ -78,6 +74,10 @@ root.render(
             <Route path="voucher" element={<Voucher />} />
             <Route path="wishlist" element={<Wishlist />} />
           </Route>
+          <Route path="shop" element={<ShopPage />} />
+          <Route path="products/:productId" element={<SingleProductPage />} />
+          <Route path="cart" element={<CartPage />} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="payment" element={<PaymentPage />} />
           <Route path="order-complete" element={<OrderCompletePage />} />

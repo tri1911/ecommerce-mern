@@ -2,47 +2,48 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../app/store";
 import profileService from "../services/profile.service";
-import { RejectErrorPayload, RequestStatus, UserProfile } from "../types";
+import { RejectErrorPayload, UserProfile } from "../types";
 
-interface ProfileState extends RequestStatus {
+interface ProfileState {
   data?: UserProfile;
 }
 
 const profileSlice = createSlice({
   name: "profile",
-  initialState: { status: "idle" } as ProfileState,
+  initialState: { data: undefined } as ProfileState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProfileInfo.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchProfileInfo.fulfilled, (_state, { payload }) => ({
-        status: "succeeded",
+      .addCase(fetchProfileInfo.fulfilled, (_, { payload }) => ({
         data: payload,
       }))
-      .addCase(fetchProfileInfo.rejected, (_, { payload, error }) => ({
-        status: "failed",
-        error: payload?.errorMessage || error.message,
-      }))
-      .addCase(updateProfile.fulfilled, (state, { payload }) => {
-        state.data = payload;
-      });
+      .addCase(updateProfile.fulfilled, (_, { payload }) => ({
+        data: payload,
+      }));
   },
 });
 
+/**
+ * Thunk Creators Definition
+ */
+
 export const fetchProfileInfo = createAsyncThunk<
   UserProfile,
-  string,
-  { rejectValue: RejectErrorPayload }
->("profile/fetch", async (token, thunkApi) => {
+  undefined,
+  { state: RootState; rejectValue: RejectErrorPayload }
+>("profile/fetch", async (_arg, { getState, rejectWithValue }) => {
   try {
-    return await profileService.getProfileInfo(token);
+    const loggedUser = getState().auth.user;
+    if (loggedUser) {
+      return await profileService.getProfileInfo(loggedUser.token);
+    } else {
+      throw new Error("Login is required to fetch profile");
+    }
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      return thunkApi.rejectWithValue(
-        error.response?.data as RejectErrorPayload
-      );
+      return rejectWithValue(error.response?.data as RejectErrorPayload);
+    } else if (error instanceof Error) {
+      return rejectWithValue({ errorMessage: error.message });
     } else {
       throw error;
     }

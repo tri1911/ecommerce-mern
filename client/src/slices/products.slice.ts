@@ -13,7 +13,7 @@ const productsAdapter = createEntityAdapter<Product>({
 });
 
 interface ProductsState {
-  status: RequestStatus["status"];
+  status: RequestStatus;
   error?: string;
   page?: number;
   pages?: number;

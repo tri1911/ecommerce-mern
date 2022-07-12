@@ -24,6 +24,7 @@ export const getProfile = asyncHandler(async (request, response) => {
   }
 });
 
+// TODO: check whether the new email does exist
 export const updateProfile = asyncHandler(async (request, response) => {
   const {
     user: { _id: userId },

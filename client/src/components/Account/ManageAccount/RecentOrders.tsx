@@ -1,84 +1,5 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import classNames from "classnames";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { fetchProfileInfo } from "../../slices/profile.slice";
-import Spinner from "../Shared/Spinner";
-
-export function InfoCard({
-  title,
-  href,
-  children,
-}: {
-  title: string;
-  href?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="shadow rounded bg-white px-4 pt-6 pb-8">
-      <div className="flex justify-between items center mb-4">
-        <h3 className="font-medium capitalize text-gray-800 text-lg">
-          {title}
-        </h3>
-        {href && (
-          <Link to={href} className="text-primary">
-            Edit
-          </Link>
-        )}
-      </div>
-      <div className="space-y-1">{children}</div>
-    </div>
-  );
-}
-
-function PersonalInfo() {
-  const dispatch = useAppDispatch();
-
-  const loggedUser = useAppSelector((state) => state.auth.user);
-
-  const { data: profileInfo, status: profileRequestStatus } = useAppSelector(
-    (state) => state.profile
-  );
-
-  useEffect(() => {
-    if (
-      loggedUser &&
-      (!profileInfo || loggedUser.email !== profileInfo.email)
-    ) {
-      dispatch(fetchProfileInfo(loggedUser.token));
-    }
-  }, [dispatch, loggedUser, profileInfo]);
-
-  if (!profileInfo) {
-    return profileRequestStatus === "loading" ? <Spinner /> : null;
-  }
-
-  const { firstName, lastName, email, phone } = profileInfo;
-
-  return (
-    <div className="grid md:grid-cols-3 gap-4">
-      <InfoCard title="Personal Profile" href="/account/profile">
-        <h4 className="text-gray-700 font-medium">
-          {firstName} {lastName}
-        </h4>
-        <p className="text-gray-800">{email}</p>
-        <p className="text-gray-800">{phone}</p>
-      </InfoCard>
-      <InfoCard title="Shipping Address" href="/account/address">
-        <h4 className="text-gray-700 font-medium">Elliot Ho</h4>
-        <p className="text-gray-800">5572 Wales Street</p>
-        <p className="text-gray-800">Vancouver, BC, Canada</p>
-        <p className="text-gray-800">(123) 456-789</p>
-      </InfoCard>
-      <InfoCard title="Billing Address" href="/account/address">
-        <h4 className="text-gray-700 font-medium">Elliot Ho</h4>
-        <p className="text-gray-800">5572 Wales Street</p>
-        <p className="text-gray-800">Vancouver, BC, Canada</p>
-        <p className="text-gray-800">(123) 456-789</p>
-      </InfoCard>
-    </div>
-  );
-}
+import { Link } from "react-router-dom";
 
 function OrderThumbnail() {
   return (
@@ -167,7 +88,7 @@ export function OrderSummaryCard() {
   );
 }
 
-function RecentOrders() {
+export default function RecentOrders() {
   return (
     <div className="shadow rounded bg-white px-4 pt-6 pb-8">
       <h3 className="font-medium capitalize text-gray-800 text-lg">
@@ -177,15 +98,6 @@ function RecentOrders() {
         <OrderSummaryCard />
         <OrderSummaryCard />
       </ul>
-    </div>
-  );
-}
-
-export default function ManageAccount() {
-  return (
-    <div className="space-y-10">
-      <PersonalInfo />
-      <RecentOrders />
     </div>
   );
 }

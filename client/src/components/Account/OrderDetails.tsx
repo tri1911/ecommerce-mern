@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { InfoCard } from "./ManageAccount";
+import { InfoCard } from "./ManageAccount/PersonalInfo";
 
 export default function OrderDetails() {
   return (

@@ -1,4 +1,4 @@
-import { OrderSummaryCard } from "./ManageAccount";
+import { OrderSummaryCard } from "./ManageAccount/RecentOrders";
 
 export default function OrderCancellations() {
   return (

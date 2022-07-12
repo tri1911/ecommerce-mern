@@ -22,8 +22,10 @@ export const fetchSingleProduct = createAsyncThunk<
   }
 });
 
-interface ProductState extends RequestStatus {
+interface ProductState {
+  status: RequestStatus;
   product?: Product;
+  error?: string;
 }
 
 const productSlice = createSlice({

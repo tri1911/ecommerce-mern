@@ -10,16 +10,18 @@ import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import NotificationMessage from "../components/Shared/NotificationMessage";
 
 export default function RegisterPage() {
-  const authError = useAppSelector((state) => state.auth.error);
-  const authStatus = useAppSelector((state) => state.auth.status);
+  const {
+    user,
+    registerStatus: { error },
+  } = useAppSelector((state) => state.auth);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authStatus === "succeeded") {
+    if (user) {
       navigate("/", { replace: true });
     }
-  }, [authStatus, navigate]);
+  }, [user, navigate]);
 
   return (
     <div>
@@ -30,7 +32,7 @@ export default function RegisterPage() {
           text="Register here if you don't have account"
         />
         <div className="mb-5">
-          {authError && <NotificationMessage message={authError} />}
+          {error && <NotificationMessage variant="error" message={error} />}
         </div>
         <RegisterForm />
         <SocialLinkButtons text="or sign up with" />

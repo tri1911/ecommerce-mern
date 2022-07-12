@@ -74,20 +74,21 @@ export interface Brand {
   quantity: number;
 }
 
-export type RequestStatus = {
-  status: "idle" | "loading" | "succeeded" | "failed";
-  error?: string;
-};
-
 export type ShopDisplayMode = "grid" | "list";
 
-export type AuthInfo = {
-  _id: string;
-  name: string;
-  email: string;
-  role: Role;
-  token: string;
-};
+/**
+ * Data Request
+ */
+
+export type RequestStatus = "idle" | "loading" | "succeeded" | "failed";
+
+export interface RejectErrorPayload {
+  errorMessage: string;
+}
+
+/**
+ * User & Auth
+ */
 
 export enum Gender {
   Male = "male",
@@ -100,6 +101,14 @@ export enum Role {
   Customer = "customer",
 }
 
+export interface AuthInfo {
+  _id: string;
+  name: string;
+  email: string;
+  role: Role;
+  token: string;
+}
+
 export interface UserProfile {
   firstName: string;
   lastName: string;
@@ -107,8 +116,4 @@ export interface UserProfile {
   phone: string;
   birthday?: string;
   gender?: Gender;
-}
-
-export interface RejectErrorPayload {
-  errorMessage: string;
 }

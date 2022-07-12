@@ -10,16 +10,18 @@ import { useNavigate } from "react-router-dom";
 import NotificationMessage from "../components/Shared/NotificationMessage";
 
 export default function LoginPage() {
-  const authError = useAppSelector((state) => state.auth.error);
-  const authStatus = useAppSelector((state) => state.auth.status);
+  const {
+    user,
+    loginStatus: { error },
+  } = useAppSelector((state) => state.auth);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authStatus === "succeeded") {
+    if (user) {
       navigate("/", { replace: true });
     }
-  }, [authStatus, navigate]);
+  }, [user, navigate]);
 
   return (
     <div>
@@ -27,7 +29,7 @@ export default function LoginPage() {
       <FormWrapper>
         <FormHeader title="Login" text="Login if you already have one" />
         <div className="mb-5">
-          {authError && <NotificationMessage message={authError} />}
+          {error && <NotificationMessage variant="error" message={error} />}
         </div>
         <LoginForm />
         <SocialLinkButtons text="or login with" />

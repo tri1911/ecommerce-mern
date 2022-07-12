@@ -14,8 +14,11 @@ interface LoginFormValues {
 }
 
 export default function LoginForm() {
-  const loginStatus = useAppSelector((state) => state.auth.status);
   const dispatch = useAppDispatch();
+
+  const { status } = useAppSelector((state) => state.auth.loginStatus);
+
+  const isSigningIn = status === "loading";
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -60,9 +63,9 @@ export default function LoginForm() {
             <button
               type="submit"
               className="default-btn py-2 w-full flex justify-center disabled:cursor-not-allowed disabled:bg-primary/80 disabled:text-white"
-              disabled={loginStatus === "loading"}
+              disabled={isSigningIn}
             >
-              {loginStatus === "loading" ? (
+              {isSigningIn ? (
                 <svg
                   className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                   xmlns="http://www.w3.org/2000/svg"

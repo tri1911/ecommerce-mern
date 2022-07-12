@@ -1,13 +1,19 @@
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import FormSubmitButton from "../Shared/FormSubmitButton";
-import TextInput from "../Form/TextInput";
-import Select from "../Form/Select";
-import { Gender, UserProfile } from "../../types";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { updateProfile } from "../../slices/profile.slice";
+import TextInput from "../../Form/TextInput";
+import Select from "../../Form/Select";
+import { Gender, UserProfile } from "../../../types";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { updateProfile } from "../../../slices/profile.slice";
+import { useState } from "react";
+import NotificationMessage from "../../Shared/NotificationMessage";
 
 export default function ProfileInfo() {
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [message, setMessage] = useState<
+    { variant: "success" | "error"; text: string } | undefined
+  >(undefined);
+
   const dispatch = useAppDispatch();
   const profileInfo = useAppSelector((state) => state.profile.data);
 
@@ -34,6 +40,11 @@ export default function ProfileInfo() {
     phone: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
   });
 
+  const showNotification = (variant: "success" | "error", text: string) => {
+    setMessage({ variant, text });
+    setTimeout(() => setMessage(undefined), 2000);
+  };
+
   return (
     <div className="shadow rounded px-6 pt-5 pb-7">
       <Formik<UserProfile>
@@ -41,13 +52,22 @@ export default function ProfileInfo() {
         validationSchema={validationSchema}
         onSubmit={async (values) => {
           try {
-            await dispatch(updateProfile(values)).unwrap();
+            setIsUpdating(true);
+            const updatedProfile = await dispatch(
+              updateProfile(values)
+            ).unwrap();
+            showNotification(
+              "success",
+              `Successfully update ${updatedProfile.firstName}'s profile`
+            );
           } catch (error: any) {
-            if (error.errorMessage) {
-              console.error(error.errorMessage);
-            } else {
-              console.error("there is something wrong");
+            if (error.payload && error.payload.errorMessage) {
+              showNotification("error", error.payload.errorMessage);
+            } else if (error.message) {
+              showNotification("error", error.message);
             }
+          } finally {
+            setIsUpdating(false);
           }
         }}
       >
@@ -55,6 +75,14 @@ export default function ProfileInfo() {
           <h3 className="text-lg font-medium capitalize mb-4">
             Profile Information
           </h3>
+          <div className="mb-5">
+            {message && (
+              <NotificationMessage
+                variant={message.variant}
+                message={message.text}
+              />
+            )}
+          </div>
           <div className="space-y-4">
             <div className="grid sm:grid-cols-2 gap-4">
               <TextInput
@@ -100,8 +128,37 @@ export default function ProfileInfo() {
                 placeholder="Enter your phone number"
               />
             </div>
-            <div className="mt-6">
-              <FormSubmitButton label="Save Change" />
+            <div className="mt-6 flex space-x-3">
+              <button
+                type="submit"
+                className="default-btn py-2 flex justify-center disabled:cursor-not-allowed disabled:bg-primary/80 disabled:text-white"
+                disabled={isUpdating}
+              >
+                {isUpdating ? (
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                ) : (
+                  "Save Change"
+                )}
+              </button>
             </div>
           </div>
         </Form>
