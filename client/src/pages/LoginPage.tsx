@@ -29,7 +29,7 @@ export default function LoginPage() {
       <FormWrapper>
         <FormHeader title="Login" text="Login if you already have one" />
         <div className="mb-5">
-          {error && <NotificationMessage variant="error" message={error} />}
+          {error && <NotificationMessage variant="error" text={error} />}
         </div>
         <LoginForm />
         <SocialLinkButtons text="or login with" />

@@ -16,7 +16,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import ManageAccount from "./components/Account/ManageAccount";
 import ProfileInfo from "./components/Account/ManageAccount/ProfileInfo";
 import AddressInfo from "./components/Account/AddressInfo";
-import UpdatePassword from "./components/Account/UpdatePassword";
+import UpdatePassword from "./components/Account/ManageAccount/UpdatePassword";
 import Wishlist from "./components/Account/Wishlist";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderCompletePage from "./pages/OrderCompletePage";

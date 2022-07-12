@@ -32,7 +32,7 @@ export default function RegisterPage() {
           text="Register here if you don't have account"
         />
         <div className="mb-5">
-          {error && <NotificationMessage variant="error" message={error} />}
+          {error && <NotificationMessage variant="error" text={error} />}
         </div>
         <RegisterForm />
         <SocialLinkButtons text="or sign up with" />

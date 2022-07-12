@@ -6,6 +6,7 @@ import authService, {
   USER_AUTH_KEY,
 } from "../services/auth.service";
 import { RejectErrorPayload, RequestStatus, AuthInfo } from "../types";
+import { clearProfile } from "./profile.slice";
 
 /**
  * Slice Configuration
@@ -66,9 +67,11 @@ const userSlice = createSlice({
           error: action.payload?.errorMessage || action.error.message,
         };
       })
-      .addCase(logout.fulfilled, (state) => {
-        state = initialState;
-      });
+      .addCase(logout.fulfilled, () => ({
+        user: undefined,
+        loginStatus: { status: "idle" },
+        registerStatus: { status: "idle" },
+      }));
   },
 });
 
@@ -112,8 +115,9 @@ export const register = createAsyncThunk<
   }
 });
 
-export const logout = createAsyncThunk("auth/logout", () => {
+export const logout = createAsyncThunk("auth/logout", (_arg, { dispatch }) => {
   authService.logout();
+  dispatch(clearProfile());
 });
 
 export default userSlice.reducer;

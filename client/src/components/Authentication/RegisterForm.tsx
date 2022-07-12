@@ -8,8 +8,10 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { register } from "../../slices/auth.slice";
 
 interface RegisterFormValues {
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  phone?: string;
   password: string;
   confirmPassword: string;
   acceptedTerms: boolean;
@@ -22,11 +24,16 @@ export default function RegisterForm() {
 
   const isRegistering = status === "loading";
 
+  const phoneRegExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
   const validationSchema = Yup.object({
-    fullName: Yup.string().required("Please enter your full name"),
+    firstName: Yup.string().required("Please enter your first name"),
+    lastName: Yup.string().required("Please enter your last name"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
+    phone: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
@@ -42,32 +49,49 @@ export default function RegisterForm() {
   return (
     <Formik<RegisterFormValues>
       initialValues={{
-        fullName: "",
+        firstName: "",
+        lastName: "",
         email: "",
+        phone: "",
         password: "",
         confirmPassword: "",
         acceptedTerms: false,
       }}
       validationSchema={validationSchema}
-      onSubmit={({ fullName: name, email, password }) => {
-        dispatch(register({ name, email, password }));
+      onSubmit={({ firstName, lastName, email, phone, password }) => {
+        dispatch(register({ firstName, lastName, email, phone, password }));
       }}
     >
       <Form>
         <div className="space-y-4">
-          <TextInput
-            label="Full Name"
-            type="text"
-            name="fullName"
-            placeholder="John Doe"
-            required
-          />
+          <div className="grid sm:grid-cols-2 gap-4">
+            <TextInput
+              label="First Name"
+              type="text"
+              name="firstName"
+              placeholder="Enter your first name"
+              required
+            />
+            <TextInput
+              label="Last Name"
+              type="text"
+              name="lastName"
+              placeholder="Enter your first name"
+              required
+            />
+          </div>
           <TextInput
             type="email"
             label="Email Address"
             name="email"
             placeholder="Enter your email"
             required
+          />
+          <TextInput
+            label="Phone Number"
+            type="text"
+            name="phone"
+            placeholder="Enter your phone number"
           />
           <Password
             label="Password"

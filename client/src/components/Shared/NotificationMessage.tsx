@@ -1,11 +1,11 @@
 import classNames from "classnames";
 
-export default function Notification({
+export default function NotificationMessage({
   variant,
-  message,
+  text,
 }: {
   variant: "success" | "error";
-  message: string;
+  text: string;
 }) {
   return (
     <div
@@ -18,7 +18,7 @@ export default function Notification({
       )}
       role="alert"
     >
-      <span className="block sm:inline">{message}</span>
+      <span className="block sm:inline">{text}</span>
     </div>
   );
 }

@@ -16,8 +16,10 @@ const login = async (credential: UserCredential): Promise<AuthInfo> => {
 };
 
 export interface UserRegistrationInfo {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  phone?: string;
   password: string;
 }
 

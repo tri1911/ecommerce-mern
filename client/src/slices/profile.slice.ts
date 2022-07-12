@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../app/store";
-import profileService from "../services/profile.service";
+import profileService, {
+  UpdatePasswordInfo,
+} from "../services/profile.service";
 import { RejectErrorPayload, UserProfile } from "../types";
 
 interface ProfileState {
@@ -11,7 +13,9 @@ interface ProfileState {
 const profileSlice = createSlice({
   name: "profile",
   initialState: { data: undefined } as ProfileState,
-  reducers: {},
+  reducers: {
+    clearProfile: () => ({}),
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProfileInfo.fulfilled, (_, { payload }) => ({
@@ -37,7 +41,7 @@ export const fetchProfileInfo = createAsyncThunk<
     if (loggedUser) {
       return await profileService.getProfileInfo(loggedUser.token);
     } else {
-      throw new Error("Login is required to fetch profile");
+      throw new Error("Login is required before fetching profile");
     }
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
@@ -63,7 +67,7 @@ export const updateProfile = createAsyncThunk<
         profileUpdate
       );
     } else {
-      throw new Error("Login is required to update profile");
+      throw new Error("Login is required before updating profile information");
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -76,4 +80,34 @@ export const updateProfile = createAsyncThunk<
   }
 });
 
+export const updatePassword = createAsyncThunk<
+  string,
+  UpdatePasswordInfo,
+  { state: RootState; rejectValue: RejectErrorPayload }
+>(
+  "profile/updatePassword",
+  async (passwordUpdate, { getState, rejectWithValue }) => {
+    try {
+      const loggedUser = getState().auth.user;
+      if (loggedUser) {
+        return await profileService.updatePassword(
+          loggedUser.token,
+          passwordUpdate
+        );
+      } else {
+        throw new Error("Login is required before updating password");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data as RejectErrorPayload);
+      } else if (error instanceof Error) {
+        return rejectWithValue({ errorMessage: error.message });
+      } else {
+        throw error;
+      }
+    }
+  }
+);
+
+export const { clearProfile } = profileSlice.actions;
 export default profileSlice.reducer;

@@ -58,7 +58,9 @@ export const updatePassword = asyncHandler(async (request, response) => {
   if (isPasswordMatched) {
     user.password = newPassword;
     await user.save();
-    response.status(201).json({ message: "Updated password successfully" });
+    response
+      .status(201)
+      .json({ message: "Password has been updated successfully" });
   } else {
     throw new HttpException("The current password does not match", 400);
   }

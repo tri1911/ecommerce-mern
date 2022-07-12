@@ -61,8 +61,8 @@ export default function ProfileInfo() {
               `Successfully update ${updatedProfile.firstName}'s profile`
             );
           } catch (error: any) {
-            if (error.payload && error.payload.errorMessage) {
-              showNotification("error", error.payload.errorMessage);
+            if (error.errorMessage) {
+              showNotification("error", error.errorMessage);
             } else if (error.message) {
               showNotification("error", error.message);
             }
@@ -79,7 +79,7 @@ export default function ProfileInfo() {
             {message && (
               <NotificationMessage
                 variant={message.variant}
-                message={message.text}
+                text={message.text}
               />
             )}
           </div>
