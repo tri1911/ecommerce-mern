@@ -15,7 +15,7 @@ import MyAccountPage from "./pages/MyAccountPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ManageAccount from "./components/Account/ManageAccount";
 import ProfileInfo from "./components/Account/ManageAccount/ProfileInfo";
-import AddressInfo from "./components/Account/AddressInfo";
+import AddressInfo from "./components/Account/ManageAccount/AddressInfo";
 import UpdatePassword from "./components/Account/ManageAccount/UpdatePassword";
 import Wishlist from "./components/Account/Wishlist";
 import CheckoutPage from "./pages/CheckoutPage";

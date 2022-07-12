@@ -1,5 +1,11 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  AnyAction,
+  createAsyncThunk,
+  createSlice,
+  ThunkAction,
+} from "@reduxjs/toolkit";
 import axios from "axios";
+import { RootState } from "../app/store";
 import authService, {
   UserCredential,
   UserRegistrationInfo,
@@ -26,6 +32,12 @@ interface AuthState {
   };
 }
 
+const defaultState = {
+  user: undefined,
+  loginStatus: { status: "idle" },
+  registerStatus: { status: "idle" },
+} as AuthState;
+
 const initialState = {
   user:
     loggedInUserFromLocalStorage !== null
@@ -35,10 +47,12 @@ const initialState = {
   registerStatus: { status: "idle" },
 } as AuthState;
 
-const userSlice = createSlice({
+const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    resetAuthState: () => defaultState,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
@@ -66,12 +80,7 @@ const userSlice = createSlice({
           status: "failed",
           error: action.payload?.errorMessage || action.error.message,
         };
-      })
-      .addCase(logout.fulfilled, () => ({
-        user: undefined,
-        loginStatus: { status: "idle" },
-        registerStatus: { status: "idle" },
-      }));
+      });
   },
 });
 
@@ -115,9 +124,12 @@ export const register = createAsyncThunk<
   }
 });
 
-export const logout = createAsyncThunk("auth/logout", (_arg, { dispatch }) => {
-  authService.logout();
-  dispatch(clearProfile());
-});
+export const logout =
+  (): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
+    authService.logout();
+    dispatch(resetAuthState());
+    dispatch(clearProfile());
+  };
 
-export default userSlice.reducer;
+export const { resetAuthState } = authSlice.actions;
+export default authSlice.reducer;

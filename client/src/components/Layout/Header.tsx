@@ -69,6 +69,7 @@ function SingleNavIcon({
 function NavIcons() {
   const cartItems = useAppSelector(selectAllCartItems);
   const wishlistItems = useAppSelector(selectAllWishlistItems);
+  const user = useAppSelector((state) => state.auth.user);
 
   const totalQuantitiesInCart = useMemo(
     () => cartItems.reduce((sum, item) => sum + item.quantity, 0),
@@ -91,9 +92,9 @@ function NavIcons() {
         badgeRight="-right-3"
       />
       <SingleNavIcon
-        href="/account/manage"
+        href={user ? "/account/manage" : "/login"}
         icon="far fa-user"
-        label="Account"
+        label={user ? "Account" : "Login"}
       />
     </div>
   );

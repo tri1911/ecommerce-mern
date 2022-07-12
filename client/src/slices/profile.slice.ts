@@ -10,11 +10,17 @@ interface ProfileState {
   data?: UserProfile;
 }
 
+const initialState = {
+  fetchStatus: { status: "idle" },
+  updateStatus: { status: "idle" },
+  updatePasswordStatus: { status: "idle" },
+} as ProfileState;
+
 const profileSlice = createSlice({
   name: "profile",
-  initialState: { data: undefined } as ProfileState,
+  initialState,
   reducers: {
-    clearProfile: () => ({}),
+    clearProfile: () => initialState,
   },
   extraReducers: (builder) => {
     builder
@@ -46,8 +52,6 @@ export const fetchProfileInfo = createAsyncThunk<
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       return rejectWithValue(error.response?.data as RejectErrorPayload);
-    } else if (error instanceof Error) {
-      return rejectWithValue({ errorMessage: error.message });
     } else {
       throw error;
     }
@@ -72,8 +76,6 @@ export const updateProfile = createAsyncThunk<
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return rejectWithValue(error.response?.data as RejectErrorPayload);
-    } else if (error instanceof Error) {
-      return rejectWithValue({ errorMessage: error.message });
     } else {
       throw error;
     }
@@ -100,8 +102,6 @@ export const updatePassword = createAsyncThunk<
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return rejectWithValue(error.response?.data as RejectErrorPayload);
-      } else if (error instanceof Error) {
-        return rejectWithValue({ errorMessage: error.message });
       } else {
         throw error;
       }

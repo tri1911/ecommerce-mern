@@ -1,8 +1,8 @@
 import { Form, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import Select from "../Form/Select";
-import TextInput from "../Form/TextInput";
-import FormSubmitButton from "../Shared/FormSubmitButton";
+import Select from "../../Form/Select";
+import TextInput from "../../Form/TextInput";
+import FormSubmitButton from "../../Shared/FormSubmitButton";
 
 interface AddressFormValue {
   fullName: string;

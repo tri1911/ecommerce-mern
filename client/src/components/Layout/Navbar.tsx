@@ -70,17 +70,9 @@ function NavMenu() {
         <NavItem href="/contact" text="Contact us" />
         <NavItem href="/faq" text="FAQ" />
       </div>
-      {user ? (
-        <div className="text-gray-200">Hello, {user.name}</div>
-      ) : (
+      {user && (
         <div className="ml-auto justify-self-end text-gray-200">
-          <Link to="/login" className=" hover:text-primary transition">
-            Login
-          </Link>
-          <span> / </span>
-          <Link to="/register" className="hover:text-primary transition">
-            Register
-          </Link>
+          Hello, {user.name}
         </div>
       )}
     </div>

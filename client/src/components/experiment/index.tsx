@@ -5,8 +5,9 @@
 // import Reviews from "./Reviews";
 // import Tabs from "./Tabs";
 // import Timeline from "./Timeline";
+// import MyDisclosure from "./MyDisclosure";
 
-import MyDisclosure from "./MyDisclosure";
+import PlaceHolderCard from "./PlaceHolderCard";
 
 export default function ExperimentPage() {
   return (
@@ -23,7 +24,9 @@ export default function ExperimentPage() {
       {/* <Reviews />
         <Tabs /> */}
       {/* <Timeline /> */}
-      <MyDisclosure />
+      {/* <MyDisclosure /> */}
+      <PlaceHolderCard />
+      <PlaceHolderCard />
     </div>
   );
 }
