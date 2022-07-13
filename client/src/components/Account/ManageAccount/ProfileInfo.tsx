@@ -47,7 +47,7 @@ export default function ProfileInfo() {
 
   return (
     <div className="shadow rounded px-6 pt-5 pb-7">
-      <Formik<UserProfile>
+      <Formik<Omit<UserProfile, "shippingAddress">>
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={async (values) => {

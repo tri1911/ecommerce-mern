@@ -1,7 +1,6 @@
 import express from "express";
 import {
   getProfile,
-  setShippingAddress,
   updatePassword,
   updateProfile,
 } from "../controllers/profile.controller";
@@ -9,8 +8,6 @@ import {
 const router = express.Router();
 
 router.route("/").get(getProfile).put(updateProfile);
-router
-  .put("/password", updatePassword)
-  .put("/shipping_address", setShippingAddress);
+router.put("/password", updatePassword);
 
 export default router;

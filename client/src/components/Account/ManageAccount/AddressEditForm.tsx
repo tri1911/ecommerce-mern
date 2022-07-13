@@ -15,6 +15,7 @@ import TextInput from "../../Form/TextInput";
 import NotificationMessage from "../../Shared/NotificationMessage";
 
 type Message = { type: "success" | "error"; text: string };
+type AddressEditFormValues = Partial<Address>;
 
 export default function AddressEditForm() {
   const [isUpdating, setIsUpdating] = useState(false);
@@ -30,7 +31,7 @@ export default function AddressEditForm() {
 
   const dispatch = useAppDispatch();
 
-  const initialValues = {
+  const initialValues: AddressEditFormValues = {
     fullName: address?.fullName,
     phone: address?.phone,
     address: address?.address,
@@ -39,7 +40,7 @@ export default function AddressEditForm() {
     country: address?.country,
     postalCode: address?.postalCode,
     isDefault: address?.isDefault,
-  } as Omit<Address, "id">;
+  };
 
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -64,7 +65,7 @@ export default function AddressEditForm() {
 
   return (
     <div className="shadow rounded px-6 pt-5 pb-7">
-      <Formik<Omit<Address, "id">>
+      <Formik<AddressEditFormValues>
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values) => {

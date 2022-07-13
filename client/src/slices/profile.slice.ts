@@ -60,7 +60,7 @@ export const fetchProfileInfo = createAsyncThunk<
 
 export const updateProfile = createAsyncThunk<
   UserProfile,
-  UserProfile,
+  Partial<UserProfile>,
   { state: RootState; rejectValue: RejectErrorPayload }
 >("profile/update", async (profileUpdate, { getState, rejectWithValue }) => {
   try {

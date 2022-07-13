@@ -1,10 +1,10 @@
-import PersonalInfo from "./PersonalInfo";
+import AccountInfo from "./AccountInfo";
 import RecentOrders from "./RecentOrders";
 
 export default function ManageAccount() {
   return (
     <div className="space-y-10">
-      <PersonalInfo />
+      <AccountInfo />
       <RecentOrders />
     </div>
   );

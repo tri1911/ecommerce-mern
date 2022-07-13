@@ -1,20 +1,25 @@
 import axios from "axios";
 import { UserProfile } from "../types";
+import { generateConfig } from "../utils/generate-auth-config.util";
 
 const BASE_URL = "http://localhost:3001/api/profile/";
 
 const getProfileInfo = async (token: string) => {
-  const config = { headers: { Authorization: `Bearer ${token}` } };
-  const { data } = await axios.get<{ user: UserProfile }>(BASE_URL, config);
+  const { data } = await axios.get<{ user: UserProfile }>(
+    BASE_URL,
+    generateConfig(token)
+  );
   return data.user;
 };
 
-const updateProfileInfo = async (token: string, profileUpdate: UserProfile) => {
-  const config = { headers: { Authorization: `Bearer ${token}` } };
+const updateProfileInfo = async (
+  token: string,
+  profileUpdate: Partial<UserProfile>
+) => {
   const { data } = await axios.put<{ updatedUser: UserProfile }>(
     BASE_URL,
     profileUpdate,
-    config
+    generateConfig(token)
   );
   return data.updatedUser;
 };
@@ -28,11 +33,10 @@ const updatePassword = async (
   token: string,
   passwordInfo: UpdatePasswordInfo
 ) => {
-  const config = { headers: { Authorization: `Bearer ${token}` } };
   const { data } = await axios.put<{ message: string }>(
     `${BASE_URL}/password`,
     passwordInfo,
-    config
+    generateConfig(token)
   );
   return data.message;
 };

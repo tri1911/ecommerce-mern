@@ -9,6 +9,7 @@ import {
   selectAddressesRequestError,
   selectAddressesRequestStatus,
   selectAllAddresses,
+  updateAddress,
 } from "../../../slices/address.slice";
 import { Address } from "../../../types";
 import NotificationMessage from "../../Shared/NotificationMessage";
@@ -27,9 +28,11 @@ function AddressItem({
     isDefault,
   },
   onRemoveAddress,
+  onSetAsDefault,
 }: {
   address: Address;
-  onRemoveAddress: React.MouseEventHandler<HTMLButtonElement> | undefined;
+  onRemoveAddress?: React.MouseEventHandler<HTMLButtonElement>;
+  onSetAsDefault?: React.MouseEventHandler<HTMLButtonElement>;
 }) {
   return (
     <div className="flex flex-col justify-between rounded bg-white shadow border">
@@ -65,9 +68,14 @@ function AddressItem({
         >
           Remove
         </button>
-        <button className="pl-2 hover:text-orange-400 hover:underline">
-          Set as default
-        </button>
+        {!isDefault && (
+          <button
+            className="pl-2 hover:text-orange-400 hover:underline"
+            onClick={onSetAsDefault}
+          >
+            Set as default
+          </button>
+        )}
       </div>
     </div>
   );
@@ -103,6 +111,10 @@ export default function AddressesList() {
     dispatch(deleteAddress(id));
   };
 
+  const handleSetDefault = (id: string) => () => {
+    dispatch(updateAddress({ id, isDefault: true }));
+  };
+
   if (addressesRequestStatus === "loading") {
     return <Spinner />;
   } else if (addressesError) {
@@ -116,6 +128,7 @@ export default function AddressesList() {
             key={address.id}
             address={address}
             onRemoveAddress={handleRemoveAddress(address.id)}
+            onSetAsDefault={handleSetDefault(address.id)}
           />
         ))}
       </div>

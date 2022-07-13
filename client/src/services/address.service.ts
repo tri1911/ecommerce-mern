@@ -1,11 +1,8 @@
 import axios from "axios";
 import { Address } from "../types";
+import { generateConfig } from "../utils/generate-auth-config.util";
 
 const BASE_URL = "http://localhost:3001/api/addresses";
-
-const generateConfig = (token: string) => {
-  return { headers: { Authorization: `Bearer ${token}` } };
-};
 
 const fetchAllAddresses = async (token: string) => {
   const { data } = await axios.get<{ addresses: Address[] }>(
@@ -29,7 +26,7 @@ const createNewAddress = async (
 
 const updateAddress = async (
   token: string,
-  { id, ...addressData }: Address
+  { id, ...addressData }: Partial<Address>
 ) => {
   const { data } = await axios.put<{ updatedAddress: Address }>(
     `${BASE_URL}/${id}`,

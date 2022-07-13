@@ -94,7 +94,7 @@ export const createAddress = createAsyncThunk<
 
 export const updateAddress = createAsyncThunk<
   Address,
-  Address,
+  Partial<Address>,
   { state: RootState; rejectValue: RejectErrorPayload }
 >(
   "addresses/updateAddress",
