@@ -1,13 +1,9 @@
 import { Form, Formik } from "formik";
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import * as Yup from "yup";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { useAppDispatch } from "../../../app/hooks";
 import { CITIES, COUNTRIES, PROVINCES } from "../../../constants";
-import {
-  selectAddressById,
-  updateAddress,
-} from "../../../slices/address.slice";
+import { createAddress } from "../../../slices/address.slice";
 import { Address } from "../../../types";
 import CheckBox from "../../Form/CheckBox";
 import Select from "../../Form/Select";
@@ -16,30 +12,22 @@ import NotificationMessage from "../../Shared/NotificationMessage";
 
 type Message = { type: "success" | "error"; text: string };
 
-export default function AddressEditForm() {
-  const [isUpdating, setIsUpdating] = useState(false);
+export default function AddressAddForm() {
+  const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<Message | undefined>(undefined);
-
-  const [searchParams] = useSearchParams();
-
-  const addressId = searchParams.get("id")!;
-
-  const address = useAppSelector((state) =>
-    selectAddressById(state, addressId)
-  );
 
   const dispatch = useAppDispatch();
 
   const initialValues = {
-    fullName: address?.fullName,
-    phone: address?.phone,
-    address: address?.address,
-    city: address?.city,
-    province: address?.province,
-    country: address?.country,
-    postalCode: address?.postalCode,
-    isDefault: address?.isDefault,
-  } as Omit<Address, "id">;
+    fullName: "",
+    phone: "",
+    address: "",
+    city: "",
+    province: "",
+    country: "",
+    postalCode: "",
+    isDefault: false,
+  };
 
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -67,32 +55,32 @@ export default function AddressEditForm() {
       <Formik<Omit<Address, "id">>
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          setIsUpdating(true);
-          dispatch(updateAddress({ id: addressId, ...values }))
+        onSubmit={(values, { resetForm }) => {
+          setIsSaving(true);
+          dispatch(createAddress(values))
             .unwrap()
-            .then((updated) => {
+            .then((created) => {
               showMessage({
                 type: "success",
-                text: `Successfully update ${updated.fullName}'s address`,
+                text: `Successfully create ${created.fullName}'s address`,
               });
+              resetForm();
             })
             .catch((error) => {
+              console.error(error);
               showMessage({
                 type: "error",
                 text: error.errorMessage || error.message,
               });
             })
             .finally(() => {
-              setIsUpdating(false);
+              setIsSaving(false);
             });
         }}
       >
         {({ dirty }) => (
           <Form>
-            <h3 className="text-lg font-medium capitalize mb-4">
-              Edit Address
-            </h3>
+            <h3 className="text-lg font-medium capitalize mb-4">Add Address</h3>
             {message && (
               <div className="mb-4">
                 <NotificationMessage
@@ -108,12 +96,14 @@ export default function AddressEditForm() {
                   type="text"
                   name="fullName"
                   placeholder="Enter your full name"
+                  required
                 />
                 <TextInput
                   label="Phone Number"
                   type="text"
                   name="phone"
                   placeholder="Enter your phone number"
+                  required
                 />
               </div>
               <div>
@@ -163,9 +153,9 @@ export default function AddressEditForm() {
                 <button
                   type="submit"
                   className="default-btn py-2 flex justify-center disabled:cursor-not-allowed disabled:bg-primary/80 disabled:text-white"
-                  disabled={!dirty || isUpdating}
+                  disabled={!dirty || isSaving}
                 >
-                  {isUpdating ? (
+                  {isSaving ? (
                     <svg
                       className="animate-spin h-5 w-5 text-white"
                       xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +177,7 @@ export default function AddressEditForm() {
                       />
                     </svg>
                   ) : (
-                    "Save Changes"
+                    "Create Address"
                   )}
                 </button>
               </div>

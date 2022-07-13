@@ -37,6 +37,7 @@ import ContactPage from "./pages/ContactPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import AddressesList from "./components/Account/ManageAccount/AddressesList";
 import AddressEditForm from "./components/Account/ManageAccount/AddressEditForm";
+import AddressAddForm from "./components/Account/ManageAccount/AddressAddForm";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -53,8 +54,11 @@ root.render(
             {/* <Route index element={<ManageAccount />} /> */}
             <Route path="manage" element={<ManageAccount />} />
             <Route path="profile" element={<ProfileInfo />} />
-            <Route path="address" element={<AddressesList />} />
-            <Route path="address/edit" element={<AddressEditForm />} />
+            <Route path="address">
+              <Route index element={<AddressesList />} />
+              <Route path="edit" element={<AddressEditForm />} />
+              <Route path="add" element={<AddressAddForm />} />
+            </Route>
             <Route path="password" element={<UpdatePassword />} />
             <Route path="order">
               <Route index element={<MyOrders />} />

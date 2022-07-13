@@ -67,5 +67,5 @@ export const deleteAddress = asyncHandler(async (request, response) => {
 
   await AddressModel.findByIdAndDelete(addressId);
 
-  response.status(200).json({ message: "Successfully delete address" });
+  response.status(200).json({ addressId });
 });

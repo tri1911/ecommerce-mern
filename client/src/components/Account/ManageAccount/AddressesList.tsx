@@ -1,6 +1,13 @@
 import { PlusIcon } from "@heroicons/react/outline";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { addresses } from "../../../data/addresses";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import {
+  deleteAddress,
+  getAllAddresses,
+  selectAddressesRequestStatus,
+  selectAllAddresses,
+} from "../../../slices/address.slice";
 import { Address } from "../../../types";
 
 function AddressItem({
@@ -15,8 +22,10 @@ function AddressItem({
     postalCode,
     isDefault,
   },
+  onRemoveAddress,
 }: {
   address: Address;
+  onRemoveAddress: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }) {
   return (
     <div className="flex flex-col justify-between rounded bg-white shadow border">
@@ -45,18 +54,15 @@ function AddressItem({
         >
           Edit
         </Link>
-        <Link
-          to="/manage/address/edit"
+        <button
           className="pl-2 hover:text-orange-400 hover:underline"
+          onClick={onRemoveAddress}
         >
           Remove
-        </Link>
-        <Link
-          to="/manage/address/edit"
-          className="pl-2 hover:text-orange-400 hover:underline"
-        >
+        </button>
+        <button className="pl-2 hover:text-orange-400 hover:underline">
           Set as default
-        </Link>
+        </button>
       </div>
     </div>
   );
@@ -65,22 +71,40 @@ function AddressItem({
 function AddAddressItem() {
   return (
     <div className="flex justify-center items-center border-2 border-dashed border-gray-300 rounded bg-white shadow divide-y">
-      <div className="p-14">
+      <Link to="/account/address/add" className="p-14">
         <PlusIcon className="w-10 h-10 mx-auto mb-3" />
         <span className="font-roboto text-base font-medium text-gray-600">
           Add Address
         </span>
-      </div>
+      </Link>
     </div>
   );
 }
 
 export default function AddressesList() {
+  const dispatch = useAppDispatch();
+  const addresses = useAppSelector(selectAllAddresses);
+  const addressesRequestStatus = useAppSelector(selectAddressesRequestStatus);
+
+  const handleRemoveAddress = (id: string) => () => {
+    dispatch(deleteAddress(id));
+  };
+
+  useEffect(() => {
+    if (addressesRequestStatus === "idle") {
+      dispatch(getAllAddresses());
+    }
+  }, [addressesRequestStatus, dispatch]);
+
   return (
     <div className="grid md:grid-cols-3 gap-4">
       <AddAddressItem />
       {addresses.map((address) => (
-        <AddressItem key={address.id} address={address} />
+        <AddressItem
+          key={address.id}
+          address={address}
+          onRemoveAddress={handleRemoveAddress(address.id)}
+        />
       ))}
     </div>
   );

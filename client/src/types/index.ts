@@ -124,12 +124,12 @@ export interface UserProfile {
 
 export interface Address {
   id: string;
-  phone: string;
   fullName: string;
-  country: string;
-  province: string;
-  city: string;
+  phone: string;
   address: string;
+  city: string;
+  province: string;
+  country: string;
   postalCode: string;
   isDefault: boolean;
 }
