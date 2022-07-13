@@ -29,6 +29,10 @@ const userSchema = new Schema(
       enum: Object.values(Role),
       default: Role.Customer,
     },
+    shippingAddress: {
+      type: Schema.Types.ObjectId,
+      ref: "Address",
+    },
   },
   {
     methods: {

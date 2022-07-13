@@ -37,3 +37,10 @@ export const updatePasswordRequestSchema = z.object({
       .min(6, { message: "Must be 6 or more characters long" }),
   }),
 });
+
+export const setShippingAddressRequestSchema = z.object({
+  user: userInRequestSchema,
+  body: z.object({
+    addressId: z.string({ required_error: "Address Id is required" }),
+  }),
+});

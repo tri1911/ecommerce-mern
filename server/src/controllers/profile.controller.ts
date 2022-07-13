@@ -1,7 +1,9 @@
 import asyncHandler from "express-async-handler";
+import AddressModel from "../models/address.model";
 import UserModel from "../models/user.model";
 import {
   getProfileRequestSchema,
+  setShippingAddressRequestSchema,
   updatePasswordRequestSchema,
   updateProfileRequestSchema,
 } from "../schemas/profile.schema";
@@ -64,4 +66,31 @@ export const updatePassword = asyncHandler(async (request, response) => {
   } else {
     throw new HttpException("The current password does not match", 400);
   }
+});
+
+export const setShippingAddress = asyncHandler(async (request, response) => {
+  const {
+    user: { _id: userId },
+    body: { addressId },
+  } = setShippingAddressRequestSchema.parse(request);
+  console.log("go here");
+
+  const address = await AddressModel.findById(addressId);
+
+  if (!address) {
+    throw new HttpException(
+      `The address with id '${addressId}' is not found`,
+      404
+    );
+  }
+
+  const updatedUser = await UserModel.findByIdAndUpdate(
+    userId,
+    {
+      shippingAddress: address._id,
+    },
+    { new: true }
+  );
+
+  response.status(200).json({ updatedUser });
 });

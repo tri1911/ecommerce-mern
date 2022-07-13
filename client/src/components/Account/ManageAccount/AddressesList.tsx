@@ -1,14 +1,18 @@
 import { PlusIcon } from "@heroicons/react/outline";
+import { CheckCircleIcon } from "@heroicons/react/solid";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import {
   deleteAddress,
   getAllAddresses,
+  selectAddressesRequestError,
   selectAddressesRequestStatus,
   selectAllAddresses,
 } from "../../../slices/address.slice";
 import { Address } from "../../../types";
+import NotificationMessage from "../../Shared/NotificationMessage";
+import Spinner from "../../Shared/Spinner";
 
 function AddressItem({
   address: {
@@ -31,10 +35,11 @@ function AddressItem({
     <div className="flex flex-col justify-between rounded bg-white shadow border">
       <div className="divide-y">
         {isDefault && (
-          <div className="px-3 py-2">
+          <div className="px-3 py-2 flex items-center space-x-2">
             <h4 className="text-base font-medium capitalize text-gray-800">
               Default
             </h4>
+            <CheckCircleIcon className="w-5 h-5 text-green-500" />
           </div>
         )}
         <div className="p-3 space-y-1 text-sm text-gray-800">
@@ -82,13 +87,11 @@ function AddAddressItem() {
 }
 
 export default function AddressesList() {
-  const dispatch = useAppDispatch();
   const addresses = useAppSelector(selectAllAddresses);
   const addressesRequestStatus = useAppSelector(selectAddressesRequestStatus);
+  const addressesError = useAppSelector(selectAddressesRequestError);
 
-  const handleRemoveAddress = (id: string) => () => {
-    dispatch(deleteAddress(id));
-  };
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (addressesRequestStatus === "idle") {
@@ -96,16 +99,26 @@ export default function AddressesList() {
     }
   }, [addressesRequestStatus, dispatch]);
 
-  return (
-    <div className="grid md:grid-cols-3 gap-4">
-      <AddAddressItem />
-      {addresses.map((address) => (
-        <AddressItem
-          key={address.id}
-          address={address}
-          onRemoveAddress={handleRemoveAddress(address.id)}
-        />
-      ))}
-    </div>
-  );
+  const handleRemoveAddress = (id: string) => () => {
+    dispatch(deleteAddress(id));
+  };
+
+  if (addressesRequestStatus === "loading") {
+    return <Spinner />;
+  } else if (addressesError) {
+    return <NotificationMessage variant="error" text={addressesError} />;
+  } else {
+    return (
+      <div className="grid md:grid-cols-3 gap-4">
+        <AddAddressItem />
+        {addresses.map((address) => (
+          <AddressItem
+            key={address.id}
+            address={address}
+            onRemoveAddress={handleRemoveAddress(address.id)}
+          />
+        ))}
+      </div>
+    );
+  }
 }

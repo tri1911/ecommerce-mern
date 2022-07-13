@@ -154,4 +154,4 @@ export const {
 export const selectAddressesRequestStatus = (state: RootState) =>
   state.addresses.status;
 export const selectAddressesRequestError = (state: RootState) =>
-  state.addresses.status;
+  state.addresses.error;
