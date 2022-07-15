@@ -1,11 +1,13 @@
 import { z } from "zod";
 
-export const getProductsSchema = z.object({
+export const getProductsRequestSchema = z.object({
   query: z.object({
     page: z.optional(z.string()),
   }),
 });
 
-export const getProductByIdSchema = z.object({
-  params: z.object({ id: z.string({ required_error: "id is required" }) }),
+export const getSingleProductRequestSchema = z.object({
+  params: z.object({
+    id: z.string({ required_error: "Product id is required" }),
+  }),
 });

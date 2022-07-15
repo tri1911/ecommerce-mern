@@ -1,65 +1,36 @@
-import { Schema, Types, model, Model } from "mongoose";
-import { Color, Size } from "../types";
+import { Schema, model, InferSchemaType } from "mongoose";
 
-// Sub-Document definition
-export interface Review {
-  title: string;
-  rating: number;
-  comment: string;
-  user: Types.ObjectId;
-}
+const productSchema = new Schema(
+  {
+    name: { type: String, required: true, trim: true },
+    sku: { type: String, required: true, unique: true },
+    description: String,
+    images: [String],
+    category: { type: Schema.Types.ObjectId, ref: "Category" },
+    brand: { type: Schema.Types.ObjectId, ref: "Brand" },
+    price: { type: Number, default: 0 },
+    availability: {
+      type: String,
+      enum: ["In Stock", "Out Of Stock"],
+      default: "Out Of Stock",
+    },
+    sizes: [String],
+    colors: [String],
+    material: String,
+    weight: String,
+  },
+  { timestamps: true }
+);
 
-// Document definition
-export interface Product {
-  sku: string;
-  name: string;
-  image: string;
-  description: string;
-  brand: string;
-  category: string;
-  size: Size;
-  color: Color;
-  price: number;
-  inStockQty: number;
-  rating: number;
-  numReviews: number;
-  // Use `Types.ObjectId` in document interface...
-  user?: Types.ObjectId;
-  reviews?: Review[];
-}
-
-// TMethodsAndOverrides
-type ProductDocumentProps = {
-  reviews: Types.DocumentArray<Review>;
-};
-
-type ProductModelType = Model<Product, unknown, ProductDocumentProps>;
-
-const reviewSchema = new Schema<Review>({
-  title: { type: String, required: true },
-  rating: { type: Number, required: true },
-  comment: { type: String, required: true },
-  user: { type: Schema.Types.ObjectId, ref: "User" },
+productSchema.set("toJSON", {
+  transform(_document, returnedObject) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
 });
 
-const productSchema = new Schema<Product, ProductModelType>({
-  sku: { type: String, required: true },
-  name: { type: String, required: true },
-  image: { type: String, required: true },
-  description: { type: String, required: true },
-  brand: { type: String, required: true },
-  category: { type: String, required: true },
-  size: { type: String, enum: ["xs", "s", "m", "l", "xl"] },
-  color: { type: String, enum: ["red", "white", "black"] },
-  price: { type: Number, required: true, default: 0 },
-  inStockQty: { type: Number, required: true, default: 0 },
-  rating: { type: Number, required: true, default: 0 },
-  numReviews: { type: Number, required: true, default: 0 },
-  // Use `Schema.Types.ObjectId` in the schema definition.
-  user: { type: Schema.Types.ObjectId, ref: "User" },
-  reviews: [reviewSchema],
-});
+export type Product = InferSchemaType<typeof productSchema>;
 
-const ProductModel = model<Product, ProductModelType>("Product", productSchema);
-
-export default ProductModel;
+export default model("Product", productSchema);
