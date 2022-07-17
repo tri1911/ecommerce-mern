@@ -15,6 +15,7 @@ import authRouter from "./routes/auth.router";
 import productRouter from "./routes/product.router";
 import addressRouter from "./routes/address.router";
 import userRouter from "./routes/profile.router";
+import categoryRouter from "./routes/category.router";
 import userExtractor from "./middlewares/extract-user.middleware";
 
 /**
@@ -38,6 +39,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
 app.use("/api/addresses", userExtractor, addressRouter);
 app.use("/api/profile", userExtractor, userRouter);
+app.use("/api/categories", categoryRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);

@@ -21,18 +21,21 @@ export const getSingleProduct = asyncHandler(async (request, response) => {
 });
 
 export const getProducts = asyncHandler(async (request, response) => {
-  const pageSize = 12;
-  const { query } = getProductsRequestSchema.parse(request);
-  const page = query.page ? parseInt(query.page, 10) : 1;
+  const {
+    query: { page },
+  } = getProductsRequestSchema.parse(request);
 
-  const totalCount = await ProductModel.countDocuments({});
+  const pageSize = 12;
+  const currentPage = page ? parseInt(page, 10) : 1;
+
+  const total = await ProductModel.countDocuments({});
+  const pages = Math.ceil(total / pageSize);
+
   const products = await ProductModel.find({})
     .limit(pageSize)
-    .skip(pageSize * (page - 1));
+    .skip(pageSize * (currentPage - 1));
 
-  response.json({
-    products,
-    page,
-    pages: Math.ceil(totalCount / pageSize),
-  });
+  response
+    .status(200)
+    .json({ page: currentPage, pages, total, data: products });
 });

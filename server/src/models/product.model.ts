@@ -2,22 +2,40 @@ import { Schema, model, InferSchemaType } from "mongoose";
 
 const productSchema = new Schema(
   {
-    name: { type: String, required: true, trim: true },
-    sku: { type: String, required: true, unique: true },
-    description: String,
-    images: [String],
+    sku: {
+      type: String,
+      required: true,
+      unique: true,
+      minLength: 1,
+      maxLength: 50,
+    },
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+      minLength: 1,
+      maxLength: 150,
+    },
+    description: {
+      type: String,
+      required: true,
+      minLength: 1,
+      maxLength: 5000,
+    },
+    image: String,
+    additionalImages: [String],
+    countInStock: { type: Number, default: 0 },
+    price: { type: Number, required: true },
     category: { type: Schema.Types.ObjectId, ref: "Category" },
     brand: { type: Schema.Types.ObjectId, ref: "Brand" },
-    price: { type: Number, default: 0 },
-    availability: {
-      type: String,
-      enum: ["In Stock", "Out Of Stock"],
-      default: "Out Of Stock",
-    },
     sizes: [String],
     colors: [String],
-    material: String,
-    weight: String,
+    material: [String],
+    weight: Number,
+    ratings: {
+      count: Number,
+      average: Number,
+    },
   },
   { timestamps: true }
 );
