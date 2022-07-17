@@ -49,8 +49,9 @@ function AddressItem({
           <h4 className="font-medium uppercase">{fullName}</h4>
           <p>{address}</p>
           <p>
-            {city}, {province} {postalCode} {country}
+            {city}, {province} {postalCode}
           </p>
+          <p>{country}</p>
           <p>Phone number: {phone}</p>
         </div>
       </div>

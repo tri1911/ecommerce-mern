@@ -1,47 +1,81 @@
+import { ChevronRightIcon } from "@heroicons/react/solid";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
-import { selectAllCategories } from "../../slices/categoriesSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { Category } from "../../services/category.service";
+import {
+  getAllCategories,
+  selectAllCategories,
+} from "../../slices/categories.slice";
 
-function CategoryItem({
-  href,
-  icon,
-  text,
+function SingleMenuSection({
+  category: { name, children },
 }: {
-  href: string;
-  icon: string;
-  text: string;
+  category: Category;
+}) {
+  return (
+    <section>
+      <h4 className="mb-1 text-lg text-gray-800 font-medium">{name}</h4>
+      <div className="space-y-2">
+        {children.map(({ name }) => (
+          <Link
+            to={"#"}
+            key={name}
+            className="block text-sm text-gray-600 hover:text-primary transition"
+          >
+            {name}
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function CategoryMenuItem({
+  category: { name, children },
+}: {
+  category: Category;
 }) {
   return (
     <Link
-      to={href}
-      className="px-6 py-3 flex items-center hover:bg-gray-100 transition"
+      to={"#"}
+      className="flex items-center pl-6 pr-3 py-3 hover:bg-gray-100 transition group-two"
     >
-      <img src={icon} alt="" className="w-5 h-5 object-contain" />
-      <span className="ml-6 text-gray-600 text-sm">{text}</span>
+      <img
+        src={"/images/icons/bed.svg"}
+        alt="Category Icon"
+        className="w-5 h-5 object-contain"
+      />
+      <span className="ml-6 text-sm text-gray-600">{name}</span>
+      <ChevronRightIcon className="w-5 h-5 ml-auto" />
+      <div className="__mega-menu absolute top-0 left-full w-[720px] px-5 pb-5 pt-3 hidden group-two-hover:grid grid-cols-4 bg-white border border-gray-300 rounded cursor-default">
+        {children.map((cat) => (
+          <SingleMenuSection key={cat.name} category={cat} />
+        ))}
+      </div>
     </Link>
   );
 }
 
-// NOTE: should pass `categories` props here OR just get data from store? (I chose get data from store because I don't re-use this component with different `categories` set)
-function CategoriesDropdown() {
+function CategoriesMenuDropdown() {
   const categories = useSelector(selectAllCategories);
 
-  // NOTE: it's better to save the icon by category's slug
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getAllCategories());
+  }, [dispatch]);
+
   return (
-    <div className="px-8 py-4 bg-primary flex items-center cursor-pointer group relative">
+    <div className="px-8 py-4 flex items-center bg-primary cursor-pointer group-one relative">
       <span className="text-white">
         <i className="fas fa-bars" />
       </span>
       <span className="ml-2 text-white capitalize">All Categories</span>
-      <div className="absolute left-0 top-full w-full bg-white shadow-md py-3 invisible opacity-0 group-hover:opacity-100 group-hover:visible transition duration-300 z-50 divide-y divide-gray-300 divide-dashed">
-        {categories.map(({ slug, icon, name }) => (
-          <CategoryItem
-            key={slug}
-            href={`/shop?category=${slug}`}
-            icon={`/images/icons/${icon}.svg`}
-            text={name}
-          />
+      <div className="absolute left-0 top-full w-full bg-white shadow-md py-3 invisible opacity-0 group-one-hover:opacity-100 group-one-hover:visible transition duration-300 z-50 divide-y divide-gray-300 divide-dashed">
+        {categories?.map((category) => (
+          <CategoryMenuItem key={category.name} category={category} />
         ))}
       </div>
     </div>
@@ -83,7 +117,7 @@ export default function Navbar() {
   return (
     <nav className="bg-gray-800 hidden lg:block">
       <section className="container flex">
-        <CategoriesDropdown />
+        <CategoriesMenuDropdown />
         <NavMenu />
       </section>
     </nav>

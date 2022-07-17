@@ -1,6 +1,5 @@
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { selectAllCategories } from "../../slices/categoriesSlice";
+import { categories } from "../../data/categories";
 import { Category } from "../../types";
 
 function CategoryItem({
@@ -25,8 +24,6 @@ function CategoryItem({
 }
 
 export default function CategoriesList() {
-  const categories = useSelector(selectAllCategories);
-
   return (
     <div className="container pb-16">
       <h2 className="text-2xl md:text-3xl font-medium text-gray-800 uppercase mb-6">
