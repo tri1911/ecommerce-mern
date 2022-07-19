@@ -25,17 +25,17 @@ const productSchema = new Schema(
     image: String,
     additionalImages: [String],
     countInStock: { type: Number, default: 0 },
-    price: { type: Number, required: true },
-    category: { type: Schema.Types.ObjectId, ref: "Category" },
+    price: { type: String, required: true },
+    category: { index: 0, type: Schema.Types.ObjectId, ref: "Category" },
     brand: { type: Schema.Types.ObjectId, ref: "Brand" },
     sizes: [String],
     colors: [String],
-    material: [String],
+    material: String,
     weight: Number,
-    ratings: {
+    ratings: new Schema({
       count: Number,
       average: Number,
-    },
+    }),
   },
   { timestamps: true }
 );

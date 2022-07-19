@@ -6,10 +6,13 @@ export const getSingleProductRequestSchema = z.object({
   }),
 });
 
-export const getProductsRequestSchema = z.object({
+export const getProductsByCategoryRequestSchema = z.object({
   query: z.object({
     page: z.optional(z.string()),
     size: z.optional(z.string()),
     color: z.optional(z.string()),
+  }),
+  params: z.object({
+    categoryId: z.optional(z.string()),
   }),
 });

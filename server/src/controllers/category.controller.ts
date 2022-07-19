@@ -1,40 +1,34 @@
 import asyncHandler from "express-async-handler";
-import CategoryModel, { Category } from "../models/category.model";
+import CategoryModel from "../models/category.model";
+import {
+  addNewCategoryRequestSchema,
+  getSingleCategoryRequestSchema,
+} from "../schemas/category.schema";
+import { HttpException } from "../utils/custom-errors.util";
 
-/**
- * Controller Definitions
- */
+export const addNewCategory = asyncHandler(async (request, response) => {
+  const {
+    body: { name, parentId },
+  } = addNewCategoryRequestSchema.parse(request);
 
-export const getAllCategories = asyncHandler(async (_request, response) => {
-  const categories = await CategoryModel.find({});
-  const processedCategories = getCategoriesTree(categories);
-  response.status(200).json({ categories: processedCategories });
+  const createdCategory = await CategoryModel.create({ name, parentId });
+  response.status(201).json({ createdCategory });
 });
 
-/**
- * Helper functions
- */
+export const getAllCategories = asyncHandler(async (_request, response) => {
+  const categories = await CategoryModel.getChildrenTree();
+  response.status(200).json({ categories });
+});
 
-type ProcessedCategory = Pick<Category, "name" | "path"> & {
-  children: ProcessedCategory[];
-};
+export const getSingleCategory = asyncHandler(async (request, response) => {
+  const {
+    params: { id },
+  } = getSingleCategoryRequestSchema.parse(request);
 
-const getCategoriesTree = (
-  categories: Category[],
-  parent?: string
-): ProcessedCategory[] => {
-  const reducer = (
-    acc: ProcessedCategory[],
-    { _id, name, parent: parentId, path }: Category
-  ) => {
-    if (parentId?.toString() === parent) {
-      acc.push({
-        name,
-        path,
-        children: getCategoriesTree(categories, _id.toString()),
-      });
-    }
-    return acc;
-  };
-  return categories.reduce(reducer, []);
-};
+  const category = await CategoryModel.findById(id).select({ children: 0 });
+  if (category) {
+    response.status(200).json({ category });
+  } else {
+    throw new HttpException(`Category with id of ${id} is not found`, 404);
+  }
+});
