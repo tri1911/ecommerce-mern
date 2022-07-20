@@ -6,17 +6,17 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import config from "./utils/config.util";
-import logger from "./utils/logger.util";
-import connectDB from "./utils/connect-db.util";
-import errorHandler from "./middlewares/error-handler.middleware";
-import notFoundHandler from "./middlewares/not-found.middleware";
-import authRouter from "./routes/auth.router";
-import productRouter from "./routes/product.router";
-import addressRouter from "./routes/address.router";
-import userRouter from "./routes/profile.router";
-import categoryRouter from "./routes/category.router";
-import userExtractor from "./middlewares/extract-user.middleware";
+import config from "@utils/config.util";
+import logger from "@utils/logger.util";
+import connectDB from "@utils/connect-db.util";
+import errorHandler from "@middlewares/error-handler.middleware";
+import notFoundHandler from "@middlewares/not-found.middleware";
+import userExtractor from "@middlewares/extract-user.middleware";
+import authRouter from "@routes/auth.router";
+import productRouter from "@routes/product.router";
+import addressRouter from "@routes/address.router";
+import userRouter from "@routes/profile.router";
+import categoryRoutes from "@routes/category.router";
 
 /**
  * App Variables
@@ -39,7 +39,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
 app.use("/api/addresses", userExtractor, addressRouter);
 app.use("/api/profile", userExtractor, userRouter);
-app.use("/api/categories", categoryRouter);
+app.use("/api/categories", categoryRoutes);
 
 app.use(errorHandler);
 app.use(notFoundHandler);

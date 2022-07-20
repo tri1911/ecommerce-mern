@@ -1,6 +1,6 @@
 import { model, Schema, Types, Model } from "mongoose";
-import { HttpException } from "../utils/custom-errors.util";
-import logger from "../utils/logger.util";
+import { HttpException } from "@utils/custom-errors.util";
+import logger from "@utils/logger.util";
 
 /**
  * Main operations in my application
@@ -33,7 +33,7 @@ const pathSeparator = "#";
 export interface ICategory {
   name: string;
   parentId?: Types.ObjectId;
-  path: string;
+  path?: string;
   children?: ICategory[];
 }
 
@@ -50,7 +50,7 @@ const categorySchema = new Schema<ICategory, CategoryModel>({
     type: Schema.Types.ObjectId,
     ref: "Category",
   },
-  path: { index: true, type: String, required: true },
+  path: { index: true, type: String },
   children: [],
 });
 

@@ -1,34 +1,43 @@
 import asyncHandler from "express-async-handler";
-import CategoryModel from "../models/category.model";
-import {
-  addNewCategoryRequestSchema,
-  getSingleCategoryRequestSchema,
-} from "../schemas/category.schema";
-import { HttpException } from "../utils/custom-errors.util";
+import { HttpException } from "@utils/custom-errors.util";
+import categorySchemas from "@schemas/category.schema";
+import categoryServices from "@services/category.service";
 
-export const addNewCategory = asyncHandler(async (request, response) => {
+const createNewCategory = asyncHandler(async (request, response) => {
   const {
     body: { name, parentId },
-  } = addNewCategoryRequestSchema.parse(request);
+  } = categorySchemas.createNewCategory.parse(request);
 
-  const createdCategory = await CategoryModel.create({ name, parentId });
-  response.status(201).json({ createdCategory });
+  const createdCategory = await categoryServices.createNewCategory({
+    name,
+    parentId,
+  });
+
+  response.status(201).json({ status: "OK", data: createdCategory });
 });
 
-export const getAllCategories = asyncHandler(async (_request, response) => {
-  const categories = await CategoryModel.getChildrenTree();
-  response.status(200).json({ categories });
+const getAllCategories = asyncHandler(async (_request, response) => {
+  const categoriesTree = await categoryServices.getAllCategories();
+
+  response.status(200).json({ status: "OK", data: categoriesTree });
 });
 
-export const getSingleCategory = asyncHandler(async (request, response) => {
+const getSingleCategory = asyncHandler(async (request, response) => {
   const {
     params: { id },
-  } = getSingleCategoryRequestSchema.parse(request);
+  } = categorySchemas.getSingleCategory.parse(request);
 
-  const category = await CategoryModel.findById(id).select({ children: 0 });
+  const category = await categoryServices.getSingleCategory(id);
+
   if (category) {
-    response.status(200).json({ category });
+    response.status(200).json({ status: "OK", data: category });
   } else {
     throw new HttpException(`Category with id of ${id} is not found`, 404);
   }
 });
+
+export default {
+  createNewCategory,
+  getAllCategories,
+  getSingleCategory,
+};

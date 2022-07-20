@@ -1,14 +1,16 @@
 import { z } from "zod";
 
-export const addNewCategoryRequestSchema = z.object({
+const createNewCategory = z.object({
   body: z.object({
-    name: z.string({ required_error: "Category name is required." }),
+    name: z.string({ required_error: "Category Name is required" }),
     parentId: z.optional(z.string()),
   }),
 });
 
-export const getSingleCategoryRequestSchema = z.object({
+const getSingleCategory = z.object({
   params: z.object({
-    id: z.string({ required_error: "Category id is required." }),
+    id: z.string({ required_error: "Category Id is required" }),
   }),
 });
+
+export default { createNewCategory, getSingleCategory };

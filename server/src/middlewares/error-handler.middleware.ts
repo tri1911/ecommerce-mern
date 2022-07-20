@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
-import { HttpException } from "../utils/custom-errors.util";
-import logger from "../utils/logger.util";
+import { HttpException } from "@utils/custom-errors.util";
+import logger from "@utils/logger.util";
 
 const errorHandler = (
   error: Error,
