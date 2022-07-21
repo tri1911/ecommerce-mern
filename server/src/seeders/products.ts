@@ -1,14 +1,18 @@
 import { faker } from "@faker-js/faker";
 import { Types } from "mongoose";
-import CategoryModel from "../models/category.model";
-import ProductModel, { Product } from "../models/product.model";
+import CategoryModel from "@models/category.model";
+import ProductModel, { IProduct } from "@models/product.model";
 
 const getCategoryIds = async (): Promise<Types.ObjectId[]> => {
   const categories = await CategoryModel.find({}).lean();
   return categories.map((cat) => cat._id);
 };
 
-export function createRandomProduct(categoryIds: Types.ObjectId[]): Product {
+type ProductSeed = Omit<IProduct, "_id" | "createdAt" | "updatedAt">;
+
+export function createRandomProduct(
+  categoryIds: Types.ObjectId[]
+): ProductSeed {
   return {
     sku: faker.datatype.uuid().substring(0, 8),
     title: faker.commerce.productName(),
@@ -35,7 +39,7 @@ export function createRandomProduct(categoryIds: Types.ObjectId[]): Product {
 
 const createRandomProducts = async () => {
   const categoryIds = await getCategoryIds();
-  const products: Product[] = [];
+  const products: ProductSeed[] = [];
 
   Array.from({ length: 100 }).forEach(() => {
     products.push(createRandomProduct(categoryIds));

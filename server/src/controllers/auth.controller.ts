@@ -1,11 +1,11 @@
 import asyncHandler from "express-async-handler";
-import UserModel from "../models/user.model";
+import UserModel from "@models/user.model";
 import {
   userLoginRequestSchema,
   userRegistrationRequestSchema,
-} from "../schemas/auth.schema";
-import { HttpException } from "../utils/custom-errors.util";
-import generateToken from "../utils/generate-token.util";
+} from "@schemas/auth.schema";
+import { HttpException } from "@utils/custom-errors.util";
+import generateToken from "@utils/generate-token.util";
 
 // @desc authenticate user & get token
 // @route POST /api/auth/login

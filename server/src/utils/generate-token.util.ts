@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import config from "./config.util";
+import config from "@utils/config.util";
 
 const generateToken = (id: string): string => {
   const secret = config.JWT_SECRET;

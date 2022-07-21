@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import CategoryModel from "../models/category.model";
+import CategoryModel from "@models/category.model";
 
 const clothesChildren = [
   "New Arrivals",

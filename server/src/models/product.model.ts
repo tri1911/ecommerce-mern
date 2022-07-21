@@ -1,6 +1,29 @@
-import { Schema, model, InferSchemaType } from "mongoose";
+import { Schema, Types, Model, model } from "mongoose";
 
-const productSchema = new Schema(
+export interface IProduct {
+  _id: Types.ObjectId;
+  sku: string;
+  title: string;
+  description: string;
+  image: string;
+  additionalImages: string[];
+  countInStock: number;
+  price: string;
+  category?: Types.ObjectId;
+  brand?: Types.ObjectId;
+  sizes: string[]; // or Types.Array<string>?
+  colors: string[];
+  material?: string;
+  weight?: number;
+  ratings: {
+    count: number;
+    average: number;
+  };
+  createdAt: number;
+  updatedAt: number;
+}
+
+const productSchema = new Schema<IProduct, Model<IProduct>>(
   {
     sku: {
       type: String,
@@ -22,9 +45,9 @@ const productSchema = new Schema(
       minLength: 1,
       maxLength: 5000,
     },
-    image: String,
+    image: { type: String, required: true },
     additionalImages: [String],
-    countInStock: { type: Number, default: 0 },
+    countInStock: { type: Number, required: true, default: 0 },
     price: { type: String, required: true },
     category: { index: 0, type: Schema.Types.ObjectId, ref: "Category" },
     brand: { type: Schema.Types.ObjectId, ref: "Brand" },
@@ -32,10 +55,10 @@ const productSchema = new Schema(
     colors: [String],
     material: String,
     weight: Number,
-    ratings: new Schema({
-      count: Number,
-      average: Number,
-    }),
+    ratings: {
+      count: { type: Number, required: true, default: 0 },
+      average: { type: Number, required: true, default: 0 },
+    },
   },
   { timestamps: true }
 );
@@ -48,7 +71,5 @@ productSchema.set("toJSON", {
     delete returnedObject.__v;
   },
 });
-
-export type Product = InferSchemaType<typeof productSchema>;
 
 export default model("Product", productSchema);

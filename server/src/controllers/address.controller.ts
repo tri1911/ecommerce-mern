@@ -1,13 +1,13 @@
 import asyncHandler from "express-async-handler";
-import AddressModel from "../models/address.model";
+import AddressModel from "@models/address.model";
 import {
   createAddressRequestSchema,
   deleteAddressRequestSchema,
   getAddressByIdRequestSchema,
   getAllAddressesRequestSchema,
   updateAddressRequestSchema,
-} from "../schemas/address.schema";
-import { HttpException } from "../utils/custom-errors.util";
+} from "@schemas/address.schema";
+import { HttpException } from "@utils/custom-errors.util";
 
 export const getAllAddresses = asyncHandler(async (request, response) => {
   const {

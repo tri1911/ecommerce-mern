@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { userInRequestSchema } from "./common";
+import { userInRequestSchema } from "@schemas/common";
 
 export const getAllAddressesRequestSchema = z.object({
   user: userInRequestSchema,

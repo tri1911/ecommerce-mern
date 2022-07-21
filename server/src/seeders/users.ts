@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import userModel, { Role, User } from "../models/user.model";
+import userModel, { Role, User } from "@models/user.model";
 
 const seedUsers: User[] = [
   {

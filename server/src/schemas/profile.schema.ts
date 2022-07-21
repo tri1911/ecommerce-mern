@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Gender } from "../models/user.model";
+import { Gender } from "@models/user.model";
 import { userInRequestSchema } from "./common";
 
 export const getProfileRequestSchema = z.object({

@@ -1,56 +1,29 @@
 import asyncHandler from "express-async-handler";
-import categoryModel from "../models/category.model";
-import ProductModel from "../models/product.model";
-import {
-  getSingleProductRequestSchema,
-  getProductsByCategoryRequestSchema,
-} from "../schemas/product.schema";
-import { HttpException } from "../utils/custom-errors.util";
-import { Types } from "mongoose";
+import { HttpException } from "@utils/custom-errors.util";
+import productSchema from "@schemas/product.schema";
+import productService from "@services/product.service";
 
-export const getSingleProduct = asyncHandler(async (request, response) => {
+const createNewProduct = asyncHandler(async (request, response) => {
+  const { body: newProduct } = productSchema.createNewProduct.parse(request);
+  const createdProduct = await productService.createNewProduct(newProduct);
+  response.status(201).json({ status: "success", data: createdProduct });
+});
+
+const getSingleProduct = asyncHandler(async (request, response) => {
   const {
     params: { id: productId },
-  } = getSingleProductRequestSchema.parse(request);
+  } = productSchema.getSingleProduct.parse(request);
 
-  const product = await ProductModel.findById(productId);
+  const product = await productService.getSingleProduct(productId);
 
   if (product) {
     response.status(200).json(product);
   } else {
-    throw new HttpException("Product Not Found", 404);
+    throw new HttpException(
+      `Product with id of ${productId} is not found`,
+      404
+    );
   }
 });
 
-export const getProductsByCategory = asyncHandler(async (request, response) => {
-  const {
-    query: { page },
-    params: { categoryId },
-  } = getProductsByCategoryRequestSchema.parse(request);
-
-  let filter = {};
-
-  if (categoryId) {
-    const categoryIds = await categoryModel.getAllChildren(categoryId);
-    // include the root id as well
-    categoryIds.push(new Types.ObjectId(categoryId));
-    filter = { category: { $in: categoryIds } };
-  }
-
-  const pageSize = 12;
-  const currentPage = page ? parseInt(page, 10) : 1;
-
-  const total = await ProductModel.countDocuments(filter);
-  const pages = Math.ceil(total / pageSize);
-  const products = await ProductModel.find(filter, { title: 1, category: 1 })
-    .limit(pageSize)
-    .skip(pageSize * (currentPage - 1))
-    .populate("category", "name");
-
-  response.status(200).json({
-    page: currentPage,
-    pages,
-    total,
-    products,
-  });
-});
+export default { createNewProduct, getSingleProduct };

@@ -1,9 +1,10 @@
 import dotenv from "dotenv";
-import logger from "../utils/logger.util";
-import connectDB from "../utils/connect-db.util";
-import CategoryModel from "../models/category.model";
-// import UserModel from "../models/user.model";
-import ProductModel from "../models/product.model";
+import logger from "@utils/logger.util";
+import connectDB from "@utils/connect-db.util";
+import CategoryModel from "@models/category.model";
+// import UserModel from "@models/user.model";
+import ProductModel from "@models/product.model";
+
 import { insertAllCategories } from "./categories";
 import { insertAllProducts } from "./products";
 // import { insertAllUsers } from "./users";

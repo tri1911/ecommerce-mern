@@ -1,10 +1,10 @@
 import asyncHandler from "express-async-handler";
-import UserModel from "../models/user.model";
+import UserModel from "@models/user.model";
 import {
   getProfileRequestSchema,
   updatePasswordRequestSchema,
   updateProfileRequestSchema,
-} from "../schemas/profile.schema";
+} from "@schemas/profile.schema";
 import { HttpException } from "../utils/custom-errors.util";
 
 export const getProfile = asyncHandler(async (request, response) => {

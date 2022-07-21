@@ -1,12 +1,8 @@
 import express from "express";
-import {
-  getSingleProduct,
-  getProductsByCategory,
-} from "../controllers/product.controller";
+import productController from "@controllers/product.controller";
 
 const router = express.Router();
 
-router.get("/category/:categoryId?", getProductsByCategory);
-router.get("/:id", getSingleProduct);
+router.get("/:id", productController.getSingleProduct);
 
 export default router;

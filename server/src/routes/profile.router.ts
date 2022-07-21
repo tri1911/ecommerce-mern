@@ -3,7 +3,7 @@ import {
   getProfile,
   updatePassword,
   updateProfile,
-} from "../controllers/profile.controller";
+} from "@controllers/profile.controller";
 
 const router = express.Router();
 

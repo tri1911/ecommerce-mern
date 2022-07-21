@@ -1,11 +1,10 @@
-import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
+import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
-
-import config from "../utils/config.util";
-import UserModel, { User } from "../models/user.model";
 import { Types } from "mongoose";
-import { HttpException } from "../utils/custom-errors.util";
+import config from "@utils/config.util";
+import { HttpException } from "@utils/custom-errors.util";
+import UserModel, { User } from "@models/user.model";
 
 export interface RequestWithUser extends Request {
   user?: Omit<User, "password"> & { _id: Types.ObjectId };
