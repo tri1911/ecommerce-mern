@@ -1,18 +1,10 @@
 import { faker } from "@faker-js/faker";
-import { Types } from "mongoose";
-import CategoryModel from "@models/category.model";
-import ProductModel, { IProduct } from "@models/product.model";
+import ProductModel from "@models/product.model";
+import { Product } from "@schemas/product.schema";
 
-const getCategoryIds = async (): Promise<Types.ObjectId[]> => {
-  const categories = await CategoryModel.find({}).lean();
-  return categories.map((cat) => cat._id);
-};
+type ProductSeed = Omit<Product, "_id" | "createdAt" | "updatedAt">;
 
-type ProductSeed = Omit<IProduct, "_id" | "createdAt" | "updatedAt">;
-
-export function createRandomProduct(
-  categoryIds: Types.ObjectId[]
-): ProductSeed {
+export function createRandomProduct(): ProductSeed {
   return {
     sku: faker.datatype.uuid().substring(0, 8),
     title: faker.commerce.productName(),
@@ -20,16 +12,20 @@ export function createRandomProduct(
     image: faker.image.imageUrl(696, 460, "shoes", true),
     additionalImages: [],
     countInStock: faker.datatype.number(100),
-    price: faker.commerce.price(),
-    category:
-      categoryIds.length > 0
-        ? categoryIds[faker.datatype.number(categoryIds.length)]
-        : undefined,
-    // brand
+    price: parseInt(faker.commerce.price()),
+    gender: faker.name.gender(true),
+    brand: faker.company.companyName(),
+    sport: faker.datatype.string(),
+    productType: faker.datatype.string(),
+    category: faker.commerce.department(),
     sizes: ["xs", "s", "m", "l", "xl"],
     colors: ["black", "red", "white"],
     material: faker.commerce.productMaterial(),
-    weight: faker.datatype.float({ min: 10, max: 100, precision: 0.001 }),
+    weight: `${faker.datatype.float({
+      min: 10,
+      max: 100,
+      precision: 0.001,
+    })} kg`,
     ratings: {
       count: faker.datatype.number(100),
       average: faker.datatype.float({ min: 0, max: 5, precision: 0.1 }),
@@ -37,18 +33,17 @@ export function createRandomProduct(
   };
 }
 
-const createRandomProducts = async () => {
-  const categoryIds = await getCategoryIds();
+const createRandomProducts = () => {
   const products: ProductSeed[] = [];
 
   Array.from({ length: 100 }).forEach(() => {
-    products.push(createRandomProduct(categoryIds));
+    products.push(createRandomProduct());
   });
 
   return products;
 };
 
 export const insertAllProducts = async () => {
-  const products = await createRandomProducts();
+  const products = createRandomProducts();
   return ProductModel.insertMany(products);
 };

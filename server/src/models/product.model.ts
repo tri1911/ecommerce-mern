@@ -1,29 +1,7 @@
-import { Schema, Types, Model, model } from "mongoose";
+import { Product } from "@schemas/product.schema";
+import { Schema, Model, model } from "mongoose";
 
-export interface IProduct {
-  _id: Types.ObjectId;
-  sku: string;
-  title: string;
-  description: string;
-  image: string;
-  additionalImages: string[];
-  countInStock: number;
-  price: string;
-  category?: Types.ObjectId;
-  brand?: Types.ObjectId;
-  sizes: string[]; // or Types.Array<string>?
-  colors: string[];
-  material?: string;
-  weight?: number;
-  ratings: {
-    count: number;
-    average: number;
-  };
-  createdAt: number;
-  updatedAt: number;
-}
-
-const productSchema = new Schema<IProduct, Model<IProduct>>(
+const productSchema = new Schema<Product, Model<Product>>(
   {
     sku: {
       type: String,
@@ -48,13 +26,16 @@ const productSchema = new Schema<IProduct, Model<IProduct>>(
     image: { type: String, required: true },
     additionalImages: [String],
     countInStock: { type: Number, required: true, default: 0 },
-    price: { type: String, required: true },
-    category: { index: 0, type: Schema.Types.ObjectId, ref: "Category" },
-    brand: { type: Schema.Types.ObjectId, ref: "Brand" },
+    price: { type: Number, required: true, default: 0 },
+    gender: { type: String, required: true },
+    brand: { type: String, required: true },
+    sport: { type: String, required: true },
+    productType: { type: String, required: true },
+    category: { type: String, required: true, lowercase: true },
     sizes: [String],
     colors: [String],
     material: String,
-    weight: Number,
+    weight: String,
     ratings: {
       count: { type: Number, required: true, default: 0 },
       average: { type: Number, required: true, default: 0 },
