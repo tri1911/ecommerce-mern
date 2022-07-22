@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "NODE_ENV=development ts-node-dev -r tsconfig-paths/register --respawn --pretty --transpile-only src/index.ts",
     "lint": "eslint --ext .ts",
-    "data:import": "ts-node src/seeder/index.ts",
-    "data:destroy": "ts-node src/seeder/index.ts -d"
+    "data:import": "ts-node -r tsconfig-paths/register src/seeders/index.ts",
+    "data:destroy": "ts-node -r tsconfig-paths/register src/seeders/index.ts -d"
   },
   "keywords": [],
   "author": "Elliot Ho",

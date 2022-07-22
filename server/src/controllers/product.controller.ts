@@ -65,13 +65,13 @@ const getAllProducts = asyncHandler(async (request, response) => {
 
   const sortQuery = sort ? sort.split(",").join(" ") : undefined;
 
-  const products = await productService.getAllProducts({
+  const data = await productService.getAllProducts({
     filter,
     pagination,
     sortQuery,
   });
 
-  response.status(200).json({ status: "success", data: products });
+  response.status(200).json({ status: "success", data });
 });
 
 export default {

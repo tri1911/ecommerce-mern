@@ -2,10 +2,10 @@ import dotenv from "dotenv";
 import logger from "@utils/logger.util";
 import connectDB from "@utils/connect-db.util";
 import CategoryModel from "@models/category.model";
-// import UserModel from "@models/user.model";
+import UserModel from "@models/user.model";
 import ProductModel from "@models/product.model";
 
-import { insertAllCategories } from "./categories";
+// import { insertAllCategories } from "./categories";
 import { insertAllProducts } from "./products";
 // import { insertAllUsers } from "./users";
 
@@ -16,7 +16,7 @@ const seedData = async () => {
   try {
     logger.info("Seeding data...");
     // await insertAllUsers();
-    await insertAllCategories();
+    // await insertAllCategories();
     await insertAllProducts();
     logger.info("Data has been populated");
     process.exit(0);
@@ -31,7 +31,7 @@ const seedData = async () => {
 const clearDb = async () => {
   try {
     logger.info("Clearing database...");
-    // await UserModel.deleteMany({});
+    await UserModel.deleteMany({});
     await CategoryModel.deleteMany({});
     await ProductModel.deleteMany({});
     logger.info("Database has been cleared");

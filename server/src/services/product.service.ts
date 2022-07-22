@@ -49,12 +49,19 @@ const getAllProducts = async ({
   const pageSize = length || 12;
   const pageIndex = page || 1;
 
+  const total = await ProductModel.find(filter).countDocuments();
+  const pages = Math.ceil(total / pageSize);
   const products = await ProductModel.find(filter)
     .sort(sortQuery ?? "-createdAt")
     .limit(pageSize)
     .skip(pageSize * (pageIndex - 1));
 
-  return products;
+  return {
+    page: pageIndex,
+    pages,
+    total,
+    products,
+  };
 };
 
 export default {
