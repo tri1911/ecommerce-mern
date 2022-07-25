@@ -1,4 +1,4 @@
-import { model, Schema, Types, Model } from "mongoose";
+import { model, Schema, Types, Model, HydratedDocument } from "mongoose";
 import { HttpException } from "@utils/custom-errors.util";
 import logger from "@utils/logger.util";
 
@@ -38,59 +38,34 @@ export interface ICategory {
 }
 
 interface CategoryModel extends Model<ICategory> {
-  getImmediateChildren(id: string): Promise<ICategory[]>;
-  getAllChildren(id: string): Promise<Types.ObjectId[]>;
+  getParent(category: ICategory): Promise<HydratedDocument<ICategory>>;
+  getParent(getAncestors: ICategory): Promise<HydratedDocument<ICategory>[]>;
+  getImmediateChildren(id: string): Promise<HydratedDocument<ICategory>[]>;
+  getAllChildren(root: ICategory): Promise<Types.ObjectId[]>;
   getChildrenTree(args: {
     id?: string;
     maxDepth?: number;
   }): Promise<ICategory[]>;
 }
 
-const categorySchema = new Schema<ICategory, CategoryModel>(
-  {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    parentId: {
-      index: true,
-      type: Schema.Types.ObjectId,
-      ref: "Category",
-    },
-    path: { index: true, type: String },
-    children: [],
+const categorySchema = new Schema<ICategory, CategoryModel>({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
   },
-  {
-    methods: {
-      getParent() {
-        return model("Category").findOne({ parentId: this.parentId });
-      },
-      getAncestors() {
-        let ancestorIds = Array<string>();
-        if (this.path) {
-          ancestorIds = this.path.split(pathSeparator);
-          ancestorIds.pop();
-        }
-        return model("Category").find({ _id: { $in: ancestorIds } });
-      },
-      getImmediateChildren() {
-        return model("Category").find({ parentId: this._id });
-      },
-      getAllChildren() {
-        if (this.path) {
-          return model("Category").find(
-            {
-              path: new RegExp(`^${this.path}[${pathSeparator}]`),
-            },
-            { _id: 1 }
-          );
-        }
-        return null;
-      },
-    },
-  }
-);
+  parentId: {
+    index: true,
+    type: Schema.Types.ObjectId,
+    ref: "Category",
+  },
+  path: { index: true, type: String },
+  children: [],
+});
+
+/**
+ * Mongoose Schema Hooks
+ */
 
 /**
  * Mongoose schema pre-save hook to generate/update the path if necessary
@@ -164,6 +139,85 @@ categorySchema.set("toJSON", {
     delete returnedObject.__v;
   },
 });
+
+/**
+ * Static Methods
+ */
+
+/**
+ * get the direct parent category
+ * @param {ICategory} the category
+ * @return {HydratedDocument<ICategory>} the parent category
+ */
+categorySchema.static(
+  "getParent",
+  async function getParent(category: ICategory) {
+    return category.parentId
+      ? await this.findOne({ parentId: category.parentId })
+      : undefined;
+  }
+);
+
+/**
+ * get the list of all parents
+ * @param {ICategory} the category to find its parents
+ * @return {HydratedDocument<ICategory>} the list of parents
+ */
+categorySchema.static(
+  "getAncestors",
+  async function getAncestors(category: ICategory) {
+    let ancestorIds = Array<string>();
+    if (category.path) {
+      ancestorIds = category.path.split(pathSeparator);
+      ancestorIds.pop();
+    }
+    return await this.find({ _id: { $in: ancestorIds } });
+  }
+);
+
+/**
+ * get list of all immediate descendants
+ * @param {string} id the category id
+ * @return {Array<HydratedDocument<ICategory>[]} list of direct children
+ */
+categorySchema.static(
+  "getImmediateChildren",
+  async function getImmediateChildren(id: string) {
+    return await this.find({ parentId: id });
+  }
+);
+
+/**
+ * get list of all immediate descendants
+ * @param {string} id the category id
+ * @return {Array<ICategory} list of direct children
+ */
+categorySchema.static(
+  "getImmediateChildren",
+  async function getImmediateChildren(id: string) {
+    return await this.find({ parentId: id });
+  }
+);
+
+/**
+ * get list of all descendants
+ * @param {string} id the root category's id
+ * @return {Array<Types.ObjectId>} list of children ids
+ */
+categorySchema.static(
+  "getAllChildren",
+  async function getAllChildren(root: ICategory) {
+    if (root.path) {
+      return this.find(
+        {
+          path: new RegExp(`^${root.path}[${pathSeparator}]`),
+        },
+        { _id: 1 }
+      );
+    }
+    return null;
+  }
+);
 
 /**
  * get the hierarchical tree of all descendants under a category

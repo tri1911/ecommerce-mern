@@ -39,8 +39,18 @@ const getSingleCategory = asyncHandler(async (request, response) => {
   }
 });
 
+const getAllProductsByCategory = asyncHandler(async (request, response) => {
+  const {
+    params: { id },
+  } = categorySchemas.getAllProductsByCategory.parse(request);
+
+  const products = await categoryServices.getAllProductsByCategory(id);
+  response.status(200).json({ status: "success", data: products });
+});
+
 export default {
   createNewCategory,
   getCategoriesTree,
   getSingleCategory,
+  getAllProductsByCategory,
 };

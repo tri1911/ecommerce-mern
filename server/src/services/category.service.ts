@@ -1,4 +1,6 @@
 import CategoryModel from "@models/category.model";
+import ProductModel from "@models/product.model";
+import { HttpException } from "@utils/custom-errors.util";
 
 const createNewCategory = async (newCategory: {
   name: string;
@@ -18,8 +20,26 @@ const getSingleCategory = async (id: string) => {
   return category;
 };
 
+const getAllProductsByCategory = async (categoryId: string) => {
+  const category = await CategoryModel.findById(categoryId);
+  if (category) {
+    const childrenIds = await CategoryModel.getAllChildren(category);
+    const categoryIds = childrenIds.concat(category._id);
+    const products = await ProductModel.find({
+      category: { $in: categoryIds },
+    });
+    return products;
+  } else {
+    throw new HttpException(
+      `The category with id of ${categoryId} cannot not be found`,
+      404
+    );
+  }
+};
+
 export default {
   createNewCategory,
   getCategoriesTree,
   getSingleCategory,
+  getAllProductsByCategory,
 };

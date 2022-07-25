@@ -7,6 +7,7 @@ router
   .route("/")
   .post(categoryController.createNewCategory)
   .get(categoryController.getCategoriesTree);
+router.get("/:id/products", categoryController.getAllProductsByCategory);
 router.get("/:id", categoryController.getSingleCategory);
 
 export default router;

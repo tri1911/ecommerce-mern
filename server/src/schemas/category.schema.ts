@@ -19,4 +19,15 @@ const getSingleCategory = z.object({
   }),
 });
 
-export default { createNewCategory, getCategoriesTree, getSingleCategory };
+const getAllProductsByCategory = z.object({
+  params: z.object({
+    id: z.string({ required_error: "Category Id is required" }),
+  }),
+});
+
+export default {
+  createNewCategory,
+  getCategoriesTree,
+  getSingleCategory,
+  getAllProductsByCategory,
+};
