@@ -1,8 +1,7 @@
-import { z } from "zod";
 import { Types } from "mongoose";
+import { z } from "zod";
 
-export const productSchema = z.object({
-  _id: z.instanceof(Types.ObjectId),
+const productSchema = z.object({
   sku: z.string(),
   title: z.string(),
   description: z.string(),
@@ -10,11 +9,12 @@ export const productSchema = z.object({
   additionalImages: z.string().array(),
   countInStock: z.number(),
   price: z.number(),
-  gender: z.string(),
-  brand: z.string(),
-  sport: z.string(),
-  productType: z.string(),
-  category: z.string(),
+  brand: z.preprocess((arg) => {
+    if (typeof arg == "string") return new Types.ObjectId(arg);
+  }, z.instanceof(Types.ObjectId)),
+  category: z.preprocess((arg) => {
+    if (typeof arg == "string") return new Types.ObjectId(arg);
+  }, z.instanceof(Types.ObjectId)),
   sizes: z.string().array(),
   colors: z.string().array(),
   material: z.string().optional(),
@@ -23,19 +23,17 @@ export const productSchema = z.object({
     count: z.number(),
     average: z.number(),
   }),
-  createdAt: z.number(),
-  updatedAt: z.number(),
 });
 
 export type Product = z.infer<typeof productSchema>;
 
 const createNewProduct = z.object({
-  body: productSchema.omit({ _id: true, createdAt: true, updatedAt: true }),
+  body: productSchema,
 });
 
 const getSingleProduct = z.object({
   params: z.object({
-    id: z.string({ required_error: "Product id is required" }),
+    id: z.string({ required_error: "Product Id is required" }),
   }),
 });
 
@@ -54,22 +52,7 @@ const deleteProduct = z.object({
 
 const getAllProducts = z.object({
   query: z.object({
-    gender: z
-      .object({
-        in: z.string().array(),
-      })
-      .optional(),
     brand: z
-      .object({
-        in: z.string().array(),
-      })
-      .optional(),
-    sport: z
-      .object({
-        in: z.string().array(),
-      })
-      .optional(),
-    productType: z
       .object({
         in: z.string().array(),
       })

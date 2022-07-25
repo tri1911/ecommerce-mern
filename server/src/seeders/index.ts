@@ -1,13 +1,16 @@
 import dotenv from "dotenv";
 import logger from "@utils/logger.util";
 import connectDB from "@utils/connect-db.util";
+
+// import UserModel from "@models/user.model";
 import CategoryModel from "@models/category.model";
-import UserModel from "@models/user.model";
+import BrandModel from "@models/brand.model";
 import ProductModel from "@models/product.model";
 
-// import { insertAllCategories } from "./categories";
-import { insertAllProducts } from "./products";
 // import { insertAllUsers } from "./users";
+import { insertAllCategories } from "./categories";
+import { insertAllBrands } from "./brands";
+import { insertAllProducts } from "./products";
 
 dotenv.config();
 
@@ -16,10 +19,10 @@ const seedData = async () => {
   try {
     logger.info("Seeding data...");
     // await insertAllUsers();
-    // await insertAllCategories();
+    await insertAllCategories();
+    await insertAllBrands();
     await insertAllProducts();
     logger.info("Data has been populated");
-    process.exit(0);
   } catch (error) {
     if (error instanceof Error) {
       logger.error(error.message);
@@ -31,8 +34,9 @@ const seedData = async () => {
 const clearDb = async () => {
   try {
     logger.info("Clearing database...");
-    await UserModel.deleteMany({});
+    // await UserModel.deleteMany({});
     await CategoryModel.deleteMany({});
+    await BrandModel.deleteMany({});
     await ProductModel.deleteMany({});
     logger.info("Database has been cleared");
   } catch (error) {
@@ -50,6 +54,7 @@ const run = async () => {
   } else {
     await seedData();
   }
+  process.exit(0);
 };
 
 void run();

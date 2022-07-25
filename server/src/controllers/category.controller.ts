@@ -16,8 +16,11 @@ const createNewCategory = asyncHandler(async (request, response) => {
   response.status(201).json({ status: "success", data: createdCategory });
 });
 
-const getAllCategories = asyncHandler(async (_request, response) => {
-  const categoriesTree = await categoryServices.getAllCategories();
+const getCategoriesTree = asyncHandler(async (request, response) => {
+  const { query } = categorySchemas.getCategoriesTree.parse(request);
+  const maxDepth = query.maxDepth ? parseInt(query.maxDepth) : undefined;
+
+  const categoriesTree = await categoryServices.getCategoriesTree(maxDepth);
 
   response.status(200).json({ status: "success", data: categoriesTree });
 });
@@ -38,6 +41,6 @@ const getSingleCategory = asyncHandler(async (request, response) => {
 
 export default {
   createNewCategory,
-  getAllCategories,
+  getCategoriesTree,
   getSingleCategory,
 };

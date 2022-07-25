@@ -7,10 +7,16 @@ const createNewCategory = z.object({
   }),
 });
 
+const getCategoriesTree = z.object({
+  query: z.object({
+    maxDepth: z.string().optional(),
+  }),
+});
+
 const getSingleCategory = z.object({
   params: z.object({
     id: z.string({ required_error: "Category Id is required" }),
   }),
 });
 
-export default { createNewCategory, getSingleCategory };
+export default { createNewCategory, getCategoriesTree, getSingleCategory };

@@ -8,8 +8,8 @@ const createNewCategory = async (newCategory: {
   return createdCategory;
 };
 
-const getAllCategories = async () => {
-  const categories = await CategoryModel.getChildrenTree();
+const getCategoriesTree = async (maxDepth?: number) => {
+  const categories = await CategoryModel.getChildrenTree({ maxDepth });
   return categories;
 };
 
@@ -18,4 +18,8 @@ const getSingleCategory = async (id: string) => {
   return category;
 };
 
-export default { createNewCategory, getAllCategories, getSingleCategory };
+export default {
+  createNewCategory,
+  getCategoriesTree,
+  getSingleCategory,
+};

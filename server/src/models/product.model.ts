@@ -1,5 +1,5 @@
 import { Product } from "@schemas/product.schema";
-import { Schema, Model, model } from "mongoose";
+import { Schema, model, Model } from "mongoose";
 
 const productSchema = new Schema<Product, Model<Product>>(
   {
@@ -27,11 +27,8 @@ const productSchema = new Schema<Product, Model<Product>>(
     additionalImages: [String],
     countInStock: { type: Number, required: true, default: 0 },
     price: { type: Number, required: true, default: 0 },
-    gender: { type: String, required: true },
-    brand: { type: String, required: true },
-    sport: { type: String, required: true },
-    productType: { type: String, required: true },
-    category: { type: String, required: true, lowercase: true },
+    brand: { type: Schema.Types.ObjectId, required: true, ref: "Brand" },
+    category: { type: Schema.Types.ObjectId, required: true, ref: "Category" },
     sizes: [String],
     colors: [String],
     material: String,
@@ -53,4 +50,4 @@ productSchema.set("toJSON", {
   },
 });
 
-export default model("Product", productSchema);
+export default model<Product, Model<Product>>("Product", productSchema);

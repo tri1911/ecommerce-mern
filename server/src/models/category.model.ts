@@ -40,30 +40,68 @@ export interface ICategory {
 interface CategoryModel extends Model<ICategory> {
   getImmediateChildren(id: string): Promise<ICategory[]>;
   getAllChildren(id: string): Promise<Types.ObjectId[]>;
-  getChildrenTree(id?: string): Promise<ICategory[]>;
+  getChildrenTree(args: {
+    id?: string;
+    maxDepth?: number;
+  }): Promise<ICategory[]>;
 }
 
-const categorySchema = new Schema<ICategory, CategoryModel>({
-  name: { type: String, required: true },
-  parentId: {
-    index: true,
-    type: Schema.Types.ObjectId,
-    ref: "Category",
+const categorySchema = new Schema<ICategory, CategoryModel>(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    parentId: {
+      index: true,
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+    },
+    path: { index: true, type: String },
+    children: [],
   },
-  path: { index: true, type: String },
-  children: [],
-});
+  {
+    methods: {
+      getParent() {
+        return model("Category").findOne({ parentId: this.parentId });
+      },
+      getAncestors() {
+        let ancestorIds = Array<string>();
+        if (this.path) {
+          ancestorIds = this.path.split(pathSeparator);
+          ancestorIds.pop();
+        }
+        return model("Category").find({ _id: { $in: ancestorIds } });
+      },
+      getImmediateChildren() {
+        return model("Category").find({ parentId: this._id });
+      },
+      getAllChildren() {
+        if (this.path) {
+          return model("Category").find(
+            {
+              path: new RegExp(`^${this.path}[${pathSeparator}]`),
+            },
+            { _id: 1 }
+          );
+        }
+        return null;
+      },
+    },
+  }
+);
 
 /**
- * Mongoose schema pre-save hook
+ * Mongoose schema pre-save hook to generate/update the path if necessary
  * Before saving the category document into database, we check whether updating the path field is required
- * Specifically, if the document is new, generating the path field by concatenating its _id to the parent's path (fetch by the parent id field)
+ * Specifically, if the document is new, generating the path field by concatenating its _id to the parent's path
  */
 categorySchema.pre("save", async function (next) {
   const parentChanged = this.isModified("parentId");
   const pathUpdateRequired = this.isNew || parentChanged;
 
-  const updateChildPaths = async (
+  const updateChildrenPaths = async (
     pathToReplace: string,
     replacementPath: string
   ) => {
@@ -90,7 +128,7 @@ categorySchema.pre("save", async function (next) {
           this.path = newPath;
           // update all children's paths as well if the current node's parentId is changed
           if (parentChanged && oldPath) {
-            await updateChildPaths(oldPath, newPath);
+            await updateChildrenPaths(oldPath, newPath);
           }
         } else {
           logger.error(
@@ -108,13 +146,15 @@ categorySchema.pre("save", async function (next) {
       this.path = newPath;
 
       if (parentChanged && oldPath) {
-        await updateChildPaths(oldPath, newPath);
+        await updateChildrenPaths(oldPath, newPath);
       }
     }
   }
 
   next();
 });
+
+// TODO: implement the pre-remove hook to remove or re-parent children
 
 categorySchema.set("toJSON", {
   transform(_document, returnedObject) {
@@ -126,92 +166,64 @@ categorySchema.set("toJSON", {
 });
 
 /**
- * get list of all immediate descendants
- * @param {string} id the category id
- * @return {Array<ICategory} list of direct children
- */
-categorySchema.static(
-  "getImmediateChildren",
-  async function getImmediateChildren(id: string) {
-    return await this.find(
-      { parentId: id },
-      { name: 1, parentId: 1, path: 1 }
-    ).lean();
-  }
-);
-
-/**
- * get list of all descendants
- * @param {string} id the root category's id
- * @return {Array<Types.ObjectId>} list of children ids
- */
-categorySchema.static(
-  "getAllChildren",
-  async function getAllChildren(id: string) {
-    const category = await this.findById(id);
-    if (category && category.path) {
-      const filter = {
-        path: new RegExp(`^${category.path}[${pathSeparator}]`),
-      };
-      return this.find(filter, { _id: 1 });
-    } else {
-      throw new HttpException(`Category with id of ${id} not found`, 404);
-    }
-  }
-);
-
-/**
  * get the hierarchical tree of all descendants under a category
  * @param {string} id the root category id
  * @return {Array<ICategory>} hierarchical array of all descendants
  */
 categorySchema.static(
   "getChildrenTree",
-  async function getChildrenTree(id?: string) {
-    try {
-      let filter = {};
+  async function getChildrenTree({
+    id,
+    maxDepth,
+  }: {
+    id?: string;
+    maxDepth?: number;
+  }) {
+    let filter = {};
 
-      // if id is undefined, get the tree of all nodes, otherwise, build tree under the category id
-      if (id) {
-        const root = await this.findById(id);
-        if (root) {
-          filter = { path: new RegExp(`^${root.path}[${pathSeparator}]`) };
-        } else {
-          throw new HttpException(
-            `Category with id of ${id} is not found`,
-            404
-          );
-        }
+    // if id is undefined, get the tree including all nodes, otherwise, build tree under the root category id
+    if (id) {
+      const root = await this.findById(id);
+      if (root) {
+        filter = { path: new RegExp(`^${root.path}[${pathSeparator}]`) };
+      } else {
+        throw new HttpException(`Category with id of ${id} is not found`, 404);
       }
-
-      const categories = await this.find(filter, {
-        name: 1,
-        parentId: 1,
-        path: 1,
-        children: 1,
-      })
-        .sort({ path: 1 })
-        .lean();
-
-      // build tree from the returned list
-      const result = Array<ICategory>();
-      const parentsMap: { [key: string]: number } = {};
-
-      for (let index = 0; index < categories.length; index++) {
-        const current = categories[index];
-        const parentId = current.parentId?.toString();
-        if (parentId && parentsMap[parentId] !== undefined) {
-          const parentIndex = parentsMap[parentId];
-          categories[parentIndex].children?.push(current);
-        } else {
-          result.push(current);
-        }
-        parentsMap[current._id.toString()] = index;
-      }
-      return result;
-    } catch (error) {
-      logger.error(error);
     }
+
+    // sorting is crucial to build the tree properly
+    let categories = await this.find(filter, {
+      name: 1,
+      parentId: 1,
+      children: 1,
+    })
+      .sort({ path: 1 })
+      .lean();
+    // get rid of unnecessary nodes
+    if (maxDepth) {
+      categories = categories.filter(({ path }) => {
+        const level = path ? path.split(pathSeparator).length : 1;
+        return level <= maxDepth;
+      });
+    }
+
+    // build tree from the returned list
+    const result = Array<ICategory>();
+    // hash table to map the parent id to its index in `categories` array [parentId : node index]
+    const parentsMap: { [parentId: string]: number } = {};
+
+    for (let index = 0; index < categories.length; index++) {
+      const current = categories[index];
+      const parentId = current.parentId?.toString();
+      if (parentId && parentsMap[parentId] !== undefined) {
+        const parentIndex = parentsMap[parentId];
+        categories[parentIndex].children?.push(current);
+      } else {
+        result.push(current);
+      }
+      parentsMap[current._id.toString()] = index;
+    }
+    return result;
   }
 );
 
