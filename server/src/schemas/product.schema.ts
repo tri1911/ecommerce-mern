@@ -50,44 +50,9 @@ const deleteProduct = z.object({
   }),
 });
 
-const getAllProducts = z.object({
-  query: z.object({
-    brand: z
-      .object({
-        in: z.string().array(),
-      })
-      .optional(),
-    category: z
-      .object({
-        in: z.string().array(),
-      })
-      .optional(),
-    size: z
-      .object({
-        in: z.string().array(),
-      })
-      .optional(),
-    color: z
-      .object({
-        in: z.string().array(),
-      })
-      .optional(),
-    price: z
-      .object({
-        gte: z.string(),
-        lte: z.string(),
-      })
-      .optional(),
-    page: z.string().optional(),
-    length: z.string().optional(),
-    sort: z.string().optional(),
-  }),
-});
-
 export default {
   createNewProduct,
   getSingleProduct,
   updateProduct,
   deleteProduct,
-  getAllProducts,
 };

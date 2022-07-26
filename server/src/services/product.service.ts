@@ -22,16 +22,7 @@ const deleteProduct = async (id: string) => {
   await ProductModel.findByIdAndDelete(id);
 };
 
-export type ProductsFilter = {
-  brand?: { $in: string[] };
-  category?: { $in: string[] };
-  sizes?: { $in: string[] };
-  colors?: { $in: string[] };
-  price?: { $gte: number; $lte: number };
-};
-
-export type ProductsPagination = { page?: number; length?: number };
-
+/*
 const getAllProducts = async ({
   filter,
   pagination: { length, page },
@@ -58,11 +49,11 @@ const getAllProducts = async ({
     products,
   };
 };
+*/
 
 export default {
   createNewProduct,
   getSingleProduct,
   updateProduct,
   deleteProduct,
-  getAllProducts,
 };

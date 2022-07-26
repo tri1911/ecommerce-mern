@@ -3,10 +3,7 @@ import productController from "@controllers/product.controller";
 
 const router = express.Router();
 
-router
-  .route("/")
-  .post(productController.createNewProduct)
-  .get(productController.getAllProducts);
+router.route("/").post(productController.createNewProduct);
 router
   .route("/:id")
   .get(productController.getSingleProduct)

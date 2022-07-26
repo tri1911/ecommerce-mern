@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
-import { HttpException } from "@utils/custom-errors.util";
 import categorySchemas from "@schemas/category.schema";
-import categoryServices from "@services/category.service";
+import categoryServices, { ProductsFilter } from "@services/category.service";
+import { HttpException } from "@utils/custom-errors.util";
 
 const createNewCategory = asyncHandler(async (request, response) => {
   const {
@@ -39,18 +39,47 @@ const getSingleCategory = asyncHandler(async (request, response) => {
   }
 });
 
-const getAllProductsByCategory = asyncHandler(async (request, response) => {
+const getProductsByCategory = asyncHandler(async (request, response) => {
   const {
-    params: { id },
-  } = categorySchemas.getAllProductsByCategory.parse(request);
+    params: { categoryId },
+    query: { page, length, sort, ...rest },
+  } = categorySchemas.getProductsByCategory.parse(request);
 
-  const products = await categoryServices.getAllProductsByCategory(id);
-  response.status(200).json({ status: "success", data: products });
+  const filter = JSON.parse(
+    JSON.stringify(rest).replace(/\b(gte|lte|in)\b/, (match) => `$${match}`)
+  ) as ProductsFilter;
+
+  const pagination = {
+    page: page ? parseInt(page) : undefined,
+    length: length ? parseInt(length) : undefined,
+  };
+
+  let sortQuery = undefined;
+  if (sort) {
+    sortQuery = sort.split(",").reduce((acc, field) => {
+      const firstChar = field.charAt(0);
+      if (["+", "-"].includes(firstChar)) {
+        acc[field] = firstChar === "-" ? -1 : 1;
+      } else {
+        acc[field] = 1;
+      }
+      return acc;
+    }, {} as Record<string, 1 | -1>);
+  }
+
+  const result = await categoryServices.getProductsByCategory({
+    categoryId,
+    filter,
+    pagination,
+    sortQuery,
+  });
+
+  response.status(200).json({ status: "success", data: result });
 });
 
 export default {
   createNewCategory,
   getCategoriesTree,
   getSingleCategory,
-  getAllProductsByCategory,
+  getProductsByCategory,
 };

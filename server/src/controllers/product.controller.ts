@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import { HttpException } from "@utils/custom-errors.util";
 import productSchema from "@schemas/product.schema";
-import productService, { ProductsFilter } from "@services/product.service";
+import productService from "@services/product.service";
 
 const createNewProduct = asyncHandler(async (request, response) => {
   const { body: newProduct } = productSchema.createNewProduct.parse(request);
@@ -49,6 +49,7 @@ const deleteProduct = asyncHandler(async (request, response) => {
   response.status(204).json({ status: "success" });
 });
 
+/*
 const getAllProducts = asyncHandler(async (request, response) => {
   const {
     query: { page, length, sort, ...rest },
@@ -73,11 +74,11 @@ const getAllProducts = asyncHandler(async (request, response) => {
 
   response.status(200).json({ status: "success", data });
 });
+*/
 
 export default {
   createNewProduct,
   getSingleProduct,
   updateProduct,
   deleteProduct,
-  getAllProducts,
 };
