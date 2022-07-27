@@ -49,6 +49,16 @@ const deleteProduct = asyncHandler(async (request, response) => {
   response.status(204).json({ status: "success" });
 });
 
+const getNewArrivalProducts = asyncHandler(async (request, response) => {
+  const {
+    query: { length },
+  } = productSchema.getNewArrivalProducts.parse(request);
+  const products = await productService.getNewArrivalProducts({
+    length: Number(length),
+  });
+  response.status(200).json({ products });
+});
+
 /*
 const getAllProducts = asyncHandler(async (request, response) => {
   const {
@@ -81,4 +91,5 @@ export default {
   getSingleProduct,
   updateProduct,
   deleteProduct,
+  getNewArrivalProducts,
 };

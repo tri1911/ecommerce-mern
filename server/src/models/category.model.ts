@@ -41,7 +41,7 @@ interface CategoryModel extends Model<ICategory> {
   getParent(category: ICategory): Promise<HydratedDocument<ICategory>>;
   getParent(getAncestors: ICategory): Promise<HydratedDocument<ICategory>[]>;
   getImmediateChildren(id: string): Promise<HydratedDocument<ICategory>[]>;
-  getAllChildren(root: ICategory): Promise<Types.ObjectId[]>;
+  getAllChildren(root: ICategory): Promise<{ _id: Types.ObjectId }[]>;
   getChildrenTree(args: {
     id?: string;
     maxDepth?: number;
@@ -202,7 +202,7 @@ categorySchema.static(
 /**
  * get list of all descendants
  * @param {string} id the root category's id
- * @return {Array<Types.ObjectId>} list of children ids
+ * @return {Array<{_id: Types.ObjectId}>} list of children
  */
 categorySchema.static(
   "getAllChildren",

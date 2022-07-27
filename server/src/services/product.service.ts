@@ -22,6 +22,13 @@ const deleteProduct = async (id: string) => {
   await ProductModel.findByIdAndDelete(id);
 };
 
+const getNewArrivalProducts = async ({ length }: { length?: number }) => {
+  const products = await ProductModel.find({})
+    .sort("-createdAt")
+    .limit(length ?? 10);
+  return products;
+};
+
 /*
 const getAllProducts = async ({
   filter,
@@ -56,4 +63,5 @@ export default {
   getSingleProduct,
   updateProduct,
   deleteProduct,
+  getNewArrivalProducts,
 };

@@ -21,7 +21,7 @@ const getSingleCategory = z.object({
 
 const getProductsByCategory = z.object({
   params: z.object({
-    categoryId: z.string().optional(),
+    id: z.string({ required_error: "Category Id is required" }),
   }),
   query: z.object({
     brand: z
@@ -45,8 +45,8 @@ const getProductsByCategory = z.object({
         lte: z.string(),
       })
       .optional(),
-    page: z.string().optional(),
-    length: z.string().optional(),
+    currentPage: z.string().optional(),
+    pageSize: z.string().optional(),
     sort: z.string().optional(),
   }),
 });

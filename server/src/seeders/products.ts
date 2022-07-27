@@ -5,11 +5,6 @@ import ProductModel from "@models/product.model";
 import { Product } from "@schemas/product.schema";
 import { Types } from "mongoose";
 
-// type ProductSeed = Omit<Product, "category" | "brand"> & {
-//   category: string;
-//   brand: string;
-// };
-
 const createRandomProducts = (
   categoryIds: Types.ObjectId[],
   brandIds: Types.ObjectId[]
@@ -20,7 +15,10 @@ const createRandomProducts = (
       sku: faker.datatype.uuid().substring(0, 8),
       title: faker.commerce.productName(),
       description: faker.commerce.productDescription(),
-      image: `/images/products/product${faker.datatype.number(12)}.jpg`,
+      image: `/images/products/product${faker.datatype.number({
+        min: 1,
+        max: 12,
+      })}.jpg`,
       additionalImages: [],
       countInStock: faker.datatype.number(100),
       price: parseFloat(faker.commerce.price()),

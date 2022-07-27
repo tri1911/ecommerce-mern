@@ -8,15 +8,7 @@ const brandSchema = new Schema({
     unique: true,
     maxLength: 70,
   },
-});
-
-brandSchema.set("toJSON", {
-  transform(_document, returnedObject) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
-  },
+  description: String,
 });
 
 export type IBrand = InferSchemaType<typeof brandSchema>;

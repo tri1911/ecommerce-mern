@@ -27,26 +27,57 @@ export type ProductsFilter = {
   price?: { $gte: number; $lte: number };
 };
 
-export type ProductsPagination = { page?: number; length?: number };
+interface ProductsByCategoryResult {
+  products: Array<{
+    title: string;
+    image: string;
+    countInStock: number;
+    price: number;
+    brand: string;
+    category: { _id: string; name: string };
+    sizes: string[];
+    colors: string[];
+    ratings: { count: number; average: number };
+  }>;
+  metadata: Array<{
+    total: number;
+    pageSize: number;
+    currentPage: number;
+  }>;
+  categories: Array<{
+    _id: string;
+    name: string;
+    count: number;
+  }>;
+  brands: Array<{
+    _id: string;
+    count: number;
+  }>;
+  sizes: Array<{ _id: string }>;
+  colors: Array<{ _id: string }>;
+}
 
 const getProductsByCategory = async ({
   categoryId,
+  currentPage = 1,
+  pageSize = 12,
   filter,
-  pagination: { length, page },
   sortQuery,
 }: {
   categoryId?: string;
+  currentPage?: number;
+  pageSize?: number;
   filter: ProductsFilter;
-  pagination: ProductsPagination;
   sortQuery?: Record<string, 1 | -1>;
 }) => {
   let categoryFilter = {};
 
+  // generate the category filter if necessary
   if (categoryId) {
     const category = await CategoryModel.findById(categoryId);
     if (category) {
-      const childrenIds = await CategoryModel.getAllChildren(category);
-      const categoryIds = childrenIds.concat(category._id);
+      const children = await CategoryModel.getAllChildren(category);
+      const categoryIds = [...children.map((child) => child._id), category._id];
       categoryFilter = { category: { $in: categoryIds } };
     } else {
       throw new HttpException(
@@ -56,10 +87,8 @@ const getProductsByCategory = async ({
     }
   }
 
-  const pageSize = length || 12;
-  const pageIndex = page || 1;
-
-  const result = await ProductModel.aggregate([
+  // main operation
+  const resultAsArray = await ProductModel.aggregate<ProductsByCategoryResult>([
     { $match: categoryFilter },
     { $sort: sortQuery ?? { createdAt: -1 } },
     {
@@ -76,26 +105,28 @@ const getProductsByCategory = async ({
         from: "brands",
         localField: "brand",
         foreignField: "_id",
-        pipeline: [{ $project: { name: 1 } }],
+        pipeline: [{ $project: { _id: 0, name: 1 } }],
         as: "brand",
       },
     },
     {
       $project: {
         title: 1,
+        image: 1,
+        countInStock: 1,
         price: 1,
-        ratings: 1,
+        brand: { $arrayElemAt: ["$brand.name", 0] },
+        category: { $arrayElemAt: ["$category", 0] },
         sizes: 1,
         colors: 1,
-        category: { $arrayElemAt: ["$category", 0] },
-        brand: { $arrayElemAt: ["$brand", 0] },
+        ratings: 1,
       },
     },
     {
       $facet: {
         products: [
           { $match: filter },
-          { $skip: pageSize * (pageIndex - 1) },
+          { $skip: pageSize * (currentPage - 1) },
           { $limit: pageSize },
         ],
         metadata: [
@@ -103,11 +134,16 @@ const getProductsByCategory = async ({
           { $count: "total" },
           {
             $addFields: {
-              pages: { $ceil: { $divide: ["$total", pageSize] } },
+              // pages: { $ceil: { $divide: ["$total", pageSize] } },
+              pageSize: pageSize,
+              currentPage: currentPage,
             },
           },
         ],
-        categories: [{ $sortByCount: "$category" }],
+        categories: [
+          { $sortByCount: "$category" },
+          { $set: { _id: "$_id._id", name: "$_id.name" } },
+        ],
         brands: [{ $sortByCount: "$brand" }],
         sizes: [{ $unwind: "$sizes" }, { $group: { _id: "$sizes" } }],
         colors: [{ $unwind: "$colors" }, { $group: { _id: "$colors" } }],
@@ -115,8 +151,7 @@ const getProductsByCategory = async ({
     },
   ]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return result;
+  return resultAsArray[0];
 };
 
 export default {

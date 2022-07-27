@@ -9,5 +9,6 @@ router
   .get(productController.getSingleProduct)
   .put(productController.updateProduct)
   .delete(productController.deleteProduct);
+router.get("/new", productController.getNewArrivalProducts);
 
 export default router;

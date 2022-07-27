@@ -41,25 +41,23 @@ const getSingleCategory = asyncHandler(async (request, response) => {
 
 const getProductsByCategory = asyncHandler(async (request, response) => {
   const {
-    params: { categoryId },
-    query: { page, length, sort, ...rest },
+    params: { id: categoryId },
+    query: { currentPage, pageSize, sort, ...rest },
   } = categorySchemas.getProductsByCategory.parse(request);
 
+  // generate `filter`
   const filter = JSON.parse(
     JSON.stringify(rest).replace(/\b(gte|lte|in)\b/, (match) => `$${match}`)
   ) as ProductsFilter;
 
-  const pagination = {
-    page: page ? parseInt(page) : undefined,
-    length: length ? parseInt(length) : undefined,
-  };
-
+  // generate `sort`
+  // sort query sent from client has format: sort=-createdBy,+price,brand
   let sortQuery = undefined;
   if (sort) {
     sortQuery = sort.split(",").reduce((acc, field) => {
       const firstChar = field.charAt(0);
       if (["+", "-"].includes(firstChar)) {
-        acc[field] = firstChar === "-" ? -1 : 1;
+        acc[field.substring(1)] = firstChar === "-" ? -1 : 1;
       } else {
         acc[field] = 1;
       }
@@ -70,11 +68,12 @@ const getProductsByCategory = asyncHandler(async (request, response) => {
   const result = await categoryServices.getProductsByCategory({
     categoryId,
     filter,
-    pagination,
+    currentPage: currentPage ? Number(currentPage) : undefined,
+    pageSize: pageSize ? Number(pageSize) : undefined,
     sortQuery,
   });
 
-  response.status(200).json({ status: "success", data: result });
+  response.status(200).json({ result });
 });
 
 export default {
