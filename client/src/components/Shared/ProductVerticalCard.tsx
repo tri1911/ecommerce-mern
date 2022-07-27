@@ -1,10 +1,11 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { XCircleIcon } from "@heroicons/react/solid";
-import { Fragment, useState } from "react";
+// import { Dialog, Transition } from "@headlessui/react";
+// import { XCircleIcon } from "@heroicons/react/solid";
+// import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAddCartItem, useAddWishlistItem } from "../../app/hooks";
-import { ProductContent, ProductImage } from "../../pages/SingleProductPage";
-import { Fn, Product } from "../../types";
+// import { useAddCartItem, useAddWishlistItem } from "../../hooks";
+// import { ProductContent, ProductImage } from "../../pages/SingleProductPage";
+import { Product } from "../../services/category.service";
+import { Fn } from "../../types";
 import Rating from "./Rating";
 
 function ProductCardHeader({
@@ -14,9 +15,9 @@ function ProductCardHeader({
   openQuickView,
 }: {
   image: string;
-  isAddedToWishlist: boolean;
-  onWishlistClicked: React.MouseEventHandler<HTMLButtonElement>;
-  openQuickView: Fn<[], void>;
+  isAddedToWishlist?: boolean;
+  onWishlistClicked?: React.MouseEventHandler<HTMLButtonElement>;
+  openQuickView?: Fn<[], void>;
 }) {
   return (
     <div className="relative">
@@ -40,7 +41,7 @@ function ProductCardHeader({
 }
 
 function ProductCardContent({
-  product: { _id, name, price, rating, reviews },
+  product: { _id, title, price, ratings },
   onAddToCartClicked,
 }: {
   product: Product;
@@ -50,7 +51,7 @@ function ProductCardContent({
     <div className="py-4 px-4 relative overflow-hidden">
       <Link to={`/products/${_id}`}>
         <h4 className="truncate capitalize font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
-          {name}
+          {title}
         </h4>
       </Link>
       <div className="__price-rating-wrapper opacity-100 group-hover:opacity-0">
@@ -63,8 +64,8 @@ function ProductCardContent({
           </p>
         </div>
         <div className="__rating flex items-center">
-          <Rating rating={rating} />
-          <div className="text-xs text-gray-500 ml-3">({reviews})</div>
+          <Rating rating={ratings.average} />
+          <div className="text-xs text-gray-500 ml-3">({ratings.count})</div>
         </div>
       </div>
       <div className="__cta-btn absolute left-4 top-14 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition duration-300">
@@ -81,42 +82,42 @@ function ProductCardContent({
 
 export default function ProductVerticalCard({ product }: { product: Product }) {
   // NOTE: should place `Quick View` visibility control here? or put it into centralized redux store?
-  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+  // const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
-  const { _id, name, image, price, inStockQty } = product;
+  // function closeQuickView() {
+  //   setIsQuickViewOpen(false);
+  // }
 
-  const { isAddedToWishlist, handleAddToWishlist } =
-    useAddWishlistItem(product);
+  // function openQuickView() {
+  //   setIsQuickViewOpen(true);
+  // }
 
-  const { handleAddToCart } = useAddCartItem({
-    item: { productId: _id, name, image, price, inStockQty },
-    size: "m",
-    quantity: 1,
-    color: "black",
-  });
+  // const { _id, title, image, price, countInStock } = product;
 
-  function closeQuickView() {
-    setIsQuickViewOpen(false);
-  }
+  // const { isAddedToWishlist, handleAddToWishlist } =
+  //   useAddWishlistItem(product);
 
-  function openQuickView() {
-    setIsQuickViewOpen(true);
-  }
+  // const { handleAddToCart } = useAddCartItem({
+  //   item: { productId: _id, title, image, price, countInStock },
+  //   size: "m",
+  //   quantity: 1,
+  //   color: "black",
+  // });
 
   // NOTE: code duplication here - each product card have one modal
   return (
     <div className="group rounded bg-white border border-gray-200 shadow-md overflow-hidden">
       <ProductCardHeader
         image={product.image}
-        isAddedToWishlist={isAddedToWishlist}
-        onWishlistClicked={handleAddToWishlist}
-        openQuickView={openQuickView}
+        // isAddedToWishlist={isAddedToWishlist}
+        // onWishlistClicked={handleAddToWishlist}
+        // openQuickView={openQuickView}
       />
       <ProductCardContent
         product={product}
-        onAddToCartClicked={handleAddToCart}
+        // onAddToCartClicked={handleAddToCart}
       />
-      <Transition appear show={isQuickViewOpen} as={Fragment}>
+      {/* <Transition appear show={isQuickViewOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeQuickView}>
           <Transition.Child
             as={Fragment}
@@ -157,7 +158,7 @@ export default function ProductVerticalCard({ product }: { product: Product }) {
             </div>
           </div>
         </Dialog>
-      </Transition>
+      </Transition> */}
     </div>
   );
 }

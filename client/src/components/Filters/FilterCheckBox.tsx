@@ -1,15 +1,17 @@
 export default function FilterCheckBox({
-  slug,
-  text,
+  id,
   name,
-  productsCount,
+  value,
+  text,
+  count,
   checked,
   onChange,
 }: {
-  slug: string;
-  text: string;
+  id: string;
   name: string;
-  productsCount: number;
+  value: string;
+  text: string;
+  count: number;
   checked?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }) {
@@ -17,20 +19,20 @@ export default function FilterCheckBox({
     <div className="flex items-center">
       <input
         type="checkbox"
-        id={slug}
+        id={id}
         name={name}
-        value={slug}
+        value={value}
         checked={checked}
-        className="text-primary focus:ring-0 rounded-sm cursor-pointer"
+        className="text-primary rounded-sm cursor-pointer focus:ring-0"
         onChange={onChange}
       />
       <label
-        htmlFor={slug}
+        htmlFor={id}
         className="text-gray-600 ml-3 cursor-pointer truncate"
       >
         {text}
       </label>
-      <div className="ml-auto text-gray-600 text-sm">({productsCount})</div>
+      <div className="ml-auto text-sm text-gray-600">({count})</div>
     </div>
   );
 }

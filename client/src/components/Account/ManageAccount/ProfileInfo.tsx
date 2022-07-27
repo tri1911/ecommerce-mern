@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import TextInput from "../../Form/TextInput";
 import Select from "../../Form/Select";
 import { Gender, UserProfile } from "../../../types";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { updateProfile } from "../../../slices/profile.slice";
 import { useState } from "react";
 import NotificationMessage from "../../Shared/NotificationMessage";

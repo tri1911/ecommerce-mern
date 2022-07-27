@@ -33,11 +33,11 @@
   }
 
   .product-size-box {
-    @apply text-xs border border-gray-200 rounded-sm h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600;
+    @apply flex items-center justify-center h-6 w-6 border border-gray-200 rounded-sm shadow-sm cursor-pointer text-xs text-gray-600 uppercase;
   }
 
   .product-color-box {
-    @apply text-xs border border-gray-200 rounded-sm h-5 w-5 flex items-center justify-center cursor-pointer shadow-sm;
+    @apply flex items-center justify-center h-5 w-5 border border-gray-200 rounded-sm shadow-sm cursor-pointer text-xs;
   }
 
   .product-quantity-btn {

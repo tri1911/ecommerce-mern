@@ -1,4 +1,4 @@
-import { Product } from "../../types";
+import { Product } from "../../services/category.service";
 import ProductVerticalCard from "../Shared/ProductVerticalCard";
 
 export default function ProductSection({

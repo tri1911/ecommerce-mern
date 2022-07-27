@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useDeleteCartItem, useUpdateCartItemQuantity } from "../../app/hooks";
+import { useDeleteCartItem, useUpdateCartItemQuantity } from "../../hooks";
 import { CartItem, Size } from "../../types";
 import QuantitySelector from "../Shared/QuantitySelector";
 

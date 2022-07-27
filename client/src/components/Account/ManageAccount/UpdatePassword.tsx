@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import { Form, Formik } from "formik";
 import Password from "../../Form/Password";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch } from "../../../hooks";
 import { updatePassword } from "../../../slices/profile.slice";
 import { useState } from "react";
 import NotificationMessage from "../../Shared/NotificationMessage";

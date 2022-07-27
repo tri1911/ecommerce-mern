@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useAddCartItem, useAddWishlistItem } from "../../app/hooks";
+import { useAddCartItem, useAddWishlistItem } from "../../hooks";
 import { Product } from "../../types";
 import Rating from "../Shared/Rating";
 

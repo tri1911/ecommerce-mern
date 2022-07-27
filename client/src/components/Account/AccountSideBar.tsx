@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { logout } from "../../slices/auth.slice";
 
 function WelcomeCard({ name }: { name?: string }) {

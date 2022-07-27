@@ -1,21 +1,18 @@
 import cn from "classnames";
 import { useSearchParams } from "react-router-dom";
-import { useFilterCheckboxHandler } from "../../app/hooks";
-import { COLORS } from "../../types";
+import useFilterCheckboxHandler from "../../hooks/useFilterCheckboxHandler";
+import { Color } from "../../services/category.service";
 
 export function ColorItem({
-  colorName,
-  hexCode,
+  value,
   checked,
   onChange,
 }: {
-  colorName: string;
-  hexCode: string;
+  value: string;
   checked?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }) {
-  const id = `color-${colorName}`;
-
+  const id = `color-${value}`;
   return (
     <div>
       <input
@@ -23,13 +20,13 @@ export function ColorItem({
         type="checkbox"
         id={id}
         name="color"
-        value={colorName}
+        value={value}
         checked={checked}
         onChange={onChange}
       />
       <label
         htmlFor={id}
-        style={{ backgroundColor: hexCode }}
+        style={{ backgroundColor: value }}
         className={cn("product-color-box", {
           "ring-2 ring-primary": checked,
         })}
@@ -38,22 +35,25 @@ export function ColorItem({
   );
 }
 
-export default function ColorFilter() {
+export default function ColorFilter({ colors }: { colors?: Color[] }) {
   const [searchParams] = useSearchParams();
   const handleColorChanged = useFilterCheckboxHandler();
 
+  if (!colors) {
+    return null;
+  }
+
   return (
     <div className="pt-4">
-      <h3 className="text-xl text-gray-800 mb-3 uppercase font-medium">
+      <h3 className="mb-3 text-xl text-gray-800 font-medium uppercase">
         color
       </h3>
-      <div className="flex items-center gap-2">
-        {Object.entries(COLORS).map(([colorName, hexCode]) => (
+      <div className="flex items-center space-x-2">
+        {colors.map(({ _id: color }) => (
           <ColorItem
-            key={colorName}
-            colorName={colorName}
-            hexCode={hexCode}
-            checked={searchParams.getAll("color").includes(colorName)}
+            key={color}
+            value={color}
+            checked={searchParams.getAll("color").includes(color)}
             onChange={handleColorChanged}
           />
         ))}

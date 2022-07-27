@@ -3,7 +3,7 @@ import {
   useAddCartItem,
   useAppSelector,
   useRemoveWishlistItem,
-} from "../../app/hooks";
+} from "../../hooks";
 import { selectAllWishlistItems } from "../../slices/wishlistSlice";
 import { WishlistItem } from "../../types";
 

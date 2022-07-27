@@ -1,53 +1,59 @@
 import cn from "classnames";
 import { useSearchParams } from "react-router-dom";
-import { useFilterCheckboxHandler } from "../../app/hooks";
-import { Size, SIZES } from "../../types";
+import { Size } from "../../services/category.service";
+import useFilterCheckboxHandler from "../../hooks/useFilterCheckboxHandler";
 
 function SizeItem({
   value,
   checked,
   onChange,
 }: {
-  value: Size;
+  value: string;
   checked?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }) {
+  const id = `size-${value}`;
+
   return (
     <div>
       <input
         className="hidden"
         type="checkbox"
-        id={`size-${value}`}
+        id={id}
         name="size"
         value={value}
         checked={checked}
         onChange={onChange}
       />
       <label
-        htmlFor={`size-${value}`}
+        htmlFor={id}
         className={cn("product-size-box", {
           "bg-primary text-white": checked,
         })}
       >
-        {value.toUpperCase()}
+        {value}
       </label>
     </div>
   );
 }
 
-export default function SizeFilter() {
+export default function SizeFilter({ sizes }: { sizes?: Size[] }) {
   const [searchParams] = useSearchParams();
   const handleSizeChanged = useFilterCheckboxHandler();
 
+  if (!sizes) {
+    return null;
+  }
+
   return (
     <div className="pt-4">
-      <h3 className="text-xl text-gray-800 mb-3 uppercase font-medium">size</h3>
-      <div className="flex items-center gap-2">
-        {SIZES.map((value) => (
+      <h3 className="mb-3 text-xl text-gray-800 uppercase font-medium">size</h3>
+      <div className="flex items-center space-x-2">
+        {sizes.map(({ _id }) => (
           <SizeItem
-            key={value}
-            value={value}
-            checked={searchParams.getAll("size").includes(value)}
+            key={_id}
+            value={_id}
+            checked={searchParams.getAll("size").includes(_id)}
             onChange={handleSizeChanged}
           />
         ))}

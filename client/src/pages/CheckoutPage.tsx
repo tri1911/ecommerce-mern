@@ -5,7 +5,7 @@ import TextInput from "../components/Form/TextInput";
 import { Link, useNavigate } from "react-router-dom";
 import CheckBox from "../components/Form/CheckBox";
 import { CartItem } from "../types";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../hooks";
 import { selectAllCartItems } from "../slices/cartSlice";
 import { useMemo } from "react";
 

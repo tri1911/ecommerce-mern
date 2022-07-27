@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import TextInput from "../Form/TextInput";
 import CheckBox from "../Form/CheckBox";
 import Password from "../Form/Password";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { register } from "../../slices/auth.slice";
 
 interface RegisterFormValues {

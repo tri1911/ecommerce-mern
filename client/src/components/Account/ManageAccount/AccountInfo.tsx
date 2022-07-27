@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { fetchProfileInfo } from "../../../slices/profile.slice";
 import NotificationMessage from "../../Shared/NotificationMessage";
 

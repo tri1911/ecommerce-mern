@@ -4,7 +4,7 @@ import SocialLinkButtons from "../components/Authentication/SocialLinkButtons";
 import FormHeader from "../components/Authentication/FormHeader";
 import FormWrapper from "../components/Authentication/FormWrapper";
 import FormFooter from "../components/Authentication/FormFooter";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../hooks";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NotificationMessage from "../components/Shared/NotificationMessage";

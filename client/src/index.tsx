@@ -38,6 +38,7 @@ import AboutUsPage from "./pages/AboutUsPage";
 import AddressesList from "./components/Account/ManageAccount/AddressesList";
 import AddressEditForm from "./components/Account/ManageAccount/AddressEditForm";
 import AddressAddForm from "./components/Account/ManageAccount/AddressAddForm";
+import ShopByCategoryPage from "./pages/ShopByCategoryPage";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -81,6 +82,10 @@ root.render(
             <Route path="wishlist" element={<Wishlist />} />
           </Route>
           <Route path="shop" element={<ShopPage />} />
+          <Route
+            path="categories/:categoryId"
+            element={<ShopByCategoryPage />}
+          />
           <Route path="products/:productId" element={<SingleProductPage />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />

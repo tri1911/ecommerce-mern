@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import * as Yup from "yup";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { CITIES, COUNTRIES, PROVINCES } from "../../../constants";
 import {
   selectAddressById,

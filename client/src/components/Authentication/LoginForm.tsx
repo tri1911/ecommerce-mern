@@ -4,7 +4,7 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import CheckBox from "../Form/CheckBox";
 import Password from "../Form/Password";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { login } from "../../slices/auth.slice";
 
 interface LoginFormValues {

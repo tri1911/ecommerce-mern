@@ -1,7 +1,7 @@
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import CartItems from "../components/Cart/CartItems";
 import CartSummary from "../components/Cart/CartSummary";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../hooks";
 import { selectAllCartItems } from "../slices/cartSlice";
 import { Link } from "react-router-dom";
 

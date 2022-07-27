@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../hooks";
 import FormFooter from "../components/Authentication/FormFooter";
 import FormHeader from "../components/Authentication/FormHeader";
 import FormWrapper from "../components/Authentication/FormWrapper";

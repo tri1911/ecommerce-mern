@@ -9,26 +9,32 @@ interface CategoriesState {
   error?: string;
 }
 
+const initialState: CategoriesState = { status: "idle" };
+
 const categoriesSlice = createSlice({
   name: "categories",
-  initialState: { status: "idle" } as CategoriesState,
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getAllCategories.pending, () => ({
+      .addCase(fetchCategoriesTree.pending, () => ({
         status: "loading",
       }))
-      .addCase(getAllCategories.fulfilled, (_, { payload }) => ({
+      .addCase(fetchCategoriesTree.fulfilled, (_, { payload }) => ({
         status: "succeeded",
         items: payload,
+      }))
+      .addCase(fetchCategoriesTree.rejected, (_, action) => ({
+        status: "failed",
+        error: action.error.message,
       }));
   },
 });
 
-export const getAllCategories = createAsyncThunk(
-  "categories/getAllCategories",
-  async () => {
-    return await categoryService.fetchAllCategories();
+export const fetchCategoriesTree = createAsyncThunk(
+  "categories/fetchCategoriesTree",
+  async ({ maxDepth }: { maxDepth?: number }) => {
+    return await categoryService.fetchCategoriesTree(maxDepth);
   }
 );
 

@@ -1,7 +1,7 @@
 import { XIcon } from "@heroicons/react/solid";
 import { useMemo } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { useAppDispatch, useAppSelector, useDeleteCartItem } from "./app/hooks";
+import { useAppDispatch, useAppSelector, useDeleteCartItem } from "./hooks";
 import Layout from "./components/Layout";
 import Drawer from "./components/Shared/Drawer";
 import { selectAllCartItems, setShowCartDrawer } from "./slices/cartSlice";

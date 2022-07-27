@@ -4,24 +4,33 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
-import productService from "../services/product.service";
-import { Product, RequestStatus } from "../types";
+import { RequestStatus } from "../types";
+import categoryService, {
+  Brand,
+  Category,
+  Color,
+  MetaData,
+  Product,
+  Size,
+} from "../services/category.service";
 
 const productsAdapter = createEntityAdapter<Product>({
   selectId: (product) => product._id,
-  sortComparer: (a, b) => a.name.localeCompare(b.name),
 });
 
 interface ProductsState {
   status: RequestStatus;
   error?: string;
-  page?: number;
-  pages?: number;
+  metadata?: MetaData;
+  categories?: Category[];
+  brands?: Brand[];
+  sizes?: Size[];
+  colors?: Color[];
 }
 
-const initialState = productsAdapter.getInitialState({
+const initialState = productsAdapter.getInitialState<ProductsState>({
   status: "idle",
-} as ProductsState);
+});
 
 const productsSlice = createSlice({
   name: "products",
@@ -29,25 +38,43 @@ const productsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProducts.pending, (state) => {
+      .addCase(fetchProductsByCategory.pending, (state) => {
         state.status = "loading";
       })
       .addCase(
-        fetchProducts.fulfilled,
-        (state, { payload: { products, page, pages } }) => {
+        fetchProductsByCategory.fulfilled,
+        (
+          state,
+          { payload: { products, metadata, categories, brands, sizes, colors } }
+        ) => {
           state.status = "succeeded";
-          state.page = page;
-          state.pages = pages;
+          state.metadata = metadata[0];
+          state.categories = categories;
+          state.brands = brands;
+          state.sizes = sizes;
+          state.colors = colors;
           productsAdapter.setAll(state, products);
         }
       );
   },
 });
 
-export const fetchProducts = createAsyncThunk(
-  "products/fetchProducts",
-  async ({ page }: { page?: string }) => {
-    return await productService.getProducts({ page });
+export const fetchProductsByCategory = createAsyncThunk(
+  "products/fetchProductsByCategory",
+  async ({
+    categoryId,
+    currentPage,
+    pageSize,
+  }: {
+    categoryId: string;
+    currentPage?: number;
+    pageSize?: number;
+  }) => {
+    return await categoryService.fetchProductsByCategory({
+      categoryId,
+      currentPage,
+      pageSize,
+    });
   }
 );
 
@@ -58,8 +85,3 @@ export const {
   selectById: selectProductById,
   selectIds: selectProductIds,
 } = productsAdapter.getSelectors<RootState>((state) => state.products);
-
-export const selectProductsRequestStatus = (state: RootState) =>
-  state.products.status;
-export const selectProductsRequestError = (state: RootState) =>
-  state.products.status;

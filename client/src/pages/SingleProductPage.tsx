@@ -7,8 +7,8 @@ import {
   useAddCartItem,
   useAddWishlistItem,
   useAppDispatch,
-} from "../app/hooks";
-import ProductSection from "../components/Home/ProductSection";
+} from "../hooks";
+// import ProductSection from "../components/Home/ProductSection";
 import ProductInfo from "../components/Product/ProductInfo";
 import QA from "../components/Product/QA";
 import Reviews from "../components/Product/Reviews";
@@ -20,7 +20,7 @@ import {
   fetchSingleProduct,
   selectProductDetails,
 } from "../slices/product.slice";
-import { selectAllProducts } from "../slices/products.slice";
+// import { selectAllProducts } from "../slices/products.slice";
 import { Color, COLORS, Fn, Product, Size, SIZES } from "../types";
 
 /* Product Image */
@@ -361,7 +361,7 @@ export default function SingleProductPage() {
     }
   }, [dispatch, productId, product]);
 
-  const products = useAppSelector(selectAllProducts);
+  // const products = useAppSelector(selectAllProducts);
 
   if (!product) {
     return null;
@@ -412,10 +412,10 @@ export default function SingleProductPage() {
           </Tab.Panels>
         </Tab.Group>
       </section>
-      <ProductSection
+      {/* <ProductSection
         title="related products"
         products={products.slice(0, 4)}
-      />
+      /> */}
     </div>
   );
 }

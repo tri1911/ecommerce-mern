@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../hooks";
 import { selectAllCartItems } from "../../slices/cartSlice";
 import { selectAllWishlistItems } from "../../slices/wishlistSlice";
 
