@@ -36,17 +36,17 @@ const SubCategoriesList = ({ categories }: { categories?: Category[] }) => (
 );
 
 export default function ShopSideBar() {
-  const { categories, brands, sizes, colors } = useAppSelector(
+  const { categories, brands, sizes, colors, price } = useAppSelector(
     (state) => state.products
   );
 
   return (
     <div className="relative space-y-5 divide-y divide-gray-200 ">
       <SubCategoriesList categories={categories} />
-      <BrandFilter brands={brands} />
-      <PriceFilter />
-      <SizeFilter sizes={sizes} />
-      <ColorFilter colors={colors} />
+      {brands && <BrandFilter brands={brands} />}
+      {price && <PriceFilter {...price} />}
+      {sizes && <SizeFilter sizes={sizes} />}
+      {colors && <ColorFilter colors={colors} />}
     </div>
   );
 }

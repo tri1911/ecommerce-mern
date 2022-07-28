@@ -37,13 +37,9 @@ function SizeItem({
   );
 }
 
-export default function SizeFilter({ sizes }: { sizes?: Size[] }) {
+export default function SizeFilter({ sizes }: { sizes: Size[] }) {
   const [searchParams] = useSearchParams();
   const handleSizeChanged = useFilterCheckboxHandler();
-
-  if (!sizes) {
-    return null;
-  }
 
   return (
     <div className="pt-4">

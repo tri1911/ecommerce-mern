@@ -19,8 +19,10 @@ const usePagination = ({
     ? Number(searchParams.get("page"))
     : 1;
 
-  const onPageChanged = (newPage: number) =>
-    setSearchParams({ page: String(newPage) });
+  const onPageChanged = (newPage: number) => {
+    searchParams.set("page", String(newPage));
+    setSearchParams(searchParams);
+  };
 
   const indices = useMemo(() => {
     const firstPage = 1;

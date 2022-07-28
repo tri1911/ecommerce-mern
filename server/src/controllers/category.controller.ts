@@ -47,7 +47,7 @@ const getProductsByCategory = asyncHandler(async (request, response) => {
 
   // generate `filter`
   const filter = JSON.parse(
-    JSON.stringify(rest).replace(/\b(gte|lte|in)\b/, (match) => `$${match}`)
+    JSON.stringify(rest).replace(/\b(gte|lte|in)\b/g, (match) => `$${match}`)
   ) as ProductsFilter;
 
   // generate `sort`

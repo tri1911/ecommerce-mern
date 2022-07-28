@@ -24,7 +24,7 @@ export type ProductsFilter = {
   brand?: { $in: string[] };
   sizes?: { $in: string[] };
   colors?: { $in: string[] };
-  price?: { $gte: number; $lte: number };
+  price?: { $gte?: number; $lte?: number };
 };
 
 interface ProductsByCategoryResult {
@@ -55,19 +55,20 @@ interface ProductsByCategoryResult {
   }>;
   sizes: Array<{ _id: string }>;
   colors: Array<{ _id: string }>;
+  price: Array<{ priceRangeMin: number; priceRangeMax: number }>;
 }
 
 const getProductsByCategory = async ({
   categoryId,
+  filter,
   currentPage = 1,
   pageSize = 12,
-  filter,
   sortQuery,
 }: {
   categoryId?: string;
+  filter: ProductsFilter;
   currentPage?: number;
   pageSize?: number;
-  filter: ProductsFilter;
   sortQuery?: Record<string, 1 | -1>;
 }) => {
   let categoryFilter = {};
@@ -147,6 +148,16 @@ const getProductsByCategory = async ({
         brands: [{ $sortByCount: "$brand" }],
         sizes: [{ $unwind: "$sizes" }, { $group: { _id: "$sizes" } }],
         colors: [{ $unwind: "$colors" }, { $group: { _id: "$colors" } }],
+        price: [
+          {
+            $group: {
+              _id: null,
+              priceRangeMin: { $min: "$price" },
+              priceRangeMax: { $max: "$price" },
+            },
+          },
+          { $project: { _id: 0 } },
+        ],
       },
     },
   ]);

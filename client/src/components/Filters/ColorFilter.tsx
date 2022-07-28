@@ -35,13 +35,9 @@ export function ColorItem({
   );
 }
 
-export default function ColorFilter({ colors }: { colors?: Color[] }) {
+export default function ColorFilter({ colors }: { colors: Color[] }) {
   const [searchParams] = useSearchParams();
   const handleColorChanged = useFilterCheckboxHandler();
-
-  if (!colors) {
-    return null;
-  }
 
   return (
     <div className="pt-4">

@@ -29,20 +29,24 @@ const getProductsByCategory = z.object({
         in: z.string().array(),
       })
       .optional(),
-    size: z
+    sizes: z
       .object({
         in: z.string().array(),
       })
       .optional(),
-    color: z
+    colors: z
       .object({
         in: z.string().array(),
       })
       .optional(),
     price: z
       .object({
-        gte: z.string(),
-        lte: z.string(),
+        gte: z.preprocess((arg) => {
+          if (typeof arg == "string") return Number(arg);
+        }, z.number().optional()),
+        lte: z.preprocess((arg) => {
+          if (typeof arg == "string") return Number(arg);
+        }, z.number().optional()),
       })
       .optional(),
     currentPage: z.string().optional(),

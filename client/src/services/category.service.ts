@@ -76,8 +76,14 @@ export interface Brand {
 export interface Size {
   _id: string;
 }
+
 export interface Color {
   _id: string;
+}
+
+export interface Price {
+  priceRangeMin: number;
+  priceRangeMax: number;
 }
 
 export interface FetchResult {
@@ -87,30 +93,56 @@ export interface FetchResult {
   brands: Brand[];
   sizes: Size[];
   colors: Color[];
+  price: Price[];
 }
 
 export interface ProductsFilter {
-  brand?: string[];
-  sizes?: string[];
-  colors?: string[];
-  minPrice?: number;
-  maxPrice?: number;
+  brand: string[];
+  sizes: string[];
+  colors: string[];
+  minPrice: string | null;
+  maxPrice: string | null;
 }
+
+export type FilterKeys = keyof ProductsFilter;
 
 const fetchProductsByCategory = async ({
   categoryId,
+  filter,
   currentPage,
   pageSize,
 }: {
   categoryId: string;
+  filter?: ProductsFilter;
   currentPage?: number;
   pageSize?: number;
-  filter?: ProductsFilter;
   sort?: string[];
 }) => {
   // convert to param queries with format: ?brand[in][]=<brandName>&sort=-createdAt,price
-
   let queryParams = "";
+
+  // TODO: refactor filter generator
+
+  if (filter) {
+    const { brand, sizes, colors, minPrice, maxPrice } = filter;
+    queryParams +=
+      (queryParams && "&") +
+      brand.map((name) => `brand[in][]=${name}`).join("&");
+    queryParams +=
+      (queryParams && "&") +
+      sizes.map((size) => `sizes[in][]=${size}`).join("&");
+    queryParams +=
+      (queryParams && "&") +
+      colors.map((color) => `colors[in][]=${color}`).join("&");
+
+    if (minPrice) {
+      queryParams += (queryParams && "&") + `price[gte]=${minPrice}`;
+    }
+
+    if (maxPrice) {
+      queryParams += (queryParams && "&") + `price[lte]=${maxPrice}`;
+    }
+  }
 
   if (currentPage) {
     queryParams += (queryParams && "&") + `currentPage=${currentPage}`;

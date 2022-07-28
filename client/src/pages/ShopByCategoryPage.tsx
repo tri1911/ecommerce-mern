@@ -145,6 +145,17 @@ const ShopByCategoryPage = () => {
     ? Number(searchParams.get("page"))
     : undefined;
 
+  /**
+   * NOTE: the 'brandFilter' will make the dependencies of useEffect Hook change on every render.
+   * Should move it inside the useEffect callback.
+   * Alternatively, wrap the initialization of 'brandFilter' in its own useMemo() Hook
+   */
+  /*
+    const brandFilter = useMemo(() => {
+      return searchParams.getAll("brand");
+    }, [searchParams]);
+  */
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -152,12 +163,19 @@ const ShopByCategoryPage = () => {
       dispatch(
         fetchProductsByCategory({
           categoryId,
+          filter: {
+            brand: searchParams.getAll("brand"),
+            sizes: searchParams.getAll("size"),
+            colors: searchParams.getAll("color"),
+            minPrice: searchParams.get("minPrice"),
+            maxPrice: searchParams.get("maxPrice"),
+          },
           currentPage,
           pageSize: PAGE_SIZE,
         })
       );
     }
-  }, [dispatch, categoryId, currentPage]);
+  }, [dispatch, categoryId, currentPage, searchParams]);
 
   const { status, metadata } = useAppSelector((state) => state.products);
   const products = useAppSelector(selectAllProducts);
@@ -177,7 +195,7 @@ const ShopByCategoryPage = () => {
                 <>
                   <ProductsGridView products={products} />
                   {metadata && (
-                    <div className="__pagination-container">
+                    <div className="__pagination-container mt-4">
                       <Pagination
                         total={metadata.total}
                         pageSize={metadata.pageSize}

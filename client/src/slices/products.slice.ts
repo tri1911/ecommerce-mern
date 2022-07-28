@@ -10,7 +10,9 @@ import categoryService, {
   Category,
   Color,
   MetaData,
+  Price,
   Product,
+  ProductsFilter,
   Size,
 } from "../services/category.service";
 
@@ -26,6 +28,7 @@ interface ProductsState {
   brands?: Brand[];
   sizes?: Size[];
   colors?: Color[];
+  price?: Price;
 }
 
 const initialState = productsAdapter.getInitialState<ProductsState>({
@@ -45,7 +48,17 @@ const productsSlice = createSlice({
         fetchProductsByCategory.fulfilled,
         (
           state,
-          { payload: { products, metadata, categories, brands, sizes, colors } }
+          {
+            payload: {
+              products,
+              metadata,
+              categories,
+              brands,
+              sizes,
+              colors,
+              price,
+            },
+          }
         ) => {
           state.status = "succeeded";
           state.metadata = metadata[0];
@@ -53,6 +66,7 @@ const productsSlice = createSlice({
           state.brands = brands;
           state.sizes = sizes;
           state.colors = colors;
+          state.price = price[0];
           productsAdapter.setAll(state, products);
         }
       );
@@ -63,15 +77,18 @@ export const fetchProductsByCategory = createAsyncThunk(
   "products/fetchProductsByCategory",
   async ({
     categoryId,
+    filter,
     currentPage,
     pageSize,
   }: {
     categoryId: string;
+    filter?: ProductsFilter;
     currentPage?: number;
     pageSize?: number;
   }) => {
     return await categoryService.fetchProductsByCategory({
       categoryId,
+      filter,
       currentPage,
       pageSize,
     });

@@ -1,36 +1,105 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import debounce from "lodash.debounce";
 
-const MIN_VALUE = 0;
-const MAX_VALUE = 10000;
-const MIN_GAP = 1000;
+export default function PriceFilter({
+  priceRangeMin,
+  priceRangeMax,
+}: {
+  priceRangeMin: number;
+  priceRangeMax: number;
+}) {
+  const MIN_GAP = ((priceRangeMax - priceRangeMin) * 10) / 100;
 
-export default function PriceFilter() {
-  const [minPrice, setMinPrice] = useState(MIN_VALUE);
-  const [maxPrice, setMaxPrice] = useState(MAX_VALUE);
+  const [minPrice, setMinPrice] = useState(priceRangeMin);
+  const [maxPrice, setMaxPrice] = useState(priceRangeMax);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  /*
+      const minPrice = searchParams.has("minPrice")
+        ? Number(searchParams.get("minPrice"))
+        : priceRangeMin;
+      const maxPrice = searchParams.has("maxPrice")
+        ? Number(searchParams.get("maxPrice"))
+        : priceRangeMax;
+      event.target.name === "range-min"
+        ? searchParams.set(
+            "minPrice",
+            String(Math.min(maxPrice - MIN_GAP, parsedValue))
+          )
+        : searchParams.set(
+            "maxPrice",
+            String(Math.max(minPrice + MIN_GAP, parsedValue))
+          );
+      setSearchParams(searchParams);
+  */
 
   const rangeIndicator = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (rangeIndicator.current) {
-      rangeIndicator.current.style.left = (minPrice / MAX_VALUE) * 100 + "%";
+      rangeIndicator.current.style.left =
+        (minPrice / priceRangeMax) * 100 + "%";
     }
-  }, [minPrice]);
+  }, [minPrice, priceRangeMax]);
 
   useEffect(() => {
     if (rangeIndicator.current) {
       rangeIndicator.current.style.right =
-        100 - (maxPrice / MAX_VALUE) * 100 + "%";
+        100 - (maxPrice / priceRangeMax) * 100 + "%";
     }
-  }, [maxPrice]);
+  }, [maxPrice, priceRangeMax]);
 
-  const handlePriceRangeChanged: React.ChangeEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    const parsedValue = parseInt(event.target.value);
-    event.target.name === "range-min"
-      ? setMinPrice(Math.min(maxPrice - MIN_GAP, parsedValue))
-      : setMaxPrice(Math.max(minPrice + MIN_GAP, parsedValue));
-  };
+  // TODO: extract into custom hook
+
+  const debouncedUpdateMinPrice = useMemo(
+    () =>
+      debounce((minPrice: number) => {
+        if (minPrice > priceRangeMin) {
+          searchParams.set("minPrice", String(minPrice));
+          setSearchParams(searchParams);
+        } else if (searchParams.has("minPrice")) {
+          searchParams.delete("minPrice");
+          setSearchParams(searchParams);
+        }
+      }, 1000),
+    [searchParams, setSearchParams, priceRangeMin]
+  );
+
+  useEffect(() => {
+    debouncedUpdateMinPrice(minPrice);
+  }, [debouncedUpdateMinPrice, minPrice]);
+
+  const debouncedUpdateMaxPrice = useMemo(
+    () =>
+      debounce((maxPrice: number) => {
+        if (maxPrice < priceRangeMax) {
+          searchParams.set("maxPrice", String(maxPrice));
+          setSearchParams(searchParams);
+        } else if (searchParams.has("maxPrice")) {
+          searchParams.delete("maxPrice");
+          setSearchParams(searchParams);
+        }
+      }, 1000),
+    [searchParams, setSearchParams, priceRangeMax]
+  );
+
+  useEffect(() => {
+    debouncedUpdateMaxPrice(maxPrice);
+  }, [debouncedUpdateMaxPrice, maxPrice]);
+
+  const handlePriceRangeChanged: React.ChangeEventHandler<HTMLInputElement> =
+    useCallback(
+      (event) => {
+        const parsedValue = parseInt(event.target.value);
+
+        event.target.name === "range-min"
+          ? setMinPrice(Math.min(maxPrice - MIN_GAP, parsedValue))
+          : setMaxPrice(Math.max(minPrice + MIN_GAP, parsedValue));
+      },
+      [MIN_GAP, minPrice, maxPrice]
+    );
 
   return (
     <div className="pt-4">
@@ -49,9 +118,8 @@ export default function PriceFilter() {
           type="range"
           name="range-min"
           value={minPrice}
-          min={MIN_VALUE}
-          max={MAX_VALUE}
-          step={10}
+          min={priceRangeMin}
+          max={priceRangeMax}
           onChange={handlePriceRangeChanged}
         />
         <input
@@ -59,9 +127,8 @@ export default function PriceFilter() {
           type="range"
           name="range-max"
           value={maxPrice}
-          min={MIN_VALUE}
-          max={MAX_VALUE}
-          step={10}
+          min={priceRangeMin}
+          max={priceRangeMax}
           onChange={handlePriceRangeChanged}
         />
       </div>

@@ -3,7 +3,7 @@ import { Brand } from "../../services/category.service";
 import FilterCheckBox from "./FilterCheckBox";
 import useFilterCheckboxHandler from "../../hooks/useFilterCheckboxHandler";
 
-export default function BrandFilter({ brands }: { brands?: Brand[] }) {
+export default function BrandFilter({ brands }: { brands: Brand[] }) {
   const [searchParams] = useSearchParams();
   const handleBrandSelected = useFilterCheckboxHandler();
 
@@ -13,7 +13,7 @@ export default function BrandFilter({ brands }: { brands?: Brand[] }) {
         Brands
       </h3>
       <div className="space-y-2">
-        {brands?.map(({ _id, count }) => (
+        {brands.map(({ _id, count }) => (
           <FilterCheckBox
             key={_id}
             id={_id}
