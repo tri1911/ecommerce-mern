@@ -1,12 +1,7 @@
-import React from "react";
-import { Product } from "../../types";
+import { Product } from "../../services/category.service";
 import ProductHorizontalCard from "./ProductHorizontalCard";
 
-export default function ProductsListView({
-  products,
-}: {
-  products: Product[];
-}) {
+const ProductsListView = ({ products }: { products: Product[] }) => {
   return (
     <div className="space-y-4">
       {products.map((product) => (
@@ -14,4 +9,6 @@ export default function ProductsListView({
       ))}
     </div>
   );
-}
+};
+
+export default ProductsListView;

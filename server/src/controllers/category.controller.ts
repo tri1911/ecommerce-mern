@@ -51,19 +51,18 @@ const getProductsByCategory = asyncHandler(async (request, response) => {
   ) as ProductsFilter;
 
   // generate `sort`
-  // sort query sent from client has format: sort=-createdBy,+price,brand
-  let sortQuery = undefined;
+  // sort query is sent from client with format: sort=-createdBy
+  let sortQuery: Record<string, 1 | -1> | undefined = undefined;
   if (sort) {
-    sortQuery = sort.split(",").reduce((acc, field) => {
-      const firstChar = field.charAt(0);
-      if (["+", "-"].includes(firstChar)) {
-        acc[field.substring(1)] = firstChar === "-" ? -1 : 1;
-      } else {
-        acc[field] = 1;
-      }
-      return acc;
-    }, {} as Record<string, 1 | -1>);
+    const firstChar = sort.charAt(0);
+    if (["+", "-"].includes(firstChar)) {
+      sortQuery = { [sort.substring(1)]: firstChar === "-" ? -1 : 1 };
+    } else {
+      sortQuery = { [sort]: 1 };
+    }
   }
+
+  console.log("sortQuery", sortQuery);
 
   const result = await categoryServices.getProductsByCategory({
     categoryId,

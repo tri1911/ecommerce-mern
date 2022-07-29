@@ -75,23 +75,14 @@ const productsSlice = createSlice({
 
 export const fetchProductsByCategory = createAsyncThunk(
   "products/fetchProductsByCategory",
-  async ({
-    categoryId,
-    filter,
-    currentPage,
-    pageSize,
-  }: {
+  async (query: {
     categoryId: string;
     filter?: ProductsFilter;
     currentPage?: number;
     pageSize?: number;
+    sort?: string;
   }) => {
-    return await categoryService.fetchProductsByCategory({
-      categoryId,
-      filter,
-      currentPage,
-      pageSize,
-    });
+    return await categoryService.fetchProductsByCategory(query);
   }
 );
 

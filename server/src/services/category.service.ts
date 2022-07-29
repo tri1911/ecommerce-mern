@@ -91,7 +91,6 @@ const getProductsByCategory = async ({
   // main operation
   const resultAsArray = await ProductModel.aggregate<ProductsByCategoryResult>([
     { $match: categoryFilter },
-    { $sort: sortQuery ?? { createdAt: -1 } },
     {
       $lookup: {
         from: "categories",
@@ -127,6 +126,7 @@ const getProductsByCategory = async ({
       $facet: {
         products: [
           { $match: filter },
+          { $sort: sortQuery ?? { createdAt: -1 } },
           { $skip: pageSize * (currentPage - 1) },
           { $limit: pageSize },
         ],

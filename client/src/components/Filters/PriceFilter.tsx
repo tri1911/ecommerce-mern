@@ -16,25 +16,6 @@ export default function PriceFilter({
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  /*
-      const minPrice = searchParams.has("minPrice")
-        ? Number(searchParams.get("minPrice"))
-        : priceRangeMin;
-      const maxPrice = searchParams.has("maxPrice")
-        ? Number(searchParams.get("maxPrice"))
-        : priceRangeMax;
-      event.target.name === "range-min"
-        ? searchParams.set(
-            "minPrice",
-            String(Math.min(maxPrice - MIN_GAP, parsedValue))
-          )
-        : searchParams.set(
-            "maxPrice",
-            String(Math.max(minPrice + MIN_GAP, parsedValue))
-          );
-      setSearchParams(searchParams);
-  */
-
   const rangeIndicator = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

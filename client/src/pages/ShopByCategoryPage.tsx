@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import Breadcrumbs from "../components/Shared/Breadcrumbs";
@@ -11,6 +11,10 @@ import {
 import ProductsGridView from "../components/Shop/ProductsGridView";
 import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/solid";
 import usePagination from "../hooks/usePagination";
+import ProductsSorter from "../components/Shop/ProductsSorter";
+import ProductsDisplayControl from "../components/Shop/ProductsDisplayControl";
+import ProductsListView from "../components/Shop/ProductsListView";
+import { ShopDisplayMode } from "../types";
 
 const PageItem = ({
   page,
@@ -145,17 +149,6 @@ const ShopByCategoryPage = () => {
     ? Number(searchParams.get("page"))
     : undefined;
 
-  /**
-   * NOTE: the 'brandFilter' will make the dependencies of useEffect Hook change on every render.
-   * Should move it inside the useEffect callback.
-   * Alternatively, wrap the initialization of 'brandFilter' in its own useMemo() Hook
-   */
-  /*
-    const brandFilter = useMemo(() => {
-      return searchParams.getAll("brand");
-    }, [searchParams]);
-  */
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -172,6 +165,7 @@ const ShopByCategoryPage = () => {
           },
           currentPage,
           pageSize: PAGE_SIZE,
+          sort: searchParams.get("sort") || undefined,
         })
       );
     }
@@ -179,6 +173,8 @@ const ShopByCategoryPage = () => {
 
   const { status, metadata } = useAppSelector((state) => state.products);
   const products = useAppSelector(selectAllProducts);
+
+  const [displayMode, setDisplayMode] = useState<ShopDisplayMode>("grid");
 
   return (
     <div>
@@ -188,12 +184,23 @@ const ShopByCategoryPage = () => {
           <ShopSideBar />
         </section>
         <section className="col-span-3 space-y-4">
+          <div className="flex items-center">
+            <ProductsSorter />
+            <ProductsDisplayControl
+              displayMode={displayMode}
+              setDisplayMode={setDisplayMode}
+            />
+          </div>
           <div className="">
             {status === "loading" && <Spinner />}
             {status === "succeeded" ? (
               products.length > 0 ? (
                 <>
-                  <ProductsGridView products={products} />
+                  {displayMode === "grid" ? (
+                    <ProductsGridView products={products} />
+                  ) : (
+                    <ProductsListView products={products} />
+                  )}
                   {metadata && (
                     <div className="__pagination-container mt-4">
                       <Pagination

@@ -111,12 +111,13 @@ const fetchProductsByCategory = async ({
   filter,
   currentPage,
   pageSize,
+  sort,
 }: {
   categoryId: string;
   filter?: ProductsFilter;
   currentPage?: number;
   pageSize?: number;
-  sort?: string[];
+  sort?: string;
 }) => {
   // convert to param queries with format: ?brand[in][]=<brandName>&sort=-createdAt,price
   let queryParams = "";
@@ -150,6 +151,10 @@ const fetchProductsByCategory = async ({
 
   if (pageSize) {
     queryParams += (queryParams && "&") + `pageSize=${pageSize}`;
+  }
+
+  if (sort) {
+    queryParams += (queryParams && "&") + `sort=${sort}`;
   }
 
   const {

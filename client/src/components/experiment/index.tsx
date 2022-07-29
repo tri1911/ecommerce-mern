@@ -6,8 +6,9 @@
 // import Tabs from "./Tabs";
 // import Timeline from "./Timeline";
 // import MyDisclosure from "./MyDisclosure";
+// import PlaceHolderCard from "./PlaceHolderCard";
 
-import PlaceHolderCard from "./PlaceHolderCard";
+import SorterBox from "./SorterBox";
 
 export default function ExperimentPage() {
   return (
@@ -25,8 +26,8 @@ export default function ExperimentPage() {
         <Tabs /> */}
       {/* <Timeline /> */}
       {/* <MyDisclosure /> */}
-      <PlaceHolderCard />
-      <PlaceHolderCard />
+      {/* <PlaceHolderCard /> */}
+      <SorterBox />
     </div>
   );
 }
