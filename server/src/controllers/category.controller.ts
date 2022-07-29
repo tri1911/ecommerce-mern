@@ -1,7 +1,6 @@
 import asyncHandler from "express-async-handler";
 import categorySchemas from "@schemas/category.schema";
 import categoryServices, { ProductsFilter } from "@services/category.service";
-import { HttpException } from "@utils/custom-errors.util";
 
 const createNewCategory = asyncHandler(async (request, response) => {
   const {
@@ -31,12 +30,7 @@ const getSingleCategory = asyncHandler(async (request, response) => {
   } = categorySchemas.getSingleCategory.parse(request);
 
   const category = await categoryServices.getSingleCategory(id);
-
-  if (category) {
-    response.status(200).json({ status: "success", data: category });
-  } else {
-    throw new HttpException(`Category with id of ${id} is not found`, 404);
-  }
+  response.status(200).json({ category });
 });
 
 const getProductsByCategory = asyncHandler(async (request, response) => {
@@ -61,8 +55,6 @@ const getProductsByCategory = asyncHandler(async (request, response) => {
       sortQuery = { [sort]: 1 };
     }
   }
-
-  console.log("sortQuery", sortQuery);
 
   const result = await categoryServices.getProductsByCategory({
     categoryId,

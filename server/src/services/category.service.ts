@@ -1,6 +1,7 @@
 import { HttpException } from "@utils/custom-errors.util";
 import CategoryModel from "@models/category.model";
 import ProductModel from "@models/product.model";
+import { Types } from "mongoose";
 
 const createNewCategory = async (newCategory: {
   name: string;
@@ -16,8 +17,32 @@ const getCategoriesTree = async (maxDepth?: number) => {
 };
 
 const getSingleCategory = async (id: string) => {
-  const category = await CategoryModel.findById(id, { children: 0 });
-  return category;
+  const result = await CategoryModel.aggregate<{
+    _id: Types.ObjectId;
+    name: string;
+    path: string;
+    children: { _id: string; name: string }[];
+  }>([
+    { $match: { _id: new Types.ObjectId(id) } },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "_id",
+        foreignField: "parentId",
+        as: "children",
+      },
+    },
+    { $project: { name: 1, path: 1, "children._id": 1, "children.name": 1 } },
+  ]);
+
+  if (result.length === 0) {
+    throw new HttpException(`Category with id of ${id} is not found`, 404);
+  }
+
+  const category = result[0];
+  const ancestors = await CategoryModel.getAncestors(category.path);
+
+  return { ...category, ancestors };
 };
 
 export type ProductsFilter = {
@@ -65,7 +90,7 @@ const getProductsByCategory = async ({
   pageSize = 12,
   sortQuery,
 }: {
-  categoryId?: string;
+  categoryId: string;
   filter: ProductsFilter;
   currentPage?: number;
   pageSize?: number;
@@ -73,19 +98,16 @@ const getProductsByCategory = async ({
 }) => {
   let categoryFilter = {};
 
-  // generate the category filter if necessary
-  if (categoryId) {
-    const category = await CategoryModel.findById(categoryId);
-    if (category) {
-      const children = await CategoryModel.getAllChildren(category);
-      const categoryIds = [...children.map((child) => child._id), category._id];
-      categoryFilter = { category: { $in: categoryIds } };
-    } else {
-      throw new HttpException(
-        `The category with id of ${categoryId} cannot not be found`,
-        404
-      );
-    }
+  const category = await CategoryModel.findById(categoryId);
+  if (category) {
+    const children = await CategoryModel.getAllChildren(category);
+    const categoryIds = [...children.map((child) => child._id), category._id];
+    categoryFilter = { category: { $in: categoryIds } };
+  } else {
+    throw new HttpException(
+      `The category with id of ${categoryId} cannot not be found`,
+      404
+    );
   }
 
   // main operation
@@ -96,7 +118,7 @@ const getProductsByCategory = async ({
         from: "categories",
         localField: "category",
         foreignField: "_id",
-        pipeline: [{ $project: { name: 1 } }],
+        pipeline: [{ $project: { _id: 0, name: 1 } }],
         as: "category",
       },
     },
@@ -116,7 +138,7 @@ const getProductsByCategory = async ({
         countInStock: 1,
         price: 1,
         brand: { $arrayElemAt: ["$brand.name", 0] },
-        category: { $arrayElemAt: ["$category", 0] },
+        category: { $arrayElemAt: ["$category.name", 0] },
         sizes: 1,
         colors: 1,
         ratings: 1,
@@ -141,10 +163,7 @@ const getProductsByCategory = async ({
             },
           },
         ],
-        categories: [
-          { $sortByCount: "$category" },
-          { $set: { _id: "$_id._id", name: "$_id.name" } },
-        ],
+        categories: [{ $sortByCount: "$category" }],
         brands: [{ $sortByCount: "$brand" }],
         sizes: [{ $unwind: "$sizes" }, { $group: { _id: "$sizes" } }],
         colors: [{ $unwind: "$colors" }, { $group: { _id: "$colors" } }],
