@@ -1,11 +1,11 @@
 import Timeline from "../components/experiment/Timeline";
-import Breadcrumbs from "../components/Shared/Breadcrumbs";
+// import Breadcrumbs from "../components/Shared/Breadcrumbs";
 
 // TODO: use Formik for the form
 export default function TrackOrderPage() {
   return (
     <div>
-      <Breadcrumbs paths={["Tracking Order"]} />
+      {/* <Breadcrumbs crumbs={["Tracking Order"]} /> */}
       <section className="container py-8 px-6 shadow">
         <h2 className="text-2xl font-medium uppercase mb-5">Order Tracking</h2>
         <form>

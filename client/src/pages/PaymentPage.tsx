@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { Form, Formik } from "formik";
 import { Fragment } from "react";
 import TextInput from "../components/Form/TextInput";
-import Breadcrumbs from "../components/Shared/Breadcrumbs";
+// import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import { noop } from "../types";
 
 function MethodTabButton({ name, image }: { name: string; image: string }) {
@@ -148,7 +148,7 @@ function CreditCard() {
 export default function PaymentPage() {
   return (
     <div>
-      <Breadcrumbs paths={["Shop", "Payment"]} />
+      {/* <Breadcrumbs crumbs={["Shop", "Payment"]} /> */}
       <div className="container pb-16 pt-4 lg:grid lg:grid-cols-12 lg:gap-6">
         <div className="lg:col-span-8">
           <h4 className="px-4 py-2 bg-gray-200 text-base font-medium">

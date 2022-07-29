@@ -1,7 +1,7 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/solid";
 import classNames from "classnames";
-import Breadcrumbs from "../components/Shared/Breadcrumbs";
+// import Breadcrumbs from "../components/Shared/Breadcrumbs";
 
 function SingleQA({ question }: { question: string }) {
   return (
@@ -60,7 +60,7 @@ function FQASection({ title }: { title: string }) {
 export default function FAQPage() {
   return (
     <div>
-      <Breadcrumbs paths={["FAQ"]} />
+      {/* <Breadcrumbs crumbs={["FAQ"]} /> */}
       <div className="container pt-4 pb-16">
         <h1 className="text-3xl font-medium capitalize text-gray-900 mt-1 mb-2">
           F.A.Q

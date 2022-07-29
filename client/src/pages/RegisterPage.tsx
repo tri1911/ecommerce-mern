@@ -6,7 +6,7 @@ import FormHeader from "../components/Authentication/FormHeader";
 import FormWrapper from "../components/Authentication/FormWrapper";
 import RegisterForm from "../components/Authentication/RegisterForm";
 import SocialLinkButtons from "../components/Authentication/SocialLinkButtons";
-import Breadcrumbs from "../components/Shared/Breadcrumbs";
+// import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import NotificationMessage from "../components/Shared/NotificationMessage";
 
 export default function RegisterPage() {
@@ -25,7 +25,7 @@ export default function RegisterPage() {
 
   return (
     <div>
-      <Breadcrumbs paths={["Register"]} />
+      {/* <Breadcrumbs crumbs={["Register"]} /> */}
       <FormWrapper>
         <FormHeader
           title="Create an account"

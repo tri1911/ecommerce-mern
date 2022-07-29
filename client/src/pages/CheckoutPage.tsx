@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { Form, Formik, FormikHelpers } from "formik";
-import Breadcrumbs from "../components/Shared/Breadcrumbs";
+// import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import TextInput from "../components/Form/TextInput";
 import { Link, useNavigate } from "react-router-dom";
 import CheckBox from "../components/Form/CheckBox";
@@ -96,7 +96,7 @@ export default function CheckoutPage() {
 
   return (
     <div>
-      <Breadcrumbs paths={["Check Out"]} />
+      {/* <Breadcrumbs crumbs={["Check Out"]} /> */}
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

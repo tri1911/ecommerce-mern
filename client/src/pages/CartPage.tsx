@@ -1,4 +1,4 @@
-import Breadcrumbs from "../components/Shared/Breadcrumbs";
+// import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import CartItems from "../components/Cart/CartItems";
 import CartSummary from "../components/Cart/CartSummary";
 import { useAppSelector } from "../hooks";
@@ -11,7 +11,7 @@ export default function CartPage() {
   // TODO: add a `svg` image
   return (
     <div>
-      <Breadcrumbs paths={["Shopping Cart"]} />
+      {/* <Breadcrumbs crumbs={["Shopping Cart"]} /> */}
       {cartItems.length === 0 ? (
         <div className="pt-4 pb-16 text-center">
           <h3 className="font-medium text-xl">Your shopping cart is empty.</h3>

@@ -11,29 +11,54 @@ export default function PriceFilter({
 }) {
   const MIN_GAP = ((priceRangeMax - priceRangeMin) * 10) / 100;
 
+  /**
+   * Local state(s)
+   */
+
   const [minPrice, setMinPrice] = useState(priceRangeMin);
   const [maxPrice, setMaxPrice] = useState(priceRangeMax);
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  // when props are changed, need to update the local state as well
+  useEffect(() => {
+    setMinPrice(priceRangeMin);
+  }, [priceRangeMin]);
+
+  useEffect(() => {
+    setMaxPrice(priceRangeMax);
+  }, [priceRangeMax]);
+
+  /**
+   * The price range indicator
+   */
 
   const rangeIndicator = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (rangeIndicator.current) {
       rangeIndicator.current.style.left =
-        (minPrice / priceRangeMax) * 100 + "%";
+        ((minPrice - priceRangeMin) / (priceRangeMax - priceRangeMin)) * 100 +
+        "%";
     }
-  }, [minPrice, priceRangeMax]);
+  }, [minPrice, priceRangeMin, priceRangeMax]);
 
   useEffect(() => {
     if (rangeIndicator.current) {
       rangeIndicator.current.style.right =
-        100 - (maxPrice / priceRangeMax) * 100 + "%";
+        100 -
+        ((maxPrice - priceRangeMin) / (priceRangeMax - priceRangeMin)) * 100 +
+        "%";
     }
-  }, [maxPrice, priceRangeMax]);
+  }, [maxPrice, priceRangeMin, priceRangeMax]);
+
+  /**
+   * Update the URL Search Params
+   */
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // TODO: extract into custom hook
 
+  // NOTE: have to useMemo (or useCallback) to make the debounce function persistence among renders
   const debouncedUpdateMinPrice = useMemo(
     () =>
       debounce((minPrice: number) => {
@@ -50,6 +75,10 @@ export default function PriceFilter({
 
   useEffect(() => {
     debouncedUpdateMinPrice(minPrice);
+    // don't need to call the debounced function when the component is unmounted
+    return () => {
+      debouncedUpdateMinPrice.cancel();
+    };
   }, [debouncedUpdateMinPrice, minPrice]);
 
   const debouncedUpdateMaxPrice = useMemo(
@@ -68,7 +97,14 @@ export default function PriceFilter({
 
   useEffect(() => {
     debouncedUpdateMaxPrice(maxPrice);
+    return () => {
+      debouncedUpdateMaxPrice.cancel();
+    };
   }, [debouncedUpdateMaxPrice, maxPrice]);
+
+  /**
+   * Handler method(s)
+   */
 
   const handlePriceRangeChanged: React.ChangeEventHandler<HTMLInputElement> =
     useCallback(

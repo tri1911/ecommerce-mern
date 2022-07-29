@@ -1,4 +1,4 @@
-import Breadcrumbs from "../components/Shared/Breadcrumbs";
+// import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import LoginForm from "../components/Authentication/LoginForm";
 import SocialLinkButtons from "../components/Authentication/SocialLinkButtons";
 import FormHeader from "../components/Authentication/FormHeader";
@@ -25,7 +25,7 @@ export default function LoginPage() {
 
   return (
     <div>
-      <Breadcrumbs paths={["Login"]} />
+      {/* <Breadcrumbs crumbs={["Login"]} /> */}
       <FormWrapper>
         <FormHeader title="Login" text="Login if you already have one" />
         <div className="mb-5">

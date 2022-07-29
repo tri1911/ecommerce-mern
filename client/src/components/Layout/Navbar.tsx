@@ -23,7 +23,7 @@ function SingleMenuSection({
         {name}
       </Link>
       <div className="space-y-2">
-        {children.map(({ _id, name }) => (
+        {children?.map(({ _id, name }) => (
           <Link
             to={`/categories/${_id}`}
             key={_id}
@@ -55,7 +55,7 @@ function DropdownItem({
       <ChevronRightIcon className="w-5 h-5 ml-auto" />
       {/* Dropdown Content */}
       <div className="__mega-menu absolute top-0 left-full w-[1000px] px-5 pb-5 pt-3 hidden group-two-hover:grid grid-cols-8 gap-5 bg-white border border-gray-300 rounded cursor-default">
-        {children.map((subcategory) => (
+        {children?.map((subcategory) => (
           <SingleMenuSection key={subcategory._id} category={subcategory} />
         ))}
       </div>
@@ -64,13 +64,13 @@ function DropdownItem({
 }
 
 function CategoriesMenuDropdown() {
-  const categories = useSelector(selectAllCategories);
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchCategoriesTree({ maxDepth: 3 }));
   }, [dispatch]);
+
+  const categories = useSelector(selectAllCategories);
 
   return (
     <div className="px-8 py-4 flex items-center bg-primary cursor-pointer group-one relative">

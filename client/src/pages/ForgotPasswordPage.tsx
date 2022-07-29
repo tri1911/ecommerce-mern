@@ -1,12 +1,12 @@
 import FormHeader from "../components/Authentication/FormHeader";
 import FormWrapper from "../components/Authentication/FormWrapper";
 import ResetPasswordForm from "../components/Authentication/ResetPasswordForm";
-import Breadcrumbs from "../components/Shared/Breadcrumbs";
+// import Breadcrumbs from "../components/Shared/Breadcrumbs";
 
 export default function ForgotPasswordPage() {
   return (
     <div>
-      <Breadcrumbs paths={["Forgot Password"]} />
+      {/* <Breadcrumbs crumbs={["Forgot Password"]} /> */}
       <FormWrapper>
         <FormHeader
           title="Reset Password"

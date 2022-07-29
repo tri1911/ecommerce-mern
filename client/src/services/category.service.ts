@@ -5,10 +5,13 @@ const baseUrl = "http://localhost:3001/api/categories";
 export interface Category {
   _id: string;
   name: string;
-  parentId?: string;
-  path?: string;
-  children: Category[];
+  children?: Category[];
+  ancestors?: Category[];
 }
+// interface Category {
+//   _id: string;
+//   name: string;
+// }
 
 const fetchCategoriesTree = async (maxDepth?: number) => {
   const queryParam = maxDepth ? `?maxDepth=${maxDepth}` : "";
@@ -16,30 +19,12 @@ const fetchCategoriesTree = async (maxDepth?: number) => {
   return data.data;
 };
 
-/*
-export interface Product {
-  id: string;
-  sku: string;
-  title: string;
-  description: string;
-  image: string;
-  additionalImages: string[];
-  countInStock: number;
-  price: number;
-  brand: string;
-  category: string;
-  sizes: string[];
-  colors: string[];
-  material?: string;
-  weight?: string;
-  ratings: {
-    count: number;
-    average: number;
-  };
-  createdAt: string;
-  updatedAt: string;
-}
-*/
+const fetchSingleCategory = async (id: string) => {
+  const { data } = await axios.get<{
+    category: Category;
+  }>(`${baseUrl}/${id}`);
+  return data.category;
+};
 
 // NOTE: types definition duplication with the one in server
 
@@ -104,8 +89,6 @@ export interface ProductsFilter {
   maxPrice: string | null;
 }
 
-export type FilterKeys = keyof ProductsFilter;
-
 const fetchProductsByCategory = async ({
   categoryId,
   filter,
@@ -165,6 +148,10 @@ const fetchProductsByCategory = async ({
   return result;
 };
 
-const categoryService = { fetchCategoriesTree, fetchProductsByCategory };
+const categoryService = {
+  fetchCategoriesTree,
+  fetchSingleCategory,
+  fetchProductsByCategory,
+};
 
 export default categoryService;

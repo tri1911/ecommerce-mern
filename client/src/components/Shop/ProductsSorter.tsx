@@ -13,9 +13,8 @@ const SORT_OPTIONS: Array<{ name: string; value?: string }> = [
 ];
 
 const ProductsSorter = () => {
-  const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
-
   const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
 
   useEffect(() => {
     selectedSort.value !== undefined

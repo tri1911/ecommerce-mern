@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import Breadcrumbs from "../components/Shared/Breadcrumbs";
+// import Breadcrumbs from "../components/Shared/Breadcrumbs";
 
 export default function NotFoundPage() {
   return (
     <div>
-      <Breadcrumbs paths={["404"]} />
+      {/* <Breadcrumbs crumbs={["404"]} /> */}
       <div className="container pt-4 pb-16">
         <div className="w-2/3 mx-auto">
           <img

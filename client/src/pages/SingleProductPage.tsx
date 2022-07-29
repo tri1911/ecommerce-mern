@@ -12,7 +12,7 @@ import {
 import ProductInfo from "../components/Product/ProductInfo";
 import QA from "../components/Product/QA";
 import Reviews from "../components/Product/Reviews";
-import Breadcrumbs from "../components/Shared/Breadcrumbs";
+// import Breadcrumbs from "../components/Shared/Breadcrumbs";
 import QuantitySelector from "../components/Shared/QuantitySelector";
 import Rating from "../components/Shared/Rating";
 import Spinner from "../components/Shared/Spinner";
@@ -375,7 +375,7 @@ export default function SingleProductPage() {
 
   return (
     <div>
-      <Breadcrumbs paths={["Shop", product?.name ?? "unknown"]} />
+      {/* <Breadcrumbs crumbs={["Shop", product?.name ?? "unknown"]} /> */}
       <section className="container pt-4 pb-6 grid lg:grid-cols-2 gap-6">
         <ProductImage />
         <ProductContent product={product} />

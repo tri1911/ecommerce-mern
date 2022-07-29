@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Breadcrumbs from "../components/Shared/Breadcrumbs";
+// import Breadcrumbs from "../components/Shared/Breadcrumbs";
 
 export default function OrderCompletePage() {
   return (
     <div>
-      <Breadcrumbs paths={["Order Complete"]} />
+      {/* <Breadcrumbs crumbs={["Order Complete"]} /> */}
       <div className="container pt-16 pb-24 text-center">
         <div className="mb-8">
           <img
