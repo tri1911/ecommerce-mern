@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const userLoginRequestSchema = z.object({
+const userLogin = z.object({
   body: z.object({
     email: z
       .string({ required_error: "Email is required" })
@@ -11,7 +11,7 @@ export const userLoginRequestSchema = z.object({
   }),
 });
 
-export const userRegistrationRequestSchema = z.object({
+const userSignUp = z.object({
   body: z.object({
     email: z.string({ required_error: "Email is required" }).email({
       message: "Invalid email address",
@@ -24,3 +24,7 @@ export const userRegistrationRequestSchema = z.object({
       .min(6, { message: "Must be 6 or more characters long" }),
   }),
 });
+
+export type UserRegistration = z.infer<typeof userSignUp>["body"];
+
+export default { userLogin, userSignUp };
