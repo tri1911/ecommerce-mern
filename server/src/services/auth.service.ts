@@ -1,15 +1,12 @@
 import UserModel from "@models/user.model";
-import { UserRegistration } from "@schemas/auth.schema";
+import { User } from "@schemas/user.schema";
 import { HttpException } from "@utils/custom-errors.util";
 import generateToken from "@utils/generate-token.util";
 
 const userLogin = async ({
   email,
   password,
-}: {
-  email: string;
-  password: string;
-}) => {
+}: Pick<User, "email" | "password">) => {
   const user = await UserModel.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
@@ -21,7 +18,7 @@ const userLogin = async ({
   }
 };
 
-const userSignUp = async (newUser: UserRegistration) => {
+const userSignUp = async (newUser: Omit<User, "birthday" | "gender">) => {
   const existingUser = await UserModel.findOne({ email: newUser.email });
 
   if (existingUser) {

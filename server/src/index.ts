@@ -37,9 +37,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
-app.use("/api/products", productRouter);
-app.use("/api/addresses", userExtractor, addressRouter);
 app.use("/api/profile", userExtractor, userRouter);
+app.use("/api/addresses", userExtractor, addressRouter);
+app.use("/api/products", productRouter);
 app.use("/api/categories", categoryRouter);
 
 app.use(errorHandler);

@@ -1,39 +1,27 @@
 import asyncHandler from "express-async-handler";
-import UserModel from "@models/user.model";
-import {
-  getProfileRequestSchema,
-  updatePasswordRequestSchema,
-  updateProfileRequestSchema,
-} from "@schemas/profile.schema";
-import { HttpException } from "../utils/custom-errors.util";
+import profileServices from "@services/profile.service";
+import userSchemas from "@schemas/user.schema";
 
-export const getProfile = asyncHandler(async (request, response) => {
+export const getUserProfile = asyncHandler(async (request, response) => {
   const {
     user: { _id: userId },
-  } = getProfileRequestSchema.parse(request);
+  } = userSchemas.getUserProfile.parse(request);
 
-  const user = await UserModel.findById(userId);
+  const user = await profileServices.getUserProfile(userId);
 
-  if (user) {
-    response.status(200).json({ user });
-  } else {
-    throw new HttpException(
-      `User profile with id '${userId}' is not found`,
-      404
-    );
-  }
+  response.status(200).json({ user });
 });
 
-// TODO: check whether the new email does exist
-export const updateProfile = asyncHandler(async (request, response) => {
+export const updateUserProfile = asyncHandler(async (request, response) => {
   const {
     user: { _id: userId },
     body: profileUpdate,
-  } = updateProfileRequestSchema.parse(request);
+  } = userSchemas.updateUserProfile.parse(request);
 
-  const updatedUser = await UserModel.findByIdAndUpdate(userId, profileUpdate, {
-    new: true,
-  }).select({ password: 0 });
+  const updatedUser = await profileServices.updateUserProfile({
+    userId,
+    profileUpdate,
+  });
 
   response.status(201).json({ updatedUser });
 });
@@ -42,26 +30,15 @@ export const updatePassword = asyncHandler(async (request, response) => {
   const {
     user: { _id: userId },
     body: { currentPassword, newPassword },
-  } = updatePasswordRequestSchema.parse(request);
+  } = userSchemas.updateUserPassword.parse(request);
 
-  const user = await UserModel.findById(userId);
+  await profileServices.updateUserPassword({
+    userId,
+    currentPassword,
+    newPassword,
+  });
 
-  if (!user) {
-    throw new HttpException(
-      `User profile with id '${userId}' is not found`,
-      404
-    );
-  }
-
-  const isPasswordMatched = await user.matchPassword(currentPassword);
-
-  if (isPasswordMatched) {
-    user.password = newPassword;
-    await user.save();
-    response
-      .status(201)
-      .json({ message: "Password has been updated successfully" });
-  } else {
-    throw new HttpException("The current password does not match", 400);
-  }
+  response
+    .status(201)
+    .json({ message: "Password has been updated successfully" });
 });

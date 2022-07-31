@@ -1,5 +1,6 @@
-import { model, Schema, InferSchemaType } from "mongoose";
+import { model, Schema, Model } from "mongoose";
 import bcrypt from "bcrypt";
+import { User } from "@schemas/user.schema";
 
 export enum Gender {
   Male = "male",
@@ -12,7 +13,13 @@ export enum Role {
   Customer = "customer",
 }
 
-const userSchema = new Schema(
+interface UserMethods {
+  matchPassword(password: string): Promise<boolean>;
+}
+
+type UserModel = Model<User, unknown, UserMethods>;
+
+const userSchema = new Schema<User, UserModel, UserMethods>(
   {
     email: { type: String, required: true, unique: true },
     firstName: { type: String, required: true },
@@ -32,7 +39,7 @@ const userSchema = new Schema(
   },
   {
     methods: {
-      async matchPassword(password: string) {
+      async matchPassword(this: User, password: string) {
         return await bcrypt.compare(password, this.password);
       },
     },
@@ -59,6 +66,4 @@ userSchema.set("toJSON", {
   },
 });
 
-export type User = InferSchemaType<typeof userSchema>;
-
-export default model("User", userSchema);
+export default model<User, UserModel>("User", userSchema);
