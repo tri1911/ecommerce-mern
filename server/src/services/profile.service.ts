@@ -5,28 +5,31 @@ import UserModel from "@models/user.model";
 
 const getUserProfile = async (userId: Types.ObjectId | string) => {
   const user = await UserModel.findById(userId);
-
-  if (user) {
-    return user;
-  } else {
-    throw new HttpException(
-      `User profile with id '${userId}' is not found`,
-      404
-    );
-  }
+  return user;
 };
 
-// TODO: check whether the new email does exist
-const updateUserProfile = async ({
-  userId,
-  profileUpdate,
-}: {
-  userId: Types.ObjectId | string;
-  profileUpdate: Partial<Omit<User, "password">>;
-}) => {
+const updateUserProfile = async (
+  userId: Types.ObjectId | string,
+  profileUpdate: Partial<Omit<User, "role" | "password">>
+) => {
+  // verify the email first since email should be unique
+  if (profileUpdate.email) {
+    const existingUser = await UserModel.findOne({
+      email: profileUpdate.email,
+    });
+    if (existingUser && existingUser._id !== userId) {
+      // NOTE: should throw http-related error here?
+      throw new HttpException(
+        `email ${profileUpdate.email} already exists, please use another one`,
+        409
+      );
+    }
+  }
+
   const updatedUser = await UserModel.findByIdAndUpdate(userId, profileUpdate, {
     new: true,
   }).select({ password: 0 });
+
   return updatedUser;
 };
 

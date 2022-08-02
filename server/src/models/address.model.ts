@@ -1,6 +1,7 @@
-import { model, Schema, InferSchemaType } from "mongoose";
+import { model, Schema } from "mongoose";
+import { Address } from "@schemas/address.schema";
 
-const addressSchema = new Schema(
+const addressSchema = new Schema<Address>(
   {
     user: { type: Schema.Types.ObjectId, required: true, ref: "User" },
     fullName: { type: String, required: true },
@@ -24,6 +25,4 @@ addressSchema.set("toJSON", {
   },
 });
 
-export type Address = InferSchemaType<typeof addressSchema>;
-
-export default model("Address", addressSchema);
+export default model<Address>("Address", addressSchema);

@@ -1,32 +1,40 @@
 import asyncHandler from "express-async-handler";
-import profileServices from "@services/profile.service";
+import { HttpException } from "@utils/custom-errors.util";
 import userSchemas from "@schemas/user.schema";
+import profileServices from "@services/profile.service";
 
-export const getUserProfile = asyncHandler(async (request, response) => {
+const getUserProfile = asyncHandler(async (request, response) => {
   const {
     user: { _id: userId },
   } = userSchemas.getUserProfile.parse(request);
 
   const user = await profileServices.getUserProfile(userId);
 
-  response.status(200).json({ user });
+  if (user) {
+    response.status(200).json({ user });
+  } else {
+    throw new HttpException(
+      `User profile with id '${userId}' is not found`,
+      404
+    );
+  }
 });
 
-export const updateUserProfile = asyncHandler(async (request, response) => {
+const updateUserProfile = asyncHandler(async (request, response) => {
   const {
     user: { _id: userId },
     body: profileUpdate,
   } = userSchemas.updateUserProfile.parse(request);
 
-  const updatedUser = await profileServices.updateUserProfile({
+  const updatedUser = await profileServices.updateUserProfile(
     userId,
-    profileUpdate,
-  });
+    profileUpdate
+  );
 
   response.status(201).json({ updatedUser });
 });
 
-export const updatePassword = asyncHandler(async (request, response) => {
+const updateUserPassword = asyncHandler(async (request, response) => {
   const {
     user: { _id: userId },
     body: { currentPassword, newPassword },
@@ -42,3 +50,5 @@ export const updatePassword = asyncHandler(async (request, response) => {
     .status(201)
     .json({ message: "Password has been updated successfully" });
 });
+
+export default { getUserProfile, updateUserProfile, updateUserPassword };

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Types } from "mongoose";
 import { Gender, Role } from "@models/user.model";
 
-export const userSchema = z.object({
+const userSchema = z.object({
   email: z.string({ required_error: "Email is required" }).email({
     message: "Invalid email address",
   }),
@@ -33,7 +33,7 @@ const userLogin = z.object({
 });
 
 const userSignUp = z.object({
-  body: userSchema.omit({ birthday: true, gender: true }),
+  body: userSchema.omit({ birthday: true, gender: true, role: true }),
 });
 
 const getUserProfile = z.object({
@@ -42,7 +42,7 @@ const getUserProfile = z.object({
 
 const updateUserProfile = z.object({
   user: userInRequestSchema,
-  body: userSchema.omit({ password: true }).partial(),
+  body: userSchema.omit({ role: true, password: true }).partial(),
 });
 
 const updateUserPassword = z.object({

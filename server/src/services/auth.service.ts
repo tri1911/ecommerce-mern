@@ -18,7 +18,9 @@ const userLogin = async ({
   }
 };
 
-const userSignUp = async (newUser: Omit<User, "birthday" | "gender">) => {
+const userSignUp = async (
+  newUser: Omit<User, "birthday" | "gender" | "role">
+) => {
   const existingUser = await UserModel.findOne({ email: newUser.email });
 
   if (existingUser) {

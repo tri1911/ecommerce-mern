@@ -1,27 +1,25 @@
 import asyncHandler from "express-async-handler";
-import AddressModel from "@models/address.model";
-import {
-  createAddressRequestSchema,
-  deleteAddressRequestSchema,
-  getAddressByIdRequestSchema,
-  getAllAddressesRequestSchema,
-  updateAddressRequestSchema,
-} from "@schemas/address.schema";
 import { HttpException } from "@utils/custom-errors.util";
+import addressSchemas from "@schemas/address.schema";
+import addressServices from "@services/address.service";
 
-export const getAllAddresses = asyncHandler(async (request, response) => {
+const getAllAddresses = asyncHandler(async (request, response) => {
   const {
     user: { _id: userId },
-  } = getAllAddressesRequestSchema.parse(request);
-  const addresses = await AddressModel.find({ user: userId });
+  } = addressSchemas.getAllAddresses.parse(request);
+
+  const addresses = await addressServices.getAllAddresses(userId);
+
   response.status(200).json({ addresses });
 });
 
-export const getAddressById = asyncHandler(async (request, response) => {
+const getAddressById = asyncHandler(async (request, response) => {
   const {
     params: { id: addressId },
-  } = getAddressByIdRequestSchema.parse(request);
-  const address = await AddressModel.findById(addressId);
+  } = addressSchemas.getAddressById.parse(request);
+
+  const address = await addressServices.getAddressById(addressId);
+
   if (address) {
     response.status(200).json({ address });
   } else {
@@ -29,43 +27,50 @@ export const getAddressById = asyncHandler(async (request, response) => {
   }
 });
 
-export const createNewAddress = asyncHandler(async (request, response) => {
+const createNewAddress = asyncHandler(async (request, response) => {
   const {
     user: { _id: userId },
     body: addressData,
-  } = createAddressRequestSchema.parse(request);
+  } = addressSchemas.createNewAddress.parse(request);
 
-  const savedAddress = await AddressModel.create({
+  const createdAddress = await addressServices.createNewAddress({
     user: userId,
     ...addressData,
   });
 
-  response.status(200).json({ savedAddress });
+  response.status(200).json({ createdAddress });
 });
 
-export const updateAddress = asyncHandler(async (request, response) => {
+const updateAddress = asyncHandler(async (request, response) => {
   const {
-    body: addressUpdate,
     params: { id: addressId },
-  } = updateAddressRequestSchema.parse(request);
+    body: addressUpdate,
+  } = addressSchemas.updateAddress.parse(request);
 
-  const updatedAddress = await AddressModel.findByIdAndUpdate(
+  const updatedAddress = await addressServices.updateAddress(
     addressId,
-    addressUpdate,
-    {
-      new: true,
-    }
+    addressUpdate
   );
 
   response.status(200).json({ updatedAddress });
 });
 
-export const deleteAddress = asyncHandler(async (request, response) => {
+const deleteAddress = asyncHandler(async (request, response) => {
   const {
     params: { id: addressId },
-  } = deleteAddressRequestSchema.parse(request);
+  } = addressSchemas.deleteAddress.parse(request);
 
-  await AddressModel.findByIdAndDelete(addressId);
+  await addressServices.deleteAddress(addressId);
 
-  response.status(200).json({ addressId });
+  response.status(200).json({
+    message: `Successfully delete the address with id of ${addressId}`,
+  });
 });
+
+export default {
+  getAllAddresses,
+  getAddressById,
+  createNewAddress,
+  updateAddress,
+  deleteAddress,
+};

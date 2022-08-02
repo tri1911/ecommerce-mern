@@ -1,19 +1,16 @@
 import express from "express";
-import {
-  createNewAddress,
-  deleteAddress,
-  getAddressById,
-  getAllAddresses,
-  updateAddress,
-} from "@controllers/address.controller";
+import addressControllers from "@controllers/address.controller";
 
 const router = express.Router();
 
-router.route("/").get(getAllAddresses).post(createNewAddress);
+router
+  .route("/")
+  .get(addressControllers.getAllAddresses)
+  .post(addressControllers.createNewAddress);
 router
   .route("/:id")
-  .get(getAddressById)
-  .put(updateAddress)
-  .delete(deleteAddress);
+  .get(addressControllers.getAddressById)
+  .put(addressControllers.updateAddress)
+  .delete(addressControllers.deleteAddress);
 
 export default router;

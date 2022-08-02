@@ -1,5 +1,5 @@
-import { model, Schema, Model } from "mongoose";
 import bcrypt from "bcrypt";
+import { model, Schema, Model } from "mongoose";
 import { User } from "@schemas/user.schema";
 
 export enum Gender {
