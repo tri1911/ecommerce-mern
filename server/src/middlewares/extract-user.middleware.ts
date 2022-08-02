@@ -4,7 +4,8 @@ import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
 import config from "@utils/config.util";
 import { HttpException } from "@utils/custom-errors.util";
-import UserModel, { User } from "@models/user.model";
+import UserModel from "@models/user.model";
+import { User } from "@schemas/user.schema";
 
 export interface RequestWithUser extends Request {
   user?: Omit<User, "password"> & { _id: Types.ObjectId };
