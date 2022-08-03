@@ -251,6 +251,7 @@
 ### Checkout Flow
 
 - [commerlayer-react-checkout](https://github.com/commercelayer/commercelayer-react-checkout)
+- [Build a checkout form in React](https://emilyxiong.medium.com/step-to-step-guide-on-building-a-checkout-form-in-react-5f28af1c1fdf)
 
 #### Stepper
 
@@ -387,6 +388,7 @@
 
 - [Jeff Devs Life](https://jeffdevslife.com/p/1-mongodb-query-of-advanced-filtering-sorting-limit-field-and-pagination-with-mongoose/)
 - [Moesif](https://www.moesif.com/blog/technical/api-design/REST-API-Design-Filtering-Sorting-and-Pagination/)
+- [Advanced Filtering Tutorial - The Full Stack Junkie](https://morioh.com/p/2fdd82a475d8)
 
 #### Web Security / User Authentication & Authorization
 
@@ -403,6 +405,17 @@
 - [Authentication with Auth0, Passportjs](https://auth0.com/blog/create-a-simple-and-secure-node-express-app/)
 - [Authenication with auth0-express-openid library](https://auth0.com/blog/complete-guide-to-nodejs-express-user-authentication/)
 
+##### Authentication with Passport.js
+
+- [How to use Passport.js](https://www.reddit.com/r/node/comments/rk3o1g/can_anyone_help_me_understand_how_to_use/)
+- [Tutorial for implementing Google OAuth 2.0 along with JWT in Node app](https://www.makeuseof.com/nodejs-google-authentication/)
+- [Using OAuth 2.0 along with JWT in Node/Express](https://medium.com/@rustyonrampage/using-oauth-2-0-along-with-jwt-in-node-express-9e0063d911ed)
+- [Google Authentication with Nodejs & passport.js](https://www.loginradius.com/blog/engineering/google-authentication-with-nodejs-and-passportjs/)
+- [Google OAuth2 Strategy Implementation](https://github.com/jaredhanson/passport-google-oauth2)
+- [Why passport authenticate() get called twice](https://stackoverflow.com/questions/26268271/why-is-passport-authenticate-called-twice)
+- [Example Passport.js, Facebook OAuth](https://github.com/passport/express-4.x-facebook-example)
+- [What is passport.initialize()](https://stackoverflow.com/questions/46644366/what-is-passport-initialize-nodejs-express)
+
 #### REST api references
 
 - [Jira](https://developer.atlassian.com/cloud/jira/software/rest/intro/)
@@ -416,6 +429,7 @@
 
 - [nodejs config file](https://www.delftstack.com/howto/node.js/nodejs-config-file/)
 - [node config best pratices](https://codingsans.com/blog/node-config-best-practices)
+- [How to use node-config in TypeScript](https://techhelpnotes.com/node-js-how-to-use-node-config-in-typescript/)
 
 #### Eslint config
 
@@ -508,6 +522,7 @@
 - [Add user to Request Object in TypeScript project](https://stackoverflow.com/questions/44383387/typescript-error-property-user-does-not-exist-on-type-request)
 - [Set new property on Express Request](https://www.kindacode.com/article/express-typescript-extending-request-and-response-objects/)
 - [Access data in decode jwt](https://stackoverflow.com/questions/50735675/typescript-jwt-verify-cannot-access-data)
+- [Chalk error](https://stackoverflow.com/questions/70309135/chalk-error-err-require-esm-require-of-es-module)
 
 ### Questions
 

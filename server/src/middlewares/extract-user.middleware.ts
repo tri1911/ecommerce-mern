@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
-import config from "@utils/config.util";
+import config from "config";
 import { HttpException } from "@utils/custom-errors.util";
 import UserModel from "@models/user.model";
 import { User } from "@schemas/user.schema";
@@ -16,9 +16,10 @@ const userExtractor = asyncHandler(
     const authorization = request.get("authorization");
 
     if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+      const jwtSecret = config.get<string>("jwt.secret");
       const decodedToken = jwt.verify(
         authorization.substring(7),
-        config.JWT_SECRET as string
+        jwtSecret
       ) as { id?: string };
       if (decodedToken && decodedToken.id) {
         request.user = await UserModel.findById(

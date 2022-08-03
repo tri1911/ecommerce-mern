@@ -1,24 +1,29 @@
 import mongoose from "mongoose";
-import config from "@utils/config.util";
-import logger from "@utils/logger.util";
+import config from "config";
+import logger, { themes } from "@utils/logger.util";
 
 const connectDB = async () => {
-  const uri = config.MONGODB_URI;
+  if (config.has("mongodb.uri")) {
+    const uri = config.get<string>("mongodb.uri");
 
-  if (!uri) {
-    throw new Error("MONGODB_URI is missing");
-  }
+    logger.info(themes.info("Connecting to MongoDB..."));
 
-  logger.info("Connecting to MongoDB...");
-
-  try {
-    const result = await mongoose.connect(uri);
-    logger.info(`MongoDB connected: ${result.connection.host}`);
-  } catch (error) {
-    if (error instanceof Error) {
-      logger.error("Error connecting to MongoDB: ", error.message);
+    try {
+      const result = await mongoose.connect(uri);
+      logger.info(
+        themes.success("✓ MongoDB connected at ") +
+          themes.success.bold(result.connection.host)
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        logger.error(
+          themes.error(`Error connecting to MongoDB: ${error.message}`)
+        );
+      }
+      process.exit(1);
     }
-    process.exit(1);
+  } else {
+    throw new Error("MongoDB URI is missing");
   }
 };
 

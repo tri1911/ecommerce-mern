@@ -1,12 +1,17 @@
 import jwt from "jsonwebtoken";
-import config from "@utils/config.util";
+import config from "config";
 
 const generateToken = (id: string): string => {
-  const secret = config.JWT_SECRET;
-  if (!secret) {
-    throw new Error("JWT_SECRET is missing");
+  if (config.has("jwt.secret")) {
+    const secret = config.get<string>("jwt.secret");
+    const expiresIn = config.get<string | undefined>("jwt.expiresIn");
+
+    return jwt.sign({ id }, secret, {
+      expiresIn,
+    });
+  } else {
+    throw new Error("jwt secret is missing");
   }
-  return jwt.sign({ id }, secret, { expiresIn: "30d" });
 };
 
 export default generateToken;
