@@ -19,6 +19,7 @@
 - How structure the mern project (where to put clien, server)?
 - Should create shared types among `client` and `server`?
 - [Why should user undefined instead of null](https://writingjavascript.com/why-you-should-always-use-undefined-and-never-null)
+- [Difference btw jwt decode and verify](https://www.googlecloudcommunity.com/gc/Apigee/What-is-the-difference-between-DecodeJWT-and-VerifyJWT/m-p/47537#:~:text=the%20VerifyJWT%20policy%20verifies%20digitally,validating%20signatures%20on%20the%20token.)
 
 ### Lessons
 
@@ -415,6 +416,10 @@
 - [Why passport authenticate() get called twice](https://stackoverflow.com/questions/26268271/why-is-passport-authenticate-called-twice)
 - [Example Passport.js, Facebook OAuth](https://github.com/passport/express-4.x-facebook-example)
 - [What is passport.initialize()](https://stackoverflow.com/questions/46644366/what-is-passport-initialize-nodejs-express)
+- [Passport Confusion](https://stackoverflow.com/questions/24376484/passport-js-session-confusion)
+  - [tutorial](https://www.digitalocean.com/community/tutorials/easy-node-authentication-setup-and-local)
+- [authenticate() implementation](https://github.com/jaredhanson/passport/blob/0b3931330e245d8e8851328a7dc436433d6411c9/lib/middleware/authenticate.js#L171)
+- [Passport: The Hidden Manual](https://github.com/jwalton/passport-api-docs)
 
 #### REST api references
 

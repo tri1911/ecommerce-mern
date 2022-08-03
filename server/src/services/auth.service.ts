@@ -11,7 +11,7 @@ const userLogin = async ({
 
   if (user && (await user.matchPassword(password))) {
     const { _id, email, firstName, lastName, role } = user;
-    const token = generateToken(_id.toString());
+    const token = generateToken({ sub: _id.toString() });
     return { _id, email, name: `${firstName} ${lastName}`, role, token };
   } else {
     throw new HttpException("Invalid email or password", 401);
@@ -29,7 +29,7 @@ const userSignUp = async (
     const { _id, email, firstName, lastName, role } = await UserModel.create(
       newUser
     );
-    const token = generateToken(_id.toString());
+    const token = generateToken({ sub: _id.toString() });
     return { _id, email, name: `${firstName} ${lastName}`, role, token };
   }
 };

@@ -4,7 +4,7 @@ dotenv.config();
 
 export default {
   server: {
-    port: process.env.PORT,
+    port: process.env.PORT || 3001,
   },
   mongodb: {
     uri: process.env.MONGODB_URI,
