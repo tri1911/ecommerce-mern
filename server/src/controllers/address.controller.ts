@@ -2,15 +2,14 @@ import asyncHandler from "express-async-handler";
 import { HttpException } from "@utils/custom-errors.util";
 import addressSchemas from "@schemas/address.schema";
 import addressServices from "@services/address.service";
+import { userInRequestSchema } from "@schemas/user.schema";
 
-const getAllAddresses = asyncHandler(async (request, response) => {
-  const {
-    user: { _id: userId },
-  } = addressSchemas.getAllAddresses.parse(request);
+const getAllAddresses = asyncHandler(async (req, res) => {
+  const { _id: userId } = userInRequestSchema.parse(req.user);
 
   const addresses = await addressServices.getAllAddresses(userId);
 
-  response.status(200).json({ addresses });
+  res.status(200).json({ addresses });
 });
 
 const getAddressById = asyncHandler(async (request, response) => {

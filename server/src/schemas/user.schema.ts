@@ -35,6 +35,7 @@ const userSchema = z.object({
 
 export type User = z.infer<typeof userSchema>;
 
+// NOTE: `user` field in authenticated request may have more fields, but I just care about user id at this time
 export const userInRequestSchema = z.object(
   { _id: z.instanceof(Types.ObjectId) },
   { required_error: "user _id is required" }

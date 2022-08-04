@@ -21,7 +21,10 @@ const jwtAuthSetup = () => {
         },
         async (jwtPayload: JwtPayload, done) => {
           try {
-            const user = await UserModel.findById(jwtPayload.sub);
+            const user = await UserModel.findById(jwtPayload.sub, {
+              password: 0,
+            }).lean();
+
             if (user) {
               return done(null, user);
             } else {

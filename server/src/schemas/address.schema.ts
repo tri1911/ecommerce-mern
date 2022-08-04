@@ -2,6 +2,10 @@ import { z } from "zod";
 import { Types } from "mongoose";
 import { userInRequestSchema } from "@schemas/user.schema";
 
+/**
+ * Address Schema
+ */
+
 const addressSchema = z.object({
   user: z.instanceof(Types.ObjectId),
   fullName: z.string({ required_error: "full name is required" }),
@@ -18,9 +22,9 @@ const addressSchema = z.object({
 
 export type Address = z.infer<typeof addressSchema>;
 
-const getAllAddresses = z.object({
-  user: userInRequestSchema,
-});
+/**
+ * Address-related Schemas for incoming requests
+ */
 
 const getAddressById = z.object({
   params: z.object({
@@ -47,7 +51,6 @@ const deleteAddress = z.object({
 });
 
 export default {
-  getAllAddresses,
   getAddressById,
   createNewAddress,
   updateAddress,

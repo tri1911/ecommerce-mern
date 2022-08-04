@@ -18,7 +18,7 @@
   - [Does anyone else not like using libraries?](https://www.reddit.com/r/learnprogramming/comments/rojkr0/does_anyone_else_not_like_using_libraries/)
 - How structure the mern project (where to put clien, server)?
 - Should create shared types among `client` and `server`?
-- [Why should user undefined instead of null](https://writingjavascript.com/why-you-should-always-use-undefined-and-never-null)
+- [Why should use `undefined` instead of `null`](https://writingjavascript.com/why-you-should-always-use-undefined-and-never-null)
 - [Difference btw jwt decode and verify](https://www.googlecloudcommunity.com/gc/Apigee/What-is-the-difference-between-DecodeJWT-and-VerifyJWT/m-p/47537#:~:text=the%20VerifyJWT%20policy%20verifies%20digitally,validating%20signatures%20on%20the%20token.)
 
 ### Lessons
@@ -402,6 +402,7 @@
 - [Authorization with Express middleware](https://caffeinecoding.com/leveraging-express-middleware-to-authorize-your-api/#more-and-more-middleware)
 - [Security Essentials](https://restfulapi.net/security-essentials/)
 - [Auth Best Practices](https://stackoverflow.blog/2021/10/06/best-practices-for-authentication-and-authorization-for-rest-apis/)
+- [You don't need passport.js - Guide to node.js authentication](https://softwareontheroad.com/nodejs-jwt-authentication-oauth/)
 
 - [Secure Express api](https://auth0.com/blog/node-js-and-typescript-tutorial-secure-an-express-api/)
 - [Authentication with Auth0, Passportjs](https://auth0.com/blog/create-a-simple-and-secure-node-express-app/)
@@ -425,6 +426,7 @@
 - [When a user logs in with Google OAuth using the same Gmail](https://stackoverflow.com/questions/59691658/whats-the-convention-for-when-a-user-logs-in-with-google-oauth-using-the-same-g)
 - [If user sign up via social login & register with same email](https://stackoverflow.com/questions/71472601/what-should-happen-if-a-user-sign-up-via-social-login-and-then-tries-to-register)
 - [passport facebook scope](https://stackoverflow.com/questions/31279066/passport-facebook-not-providing-email-even-if-it-is-in-scope)
+- [How to setup twitter OAuth using Passport.js & React.js](https://medium.com/free-code-camp/how-to-set-up-twitter-oauth-using-passport-js-and-reactjs-9ffa6f49ef0)
 
 #### REST api references
 
