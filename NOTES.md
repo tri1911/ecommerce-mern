@@ -420,6 +420,9 @@
   - [tutorial](https://www.digitalocean.com/community/tutorials/easy-node-authentication-setup-and-local)
 - [authenticate() implementation](https://github.com/jaredhanson/passport/blob/0b3931330e245d8e8851328a7dc436433d6411c9/lib/middleware/authenticate.js#L171)
 - [Passport: The Hidden Manual](https://github.com/jwalton/passport-api-docs)
+- [Plugin for find or create document](https://github.com/drudge/mongoose-findorcreate)
+- [When a user logs in with Google OAuth using the same Gmail](https://stackoverflow.com/questions/59691658/whats-the-convention-for-when-a-user-logs-in-with-google-oauth-using-the-same-g)
+- [If user sign up via social login & register with same email](https://stackoverflow.com/questions/71472601/what-should-happen-if-a-user-sign-up-via-social-login-and-then-tries-to-register)
 
 #### REST api references
 

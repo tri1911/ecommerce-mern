@@ -11,6 +11,7 @@ export enum Gender {
 export enum Role {
   Admin = "admin",
   Customer = "customer",
+  Merchant = "merchant",
 }
 
 interface UserMethods {
@@ -21,7 +22,11 @@ type UserModel = Model<User, unknown, UserMethods>;
 
 const userSchema = new Schema<User, UserModel, UserMethods>(
   {
-    email: { type: String, required: true, unique: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     birthday: Date,
@@ -29,8 +34,16 @@ const userSchema = new Schema<User, UserModel, UserMethods>(
       type: String,
       enum: Object.values(Gender),
     },
-    phone: { type: String, required: true },
-    password: { type: String, required: true },
+    phone: String,
+    password: String,
+    federatedCredentials: [
+      {
+        _id: false,
+        provider: String,
+        subject: String,
+      },
+    ],
+    avatar: String,
     role: {
       type: String,
       enum: Object.values(Role),
@@ -40,7 +53,7 @@ const userSchema = new Schema<User, UserModel, UserMethods>(
   {
     methods: {
       async matchPassword(this: User, password: string) {
-        return await bcrypt.compare(password, this.password);
+        return this.password && (await bcrypt.compare(password, this.password));
       },
     },
     timestamps: true,
@@ -48,7 +61,7 @@ const userSchema = new Schema<User, UserModel, UserMethods>(
 );
 
 userSchema.pre("save", async function (next) {
-  if (this.isModified("password")) {
+  if (this.isModified("password") && this.password) {
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
     this.password = await bcrypt.hash(this.password, salt);
