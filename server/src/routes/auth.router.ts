@@ -1,6 +1,6 @@
 import express from "express";
-import authControllers from "@controllers/auth.controller";
 import passport from "passport";
+import authControllers from "@controllers/auth.controller";
 
 const router = express.Router();
 
@@ -25,6 +25,22 @@ router.get(
     failureRedirect: "/login",
   }),
   authControllers.googleCallbackHandler
+);
+
+router.get(
+  "/facebook",
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  passport.authenticate("facebook", { scope: ["public_profile", "email"] })
+);
+
+router.get(
+  "/facebook/callback",
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  passport.authenticate("facebook", {
+    session: false,
+    failureRedirect: "/login",
+  }),
+  authControllers.facebookCallbackHandler
 );
 
 export default router;

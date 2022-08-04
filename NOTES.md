@@ -85,6 +85,7 @@
 - [Tutorial](https://www.youtube.com/playlist?list=PLzBl445W4ieshIswFhOOTwnbvlEhQPc81)
   - [Demo Link](http://www.templatemonsterpreview.com/demo/181186.html)
   - [Live Demo](http://rafcart.rslahmed.com/index-1.html)
+- [E-commerce Design with React](https://www.youtube.com/watch?v=K3L8J0DbuT8)
 
 ### TypeScript Setup
 
@@ -423,6 +424,7 @@
 - [Plugin for find or create document](https://github.com/drudge/mongoose-findorcreate)
 - [When a user logs in with Google OAuth using the same Gmail](https://stackoverflow.com/questions/59691658/whats-the-convention-for-when-a-user-logs-in-with-google-oauth-using-the-same-g)
 - [If user sign up via social login & register with same email](https://stackoverflow.com/questions/71472601/what-should-happen-if-a-user-sign-up-via-social-login-and-then-tries-to-register)
+- [passport facebook scope](https://stackoverflow.com/questions/31279066/passport-facebook-not-providing-email-even-if-it-is-in-scope)
 
 #### REST api references
 
