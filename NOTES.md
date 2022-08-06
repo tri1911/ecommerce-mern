@@ -19,7 +19,8 @@
 - How structure the mern project (where to put clien, server)?
 - Should create shared types among `client` and `server`?
 - [Why should use `undefined` instead of `null`](https://writingjavascript.com/why-you-should-always-use-undefined-and-never-null)
-- [Difference btw jwt decode and verify](https://www.googlecloudcommunity.com/gc/Apigee/What-is-the-difference-between-DecodeJWT-and-VerifyJWT/m-p/47537#:~:text=the%20VerifyJWT%20policy%20verifies%20digitally,validating%20signatures%20on%20the%20token.)
+- [Difference btw jwt decode and verify](https://www.googlecloudcommunity.com/gc/Apigee/What-is-the-difference-between-DecodeJWT-and-VerifyJWT/m-p/47537)
+- [Should use union or enum?](https://stackoverflow.com/questions/40275832/typescript-has-unions-so-are-enums-redundant)
 
 ### Lessons
 
@@ -483,6 +484,8 @@
 - [Polymorphic pattern](https://www.mongodb.com/developer/products/mongodb/polymorphic-pattern/)
 - [Attribute Pattern](https://www.mongodb.com/developer/products/mongodb/attribute-pattern/)
 - [Update with Aggregation Pipeline](https://www.mongodb.com/docs/upcoming/reference/method/db.collection.update/#update-with-aggregation-pipeline)
+- [MongoDB Schema Design Best Practices](https://www.mongodb.com/developer/products/mongodb/mongodb-schema-design-best-practices/)
+- [Retail Architecture Best Practices Part 1: Building a MongoDB Product Catalog](https://www.mongodb.com/blog/post/retail-reference-architecture-part-1-building-flexible-searchable-low-latency-product)
 
 #### mongoose
 
@@ -493,6 +496,7 @@
 - [Create slug in schema](https://www.thiscodeworks.com/create-a-slug-and-add-a-slug-to-mongoose-schema-express-nodej-mongodb-mongoose-slug-url/60c749bd3b8c8500149c0cbb)
 - [mongoose: this in instance methods](https://stackoverflow.com/questions/65704763/typescript-mongoose-this-not-available-in-instance-methods)
 - [Working with Mongoose in TS](https://thecodebarbarian.com/working-with-mongoose-in-typescript.html)
+- [How to use findOneAndUpdate](https://mongoosejs.com/docs/tutorials/findoneandupdate.html)
 
 #### Nested Categories
 
@@ -507,7 +511,19 @@
 - [Rich ecommerce Product Dataset](https://www.reddit.com/r/datasets/comments/9wc0sz/looking_for_a_rich_ecommerce_product_dataset/)
 - [Ecommerce Dataset](https://ganeshrajum.blogspot.com/2022/05/best-ecommerce-datasets-databases.html)
 
-### Paypal Integration
+### Shopping Cart and Checkout
+
+#### Shopping Cart
+
+- [Model design & operations](https://learning.oreilly.com/library/view/mongodb-applied-design/9781449340056/ch05.html)
+- [Shopping Cart with no reservation](https://learnmongodbthehardway.com/schema/shoppingcartnoreservation/)
+- [Data model with mongodb](https://www.infoq.com/articles/data-model-mongodb/) -[](https://commercejs.com/docs/api/#carts)
+
+#### Checkout with Stripe Integration
+
+- [Stripe Payment Integration - React and Node.js E-Commerce](https://www.youtube.com/watch?v=72iEz5iopqQ)
+
+#### Paypal Integration
 
 - [Standard payments with JS frameworks](https://developer.paypal.com/docs/checkout/standard/customize/single-page-app/)
 - [react-paypal-js](https://www.npmjs.com/package/@paypal/react-paypal-js)

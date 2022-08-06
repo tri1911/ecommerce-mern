@@ -5,7 +5,7 @@ const info = (...params: unknown[]) => {
 };
 
 const error = (...params: unknown[]) => {
-  console.error(...params);
+  console.error(chalk.red("❌ ", ...params));
 };
 
 export const themes = {

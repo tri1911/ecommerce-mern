@@ -16,6 +16,7 @@ import productRouter from "@routes/product.router";
 import addressRouter from "@routes/address.router";
 import userRouter from "@routes/profile.router";
 import categoryRouter from "@routes/category.router";
+import cartRouter from "@routes/cart.router";
 import passportSetup from "configs/passport";
 import authenticateUser from "@middlewares/authenticate-user.middleware";
 
@@ -50,6 +51,8 @@ app.use(
 );
 app.use("/api/products", productRouter);
 app.use("/api/categories", categoryRouter);
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+app.use("/api/carts", authenticateUser, cartRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);

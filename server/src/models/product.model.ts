@@ -26,6 +26,13 @@ const productSchema = new Schema<Product, Model<Product>>(
     image: { type: String, required: true },
     additionalImages: [String],
     countInStock: { type: Number, required: true, default: 0 },
+    reservations: [
+      {
+        userId: { type: Schema.Types.ObjectId, required: true },
+        quantity: { type: Number, required: true },
+        modifiedAt: { type: Date, required: true, default: new Date() },
+      },
+    ],
     price: { type: Number, required: true, default: 0 },
     brand: { type: Schema.Types.ObjectId, required: true, ref: "Brand" },
     category: { type: Schema.Types.ObjectId, required: true, ref: "Category" },
