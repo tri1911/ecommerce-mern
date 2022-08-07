@@ -16,9 +16,7 @@ const connectDB = async () => {
       );
     } catch (error) {
       if (error instanceof Error) {
-        logger.error(
-          themes.error(`Error connecting to MongoDB: ${error.message}`)
-        );
+        logger.error(`Error connecting to MongoDB: ${error.message}`);
       }
       process.exit(1);
     }

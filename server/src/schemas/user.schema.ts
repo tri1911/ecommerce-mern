@@ -3,10 +3,11 @@ import { Types } from "mongoose";
 import { Gender, Role } from "@models/user.model";
 
 /**
- * User Schema to store in database
+ * Zod User Schema
  */
 
 const userSchema = z.object({
+  _id: z.instanceof(Types.ObjectId),
   email: z.string({ required_error: "Email is required" }).email({
     message: "Invalid email address",
   }),
@@ -35,15 +36,22 @@ const userSchema = z.object({
 
 export type User = z.infer<typeof userSchema>;
 
-// NOTE: `user` field in authenticated request may have more fields, but I just care about user id at this time
-export const userInRequestSchema = z.object(
-  { _id: z.instanceof(Types.ObjectId) },
-  { required_error: "user _id is required" }
-);
-
 /**
- * Authentication Schemas
+ * Authentication schemas
  */
+
+export const jwtAuthPayloadSchema = z.object({ sub: z.string() });
+
+export type JwtAuthPayload = z.infer<typeof jwtAuthPayloadSchema>;
+
+// schema to parse the `req.user` object (which is attached after successful authentication)
+export const userInRequestSchema = userSchema.pick({
+  _id: true,
+  email: true,
+  firstName: true,
+  lastName: true,
+  role: true,
+});
 
 const userLogin = z.object({
   body: z.object({
@@ -75,20 +83,25 @@ const userSignUp = z.object({
 export type NewUserData = z.infer<typeof userSignUp>["body"];
 
 /**
- * Profile Schemas
+ * User Profile Request Schemas
  */
 
-const getUserProfile = z.object({
+const getUserById = z.object({
   user: userInRequestSchema,
+  params: z.object({ id: z.string() }),
 });
 
-const updateUserProfile = z.object({
+const updateUserById = z.object({
   user: userInRequestSchema,
-  body: userSchema.omit({ role: true, password: true }).partial(),
+  params: z.object({ id: z.string() }),
+  body: userSchema
+    .omit({ federatedCredentials: true, role: true, password: true })
+    .partial(),
 });
 
 const updateUserPassword = z.object({
   user: userInRequestSchema,
+  params: z.object({ id: z.string() }),
   body: z.object({
     currentPassword: z
       .string({ required_error: "Old password is required" })
@@ -102,7 +115,7 @@ const updateUserPassword = z.object({
 export default {
   userLogin,
   userSignUp,
-  getUserProfile,
-  updateUserProfile,
+  getUserById,
+  updateUserById,
   updateUserPassword,
 };

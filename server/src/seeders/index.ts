@@ -1,13 +1,13 @@
 import dotenv from "dotenv";
 import logger from "@utils/logger.util";
-import connectDB from "@utils/connect-db.util";
+import connectDB from "configs/mongoose";
 
-// import UserModel from "@models/user.model";
+import UserModel from "@models/user.model";
 import CategoryModel from "@models/category.model";
 import BrandModel from "@models/brand.model";
 import ProductModel from "@models/product.model";
 
-// import { insertAllUsers } from "./users";
+import { insertAllUsers } from "./users";
 import { insertAllCategories } from "./categories";
 import { insertAllBrands } from "./brands";
 import { insertAllProducts } from "./products";
@@ -18,7 +18,7 @@ const seedData = async () => {
   await clearDb();
   try {
     logger.info("Seeding data...");
-    // await insertAllUsers();
+    await insertAllUsers();
     await insertAllCategories();
     await insertAllBrands();
     await insertAllProducts();
@@ -34,7 +34,7 @@ const seedData = async () => {
 const clearDb = async () => {
   try {
     logger.info("Clearing database...");
-    // await UserModel.deleteMany({});
+    await UserModel.deleteMany({});
     await CategoryModel.deleteMany({});
     await BrandModel.deleteMany({});
     await ProductModel.deleteMany({});

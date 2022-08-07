@@ -8,17 +8,17 @@ import helmet from "helmet";
 import morgan from "morgan";
 import config from "config";
 import logger, { themes } from "@utils/logger.util";
-import connectDB from "@utils/connect-db.util";
 import errorHandler from "@middlewares/error-handler.middleware";
 import notFoundHandler from "@middlewares/not-found.middleware";
+import authorize from "@middlewares/authorize.middleware";
+import connectDB from "configs/mongoose";
+import passportSetup from "configs/passport";
 import authRouter from "@routes/auth.router";
-import productRouter from "@routes/product.router";
+import userRouter from "@routes/user.router";
 import addressRouter from "@routes/address.router";
-import userRouter from "@routes/profile.router";
+import productRouter from "@routes/product.router";
 import categoryRouter from "@routes/category.router";
 import cartRouter from "@routes/cart.router";
-import passportSetup from "configs/passport";
-import authenticateUser from "@middlewares/authenticate-user.middleware";
 
 /**
  * App Variables
@@ -41,18 +41,11 @@ app.use(express.json());
 passportSetup();
 
 app.use("/api/auth", authRouter);
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-app.use("/api/profile", authenticateUser, userRouter);
-app.use(
-  "/api/addresses",
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  authenticateUser,
-  addressRouter
-);
+app.use("/api/users", userRouter);
+app.use("/api/addresses", addressRouter);
 app.use("/api/products", productRouter);
 app.use("/api/categories", categoryRouter);
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-app.use("/api/carts", authenticateUser, cartRouter);
+app.use("/api/carts", authorize(), cartRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);

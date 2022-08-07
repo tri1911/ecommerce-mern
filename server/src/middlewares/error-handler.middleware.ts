@@ -4,26 +4,24 @@ import { HttpException } from "@utils/custom-errors.util";
 import logger from "@utils/logger.util";
 
 const errorHandler = (
-  error: Error,
-  _request: Request,
-  response: Response,
+  err: Error,
+  _req: Request,
+  res: Response,
   _next: NextFunction
 ) => {
-  logger.error(error.name, error.message);
-  if (error instanceof HttpException) {
-    return response
-      .status(error.statusCode)
-      .json({ errorMessage: error.message });
-  } else if (error instanceof ZodError) {
-    return response.status(400).json({ errorMessages: error.errors });
-  } else if (error.name === "CastError") {
-    return response.status(400).json({ errorMessage: "mal-formatted id" });
-  } else if (error.name === "ValidationError") {
-    return response.status(400).json({ errorMessage: error.message });
-  } else if (error.name === "JsonWebTokenError") {
-    return response.status(401).json({ errorMessage: "Invalid Token" });
+  logger.error(err.name, err.message);
+  if (err instanceof HttpException) {
+    return res.status(err.statusCode).json({ message: err.message });
+  } else if (err instanceof ZodError) {
+    return res.status(400).json({ message: err.errors });
+  } else if (err.name === "CastError") {
+    return res.status(400).json({ message: "mal-formatted id" });
+  } else if (err.name === "ValidationError") {
+    return res.status(400).json({ message: err.message });
+  } else if (err.name === "JsonWebTokenError") {
+    return res.status(401).json({ message: "Invalid Token" });
   } else {
-    return response.status(500).json({ errorMessage: error.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 

@@ -3,9 +3,10 @@ import cartControllers from "@controllers/cart.controller";
 
 const router = express.Router();
 
-router.get("/", cartControllers.getCart);
-router.post("/", cartControllers.addItemToCart);
-router.put("/", cartControllers.updateItemQuantity);
-router.delete("/", cartControllers.removeCartItem);
+router.get("/:userId", cartControllers.getCart);
+router.post("/:userId/items", cartControllers.addItemToCart);
+router.put("/:userId/items", cartControllers.updateItemQuantity);
+router.delete("/:userId/items/:productId", cartControllers.removeCartItem);
+router.delete("/:userId/empty-cart", cartControllers.emptyCart);
 
 export default router;

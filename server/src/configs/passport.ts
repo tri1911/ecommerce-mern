@@ -1,11 +1,16 @@
-import loggerUtil, { themes } from "@utils/logger.util";
-import config from "config";
 import passport, { Profile } from "passport";
-import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import { JwtPayload } from "jsonwebtoken";
+import {
+  Strategy as JwtStrategy,
+  ExtractJwt,
+  VerifiedCallback,
+} from "passport-jwt";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as FacebookStrategy } from "passport-facebook";
+
+import loggerUtil, { themes } from "@utils/logger.util";
+import config from "config";
 import UserModel from "@models/user.model";
+import { JwtAuthPayload } from "@schemas/user.schema";
 
 /**
  * JWT Strategy Configuration
@@ -19,12 +24,12 @@ const jwtAuthSetup = () => {
           jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
           secretOrKey: config.get<string>("jwt.secret"),
         },
-        async (jwtPayload: JwtPayload, done) => {
+        async (jwtPayload: JwtAuthPayload, done: VerifiedCallback) => {
           try {
             const user = await UserModel.findById(jwtPayload.sub, {
               password: 0,
+              federatedCredentials: 0,
             }).lean();
-
             if (user) {
               return done(null, user);
             } else {

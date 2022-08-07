@@ -1,8 +1,19 @@
 import { z } from "zod";
 import { Types } from "mongoose";
+import { userInRequestSchema } from "./user.schema";
+
+const getCart = z.object({
+  user: userInRequestSchema,
+  params: z.object({
+    userId: z.string(),
+  }),
+});
 
 const addItemToCart = z.object({
-  user: z.object({ _id: z.instanceof(Types.ObjectId) }),
+  user: userInRequestSchema,
+  params: z.object({
+    userId: z.string(),
+  }),
   body: z.object({
     productId: z.preprocess((arg) => {
       if (typeof arg == "string") return new Types.ObjectId(arg);
@@ -12,22 +23,39 @@ const addItemToCart = z.object({
 });
 
 const updateItemQuantity = z.object({
-  user: z.object({ _id: z.instanceof(Types.ObjectId) }),
+  user: userInRequestSchema,
+  params: z.object({
+    userId: z.string(),
+  }),
   body: z.object({
     productId: z.preprocess((arg) => {
       if (typeof arg == "string") return new Types.ObjectId(arg);
     }, z.instanceof(Types.ObjectId)),
-    newQuantity: z.preprocess((arg) => Number(arg), z.number()),
+    quantity: z.preprocess((arg) => Number(arg), z.number()),
   }),
 });
 
 const removeCartItem = z.object({
-  user: z.object({ _id: z.instanceof(Types.ObjectId) }),
-  body: z.object({
+  user: userInRequestSchema,
+  params: z.object({
+    userId: z.string(),
     productId: z.preprocess((arg) => {
       if (typeof arg == "string") return new Types.ObjectId(arg);
     }, z.instanceof(Types.ObjectId)),
   }),
 });
 
-export default { addItemToCart, updateItemQuantity, removeCartItem };
+const emptyCart = z.object({
+  user: userInRequestSchema,
+  params: z.object({
+    userId: z.string(),
+  }),
+});
+
+export default {
+  getCart,
+  addItemToCart,
+  updateItemQuantity,
+  removeCartItem,
+  emptyCart,
+};

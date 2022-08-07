@@ -1,53 +1,124 @@
 import asyncHandler from "express-async-handler";
 import cartSchemas from "@schemas/cart.schema";
 import cartServices from "@services/cart.service";
-import { userInRequestSchema } from "@schemas/user.schema";
+import { Role } from "@models/user.model";
 
 const getCart = asyncHandler(async (req, res) => {
-  const { _id } = userInRequestSchema.parse(req.user);
-  const cart = await cartServices.getCart(_id);
-  res.status(200).json({ cart });
+  const {
+    user: currentUser,
+    params: { userId },
+  } = cartSchemas.getCart.parse(req);
+
+  if (
+    currentUser._id.toString() === userId ||
+    currentUser.role === Role.Admin
+  ) {
+    const cart = await cartServices.getCart(currentUser._id);
+    res.status(200).json({ cart });
+  } else {
+    res
+      .status(403)
+      .json({ message: "You are not allowed to access to this resource" });
+  }
 });
 
 const addItemToCart = asyncHandler(async (req, res) => {
   const {
-    user: { _id },
+    user: currentUser,
+    params: { userId },
     body: { productId, quantity },
   } = cartSchemas.addItemToCart.parse(req);
 
-  const updatedCart = await cartServices.addItemToCart({
-    userId: _id,
-    productId,
-    quantity,
-  });
+  if (
+    currentUser._id.toString() === userId ||
+    currentUser.role === Role.Admin
+  ) {
+    const updatedCart = await cartServices.addItemToCart({
+      userId: currentUser._id,
+      productId,
+      quantity,
+    });
 
-  res.status(201).json({ updatedCart });
+    res.status(201).json({ updatedCart });
+  } else {
+    res
+      .status(403)
+      .json({ message: "You are not allowed to access to this resource" });
+  }
 });
 
 const updateItemQuantity = asyncHandler(async (req, res) => {
   const {
-    user: { _id },
-    body: { productId, newQuantity },
+    user: currentUser,
+    params: { userId },
+    body: { productId, quantity },
   } = cartSchemas.updateItemQuantity.parse(req);
 
-  const updatedCart = await cartServices.updateItemQuantity({
-    userId: _id,
-    productId,
-    newQuantity,
-  });
+  if (
+    currentUser._id.toString() === userId ||
+    currentUser.role === Role.Admin
+  ) {
+    const updatedCart = await cartServices.updateItemQuantity({
+      userId: currentUser._id,
+      productId,
+      newQty: quantity,
+    });
 
-  res.status(201).json({ updatedCart });
+    res.status(201).json({ updatedCart });
+  } else {
+    res
+      .status(403)
+      .json({ message: "You are not allowed to access to this resource" });
+  }
 });
 
 const removeCartItem = asyncHandler(async (req, res) => {
   const {
-    user: { _id },
-    body: { productId },
+    user: currentUser,
+    params: { userId, productId },
   } = cartSchemas.removeCartItem.parse(req);
 
-  await cartServices.removeCartItem({ userId: _id, productId });
+  if (
+    currentUser._id.toString() === userId ||
+    currentUser.role === Role.Admin
+  ) {
+    const updatedCart = await cartServices.removeCartItem({
+      userId: currentUser._id,
+      productId,
+    });
 
-  res.status(204).json({ message: "successfully remove cart item" });
+    res.status(204).json({ updatedCart });
+  } else {
+    res
+      .status(403)
+      .json({ message: "You are not allowed to access to this resource" });
+  }
 });
 
-export default { getCart, addItemToCart, updateItemQuantity, removeCartItem };
+const emptyCart = asyncHandler(async (req, res) => {
+  const {
+    user: currentUser,
+    params: { userId },
+  } = cartSchemas.emptyCart.parse(req);
+
+  if (
+    currentUser._id.toString() === userId ||
+    currentUser.role === Role.Admin
+  ) {
+    const updatedCart = await cartServices.emptyCart(currentUser._id);
+
+    res.status(204).json({ updatedCart });
+  } else {
+    res
+      .status(403)
+      .json({ message: "You are not allowed to access to this resource" });
+  }
+});
+
+export default {
+  getCart,
+  addItemToCart,
+  updateItemQuantity,
+  removeCartItem,
+  emptyCart,
+};

@@ -1,13 +1,19 @@
 import { Types } from "mongoose";
 import CartModel from "@models/cart.model";
 import ProductModel from "@models/product.model";
+import { HttpException } from "@utils/custom-errors.util";
 
 /**
  * Shopping cart with no reservation (only reserve cart items at the checkout process)
  */
 
-const getCart = async (userId: Types.ObjectId) => {
-  return await CartModel.find({ userId });
+const getCart = async (userId: Types.ObjectId | string) => {
+  let cart = await CartModel.findOne({ userId });
+  // create new cart if it does not exist
+  if (!cart) {
+    cart = await CartModel.create({ userId });
+  }
+  return cart;
 };
 
 const addItemToCart = async ({
@@ -19,59 +25,71 @@ const addItemToCart = async ({
   productId: Types.ObjectId;
   quantity: number;
 }) => {
-  // fetch necessary product information first
+  const cart = await CartModel.findOne({ userId });
   const product = await ProductModel.findById(productId);
 
-  // add the item into the cart only when the in-stock quantity is sufficient
-  if (product && product.countInStock >= quantity) {
-    const { title, image, price } = product;
+  if (!product) {
+    throw new HttpException("product is not found", 404);
+  }
 
-    // add new item into cart (create new cart if user's cart is not active)
-    const updatedCart = await CartModel.findOneAndUpdate(
-      {
-        userId,
-        status: "active",
-      },
-      {
-        $push: { items: { productId, quantity, title, image, price } },
-      },
-      { new: true, upsert: true }
+  const { title, image, price, countInStock } = product;
+
+  if (cart) {
+    // check whether the item was already added to the cart previously
+    const foundIdx = cart.items.findIndex(
+      (item) => item.productId.toString() === productId.toString()
     );
-
+    // if the item does exists, add the new quantity to the current one
+    if (foundIdx !== -1) {
+      const oldQty = cart.items[foundIdx].quantity;
+      // update to new, accumulated qty (cap the new qty to in-stock count)
+      cart.items[foundIdx].quantity = Math.min(countInStock, oldQty + quantity);
+      // update other properties as well
+      cart.items[foundIdx].title = title;
+      cart.items[foundIdx].image = image;
+      cart.items[foundIdx].price = price;
+    } else {
+      // otherwise, push new item into cart
+      cart.items.push({ productId, title, image, price, quantity });
+    }
+    const updatedCart = await cart.save();
     return updatedCart;
   } else {
-    throw new Error(
-      product ? "the item is out of stock" : "product to add is not found"
-    );
+    // create new cart with newly added item if it does not exist
+    const newCart = await CartModel.create({
+      userId,
+      items: [{ productId, title, image, price, quantity }],
+    });
+    return newCart;
   }
 };
 
+// TODO: remove cart item if the qty = 0
 const updateItemQuantity = async ({
   userId,
   productId,
-  newQuantity,
+  newQty,
 }: {
   userId: Types.ObjectId;
   productId: Types.ObjectId;
-  newQuantity: number;
+  newQty: number;
 }) => {
   const product = await ProductModel.findById(productId);
 
-  if (product && product.countInStock >= newQuantity) {
-    const updatedCart = await CartModel.findOneAndUpdate(
-      { userId, "items.productId": productId, status: "active" },
-      { $set: { "items.$.quantity": newQuantity } },
-      { new: true }
-    );
-
-    return updatedCart;
-  } else {
-    throw new Error(
-      product
-        ? "updated quantity is over the quantity limit"
-        : "product to add is not found"
-    );
+  if (!product) {
+    throw new HttpException("product is not found", 404);
   }
+
+  newQty = Math.min(newQty, product.countInStock);
+
+  const updatedCart = await CartModel.findOneAndUpdate(
+    { userId, "items.productId": productId },
+    // cap quantity to the in-stock qty
+    { $set: { "items.$.quantity": newQty } },
+    { new: true }
+  );
+
+  return updatedCart;
 };
 
 const removeCartItem = async ({
@@ -81,15 +99,25 @@ const removeCartItem = async ({
   userId: Types.ObjectId;
   productId: Types.ObjectId;
 }) => {
-  await CartModel.findOneAndUpdate(
+  const updatedCart = await CartModel.findOneAndUpdate(
     { userId, "items.productId": productId },
-    { $pull: { items: { productId } } }
+    { $pull: { items: { productId } } },
+    { new: true }
   );
+  return updatedCart;
+};
+
+const emptyCart = async (userId: Types.ObjectId) => {
+  const updatedCart = await CartModel.findOneAndUpdate(
+    { userId },
+    { items: [] },
+    { new: true }
+  );
+  return updatedCart;
 };
 
 /**
  * at the time of checkout, attempt to reserve all requested cart items
- * and, set the cart `status` to `pending`
  */
 
 const cartItemsReservation = async (userId: Types.ObjectId) => {
@@ -98,9 +126,7 @@ const cartItemsReservation = async (userId: Types.ObjectId) => {
     // reverse cart items (move requested product quantities into `reservations` array)
     const updatedProducts = await Promise.all(
       cart.items.map(async (item) => {
-        const product = await ProductModel.findOne({
-          productId: item.productId,
-        });
+        const product = await ProductModel.findById(item.productId);
         // check whether in-stock count is sufficient before reserve products
         if (product && product.countInStock >= item.quantity) {
           product.countInStock -= item.quantity;
@@ -131,5 +157,6 @@ export default {
   addItemToCart,
   updateItemQuantity,
   removeCartItem,
+  emptyCart,
   cartItemsReservation,
 };

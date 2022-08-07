@@ -1,13 +1,15 @@
 import bcrypt from "bcrypt";
-import userModel, { Role, User } from "@models/user.model";
+import userModel, { Role } from "@models/user.model";
+import { User } from "@schemas/user.schema";
 
-const seedUsers: User[] = [
+const seedUsers: Omit<User, "_id">[] = [
   {
     email: "admin@email.com",
     firstName: "Admin",
     lastName: "User",
     phone: "778-775-2891",
     password: bcrypt.hashSync("123456", 10),
+    federatedCredentials: [],
     role: Role.Admin,
   },
   {
@@ -16,14 +18,16 @@ const seedUsers: User[] = [
     lastName: "Ho",
     phone: "(+1) 778-234-5678",
     password: bcrypt.hashSync("123456", 10),
+    federatedCredentials: [],
     role: Role.Customer,
   },
   {
-    email: "tripham@email.com",
+    email: "triho@email.com",
     firstName: "Tri",
-    lastName: "Pham",
+    lastName: "Ho",
     phone: "(+1) 778-987-6543",
     password: bcrypt.hashSync("123456", 10),
+    federatedCredentials: [],
     role: Role.Customer,
   },
 ];
