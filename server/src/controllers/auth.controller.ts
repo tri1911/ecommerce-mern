@@ -5,8 +5,8 @@ import userServices from "@services/user.service";
 
 const userLogin = asyncHandler(async (req, res) => {
   const { body: userCredential } = userSchemas.userLogin.parse(req);
-  const authenticatedUser = await userServices.userLogin(userCredential);
-  res.status(200).json({ authenticatedUser });
+  const user = await userServices.userLogin(userCredential);
+  res.status(200).json({ user });
 });
 
 const userSignUp = asyncHandler(async (req, res) => {
@@ -23,8 +23,7 @@ const googleCallbackHandler = asyncHandler((req, res) => {
     user: {
       _id,
       email,
-      firstName,
-      lastName,
+      name: `${firstName} ${lastName}`,
       role,
       token: generateToken({ sub: _id.toString() }),
     },
@@ -39,8 +38,7 @@ const facebookCallbackHandler = asyncHandler((req, res) => {
     user: {
       _id,
       email,
-      firstName,
-      lastName,
+      name: `${firstName} ${lastName}`,
       role,
       token: generateToken({ sub: _id.toString() }),
     },

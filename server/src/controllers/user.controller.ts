@@ -74,9 +74,72 @@ const getAllUsers = asyncHandler(async (_req, res) => {
   res.status(200).json(users);
 });
 
+const addNewAddress = asyncHandler(async (req, res) => {
+  const {
+    user: currentUser,
+    params: { id },
+    body,
+  } = userSchemas.addNewAddress.parse(req);
+
+  if (id === currentUser._id.toString() || currentUser.role === Role.Admin) {
+    const updatedUser = await userServices.addNewAddress({
+      userId: id,
+      newAddress: body,
+    });
+    res.status(201).json({ updatedUser });
+  } else {
+    res
+      .status(403)
+      .json({ message: "You are not allowed to access to this resource" });
+  }
+});
+
+const updateAddress = asyncHandler(async (req, res) => {
+  const {
+    user: currentUser,
+    params: { id, addressId },
+    body,
+  } = userSchemas.updateAddress.parse(req);
+
+  if (id === currentUser._id.toString() || currentUser.role === Role.Admin) {
+    const updatedUser = await userServices.updateAddress({
+      userId: id,
+      addressId,
+      payload: body,
+    });
+    res.status(201).json({ updatedUser });
+  } else {
+    res
+      .status(403)
+      .json({ message: "You are not allowed to access to this resource" });
+  }
+});
+
+const removeAddress = asyncHandler(async (req, res) => {
+  const {
+    user: currentUser,
+    params: { id, addressId },
+  } = userSchemas.removeAddress.parse(req);
+
+  if (id === currentUser._id.toString() || currentUser.role === Role.Admin) {
+    const updatedUser = await userServices.removeAddress({
+      userId: id,
+      addressId,
+    });
+    res.status(201).json({ updatedUser });
+  } else {
+    res
+      .status(403)
+      .json({ message: "You are not allowed to access to this resource" });
+  }
+});
+
 export default {
   getUserById,
   updateUserById,
   updateUserPassword,
   getAllUsers,
+  addNewAddress,
+  updateAddress,
+  removeAddress,
 };

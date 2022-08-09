@@ -11,6 +11,25 @@
 - [React App Architecture](https://blog.openreplay.com/react-architecture-patterns-for-your-projects)
 - [Better Express Routing for Node.js](https://caffeinecoding.com/better-express-routing-for-nodejs/)
 
+### Miscellaneous
+
+#### Node.js config
+
+- [nodejs config file](https://www.delftstack.com/howto/node.js/nodejs-config-file/)
+- [node config best pratices](https://codingsans.com/blog/node-config-best-practices)
+- [How to use node-config in TypeScript](https://techhelpnotes.com/node-js-how-to-use-node-config-in-typescript/)
+
+#### Eslint config
+
+- [eslint for typescript](https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/)
+
+#### Absolute Path & Path Mapping
+
+- [Path aliases with TS in Node](https://dev.to/larswaechter/path-aliases-with-typescript-in-nodejs-4353)
+- [Path mapping in TypeScript](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping)
+- [Fix Issue with ts-node-dev](https://medium.com/@fmoessle/typescript-paths-with-ts-node-ts-node-dev-and-jest-671deacf6428)
+- [Absolute imports in create-react-app project](https://create-react-app.dev/docs/importing-a-component/#absolute-imports)
+
 ### Questions
 
 - [Use library or write your own?](https://stackoverflow.com/questions/1236256/how-do-you-decide-whether-to-use-a-library-or-write-your-own-implementation)
@@ -331,6 +350,10 @@
 
 - [date-fns library](https://www.npmjs.com/package/date-fns)
 
+### Optimize Performance
+
+- [Optimize React re-renders](https://kentcdodds.com/blog/optimize-react-re-renders)
+
 ### Others
 
 - [Fake API](https://fakestoreapi.com/)
@@ -438,24 +461,6 @@
 - [Fabric](https://knowledgebase.fabric.inc/docs/openapi/oms/reference/#tag/Cart)
 - [Shopify](https://shopify.dev/api/ajax/reference/cart)
 
-### Miscellaneous
-
-#### Node config
-
-- [nodejs config file](https://www.delftstack.com/howto/node.js/nodejs-config-file/)
-- [node config best pratices](https://codingsans.com/blog/node-config-best-practices)
-- [How to use node-config in TypeScript](https://techhelpnotes.com/node-js-how-to-use-node-config-in-typescript/)
-
-#### Eslint config
-
-- [eslint for typescript](https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/)
-
-#### Path Mapping
-
-- [Path aliases with TS in Node](https://dev.to/larswaechter/path-aliases-with-typescript-in-nodejs-4353)
-- [Path mapping in TypeScript](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping)
-- [Fix Issue with ts-node-dev](https://medium.com/@fmoessle/typescript-paths-with-ts-node-ts-node-dev-and-jest-671deacf6428)
-
 ### Validation (for requests)
 
 - [Schema Validation with Zod and Express.js](https://dev.to/imadatyat/schema-validation-with-zod-and-expressjs-240i)
@@ -503,6 +508,7 @@
 - [mongoose: this in instance methods](https://stackoverflow.com/questions/65704763/typescript-mongoose-this-not-available-in-instance-methods)
 - [Working with Mongoose in TS](https://thecodebarbarian.com/working-with-mongoose-in-typescript.html)
 - [How to use findOneAndUpdate](https://mongoosejs.com/docs/tutorials/findoneandupdate.html)
+- [Update element in sub-array with mongoose](https://stackoverflow.com/questions/15691224/mongoose-update-values-in-array-of-objects)
 
 #### Nested Categories
 

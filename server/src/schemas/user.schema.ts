@@ -6,6 +6,18 @@ import { Gender, Role } from "@models/user.model";
  * Zod User Schema
  */
 
+const addressSchema = z.object({
+  fullName: z.string({ required_error: "full name is required" }),
+  phone: z.string({ required_error: "phone number is required" }),
+  country: z.string({ required_error: "country name is required" }),
+  province: z.string({ required_error: "province name is required" }),
+  city: z.string({ required_error: "city name is required" }),
+  address: z.string({ required_error: "address is required" }),
+  postalCode: z.string({ required_error: "postal code is required" }),
+});
+
+export type Address = z.infer<typeof addressSchema>;
+
 const userSchema = z.object({
   _id: z.instanceof(Types.ObjectId),
   email: z.string({ required_error: "Email is required" }).email({
@@ -20,6 +32,13 @@ const userSchema = z.object({
     .optional(),
   gender: z.nativeEnum(Gender).optional(),
   phone: z.string().optional(),
+  addresses: z.array(addressSchema),
+  shippingAddress: z.preprocess((arg) => {
+    if (typeof arg == "string") return new Types.ObjectId(arg);
+  }, z.instanceof(Types.ObjectId).optional()),
+  billingAddress: z.preprocess((arg) => {
+    if (typeof arg == "string") return new Types.ObjectId(arg);
+  }, z.instanceof(Types.ObjectId).optional()),
   password: z
     .string()
     .min(6, { message: "Must be 6 or more characters long" })
@@ -112,10 +131,34 @@ const updateUserPassword = z.object({
   }),
 });
 
+/**
+ * User Address-related Request Schemas
+ */
+
+const addNewAddress = z.object({
+  user: userInRequestSchema,
+  params: z.object({ id: z.string() }),
+  body: addressSchema,
+});
+
+const updateAddress = z.object({
+  user: userInRequestSchema,
+  params: z.object({ id: z.string(), addressId: z.string() }),
+  body: addressSchema.partial(),
+});
+
+const removeAddress = z.object({
+  user: userInRequestSchema,
+  params: z.object({ id: z.string(), addressId: z.string() }),
+});
+
 export default {
   userLogin,
   userSignUp,
   getUserById,
   updateUserById,
   updateUserPassword,
+  addNewAddress,
+  updateAddress,
+  removeAddress,
 };

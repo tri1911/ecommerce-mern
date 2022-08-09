@@ -1,7 +1,12 @@
 import { Types } from "mongoose";
 import { HttpException } from "@utils/custom-errors.util";
 import generateToken from "@utils/generate-token.util";
-import { User, UserCredential, NewUserData } from "@schemas/user.schema";
+import {
+  User,
+  Address,
+  UserCredential,
+  NewUserData,
+} from "@schemas/user.schema";
 import UserModel from "@models/user.model";
 
 const userLogin = async ({ email, password }: UserCredential) => {
@@ -44,17 +49,18 @@ const getUserById = async (userId: Types.ObjectId | string) => {
   const user = await UserModel.findById(userId, {
     password: 0,
     federatedCredentials: 0,
+    role: 0,
   });
   return user;
 };
 
 const updateUserById = async (
   userId: Types.ObjectId | string,
-  userUpdate: Partial<Omit<User, "role" | "password">>
+  payload: Partial<Omit<User, "role" | "password">>
 ) => {
-  const updatedUser = await UserModel.findByIdAndUpdate(userId, userUpdate, {
+  const updatedUser = await UserModel.findByIdAndUpdate(userId, payload, {
     new: true,
-  }).select({ password: 0 });
+  }).select({ password: 0, federatedCredentials: 0, role: 0 });
   return updatedUser;
 };
 
@@ -87,6 +93,59 @@ const getAllUsers = async () => {
   return users;
 };
 
+const addNewAddress = async ({
+  userId,
+  newAddress,
+}: {
+  userId: Types.ObjectId | string;
+  newAddress: Omit<Address, "_id">;
+}) => {
+  const user = await UserModel.findById(userId);
+  if (!user) {
+    throw new HttpException("user is not found");
+  }
+  user.addresses.push(newAddress);
+  const updatedUser = await user.save();
+  return updatedUser;
+};
+
+const updateAddress = async ({
+  userId,
+  addressId,
+  payload,
+}: {
+  userId: string;
+  addressId: string;
+  payload: Partial<Address>;
+}) => {
+  const user = await UserModel.findById(userId);
+  if (!user) {
+    throw new HttpException("user is not found");
+  }
+  const address = user.addresses.id(addressId);
+  if (!address) {
+    throw new HttpException("address does not exist");
+  }
+  Object.assign(address, payload);
+  const updatedUser = await user.save();
+  return updatedUser;
+};
+
+const removeAddress = async ({
+  userId,
+  addressId,
+}: {
+  userId: string;
+  addressId: string;
+}) => {
+  const updatedUser = await UserModel.findOneAndUpdate(
+    { _id: userId, "addresses._id": addressId },
+    { $pull: { addresses: { _id: addressId } } },
+    { new: true }
+  );
+  return updatedUser;
+};
+
 export default {
   userLogin,
   userSignUp,
@@ -94,4 +153,7 @@ export default {
   updateUserById,
   updateUserPassword,
   getAllUsers,
+  addNewAddress,
+  updateAddress,
+  removeAddress,
 };

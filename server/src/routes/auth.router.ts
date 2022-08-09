@@ -4,7 +4,7 @@ import authControllers from "@controllers/auth.controller";
 
 const router = express.Router();
 
-router.post("/login", authControllers.userLogin);
+router.post("/local", authControllers.userLogin);
 router.post("/register", authControllers.userSignUp);
 
 // initiate the OpenID authentication

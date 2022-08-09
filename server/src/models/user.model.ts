@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import { model, Schema, Model } from "mongoose";
-import { User } from "@schemas/user.schema";
+import { model, Schema, Model, Types } from "mongoose";
+import { User, Address } from "@schemas/user.schema";
 
 export enum Gender {
   Male = "male",
@@ -14,13 +14,25 @@ export enum Role {
   Merchant = "merchant",
 }
 
-interface UserMethods {
+const addressSchema = new Schema<Address>({
+  fullName: { type: String, required: true },
+  phone: { type: String, required: true },
+  country: { type: String, required: true },
+  province: { type: String, required: true },
+  city: { type: String, required: true },
+  address: { type: String, required: true },
+  postalCode: { type: String, required: true },
+});
+
+// TMethodsAndOverrides
+interface UserDocumentProps {
+  addresses: Types.DocumentArray<Address>;
   matchPassword(password: string): Promise<boolean>;
 }
 
-type UserModel = Model<User, unknown, UserMethods>;
+type UserModelType = Model<User, unknown, UserDocumentProps>;
 
-const userSchema = new Schema<User, UserModel, UserMethods>(
+const userSchema = new Schema<User, UserModelType>(
   {
     email: {
       type: String,
@@ -35,6 +47,13 @@ const userSchema = new Schema<User, UserModel, UserMethods>(
       enum: Object.values(Gender),
     },
     phone: String,
+    addresses: [addressSchema],
+    shippingAddress: {
+      type: Schema.Types.ObjectId,
+    },
+    billingAddress: {
+      type: Schema.Types.ObjectId,
+    },
     password: String,
     federatedCredentials: [
       {
@@ -76,4 +95,4 @@ userSchema.set("toJSON", {
   },
 });
 
-export default model<User, UserModel>("User", userSchema);
+export default model<User, UserModelType>("User", userSchema);
