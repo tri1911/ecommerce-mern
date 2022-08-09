@@ -47,10 +47,18 @@ const addItemToCart = async ({
       // update other properties as well
       cart.items[foundIdx].title = title;
       cart.items[foundIdx].image = image;
+      cart.items[foundIdx].countInStock = countInStock;
       cart.items[foundIdx].price = price;
     } else {
       // otherwise, push new item into cart
-      cart.items.push({ productId, title, image, price, quantity });
+      cart.items.push({
+        productId,
+        title,
+        image,
+        price,
+        countInStock,
+        quantity,
+      });
     }
     const updatedCart = await cart.save();
     return updatedCart;
@@ -58,7 +66,7 @@ const addItemToCart = async ({
     // create new cart with newly added item if it does not exist
     const newCart = await CartModel.create({
       userId,
-      items: [{ productId, title, image, price, quantity }],
+      items: [{ productId, title, image, price, countInStock, quantity }],
     });
     return newCart;
   }

@@ -87,7 +87,7 @@ const removeCartItem = asyncHandler(async (req, res) => {
       productId,
     });
 
-    res.status(204).json({ updatedCart });
+    res.status(200).json({ updatedCart });
   } else {
     res
       .status(403)

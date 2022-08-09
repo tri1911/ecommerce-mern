@@ -1,6 +1,6 @@
-import BrandModel, { IBrand } from "@models/brand.model";
+import BrandModel, { Brand } from "@models/brand.model";
 
-const createNewBrand = async (newBrand: IBrand) => {
+const createNewBrand = async (newBrand: Brand) => {
   const createdBrand = await BrandModel.create(newBrand);
   return createdBrand;
 };
@@ -10,8 +10,13 @@ const getSingleBrand = async (id: string) => {
   return foundBrand;
 };
 
-const updateBrand = async (id: string, data: Partial<IBrand>) => {
-  const updatedBrand = await BrandModel.findByIdAndUpdate(id, data, {
+const getAllBrands = async () => {
+  const brands = await BrandModel.find({});
+  return brands;
+};
+
+const updateBrand = async (id: string, payload: Partial<Brand>) => {
+  const updatedBrand = await BrandModel.findByIdAndUpdate(id, payload, {
     new: true,
   });
   return updatedBrand;
@@ -24,6 +29,7 @@ const deleteBrand = async (id: string) => {
 export default {
   createNewBrand,
   getSingleBrand,
+  getAllBrands,
   updateBrand,
   deleteBrand,
 };

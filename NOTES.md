@@ -205,6 +205,7 @@
 - [Usage with TypeScript](https://redux.js.org/usage/usage-with-typescript)
 - [Error Handler in createAsyncThunk](https://redux-toolkit.js.org/api/createAsyncThunk#handling-thunk-errors)
 - [Optimize Selector](https://redux.js.org/usage/deriving-data-selectors#optimizing-selectors-with-memoization)
+- [Normalizing state shape](https://redux.js.org/usage/structuring-reducers/normalizing-state-shape)
 
 #### Redux-persist
 
@@ -404,6 +405,7 @@
 - [Security Essentials](https://restfulapi.net/security-essentials/)
 - [Auth Best Practices](https://stackoverflow.blog/2021/10/06/best-practices-for-authentication-and-authorization-for-rest-apis/)
 - [You don't need passport.js - Guide to node.js authentication](https://softwareontheroad.com/nodejs-jwt-authentication-oauth/)
+- [Node.js - Role Based Authorization Tutorial with Example API](https://jasonwatmore.com/post/2018/11/28/nodejs-role-based-authorization-tutorial-with-example-api)
 
 - [Secure Express api](https://auth0.com/blog/node-js-and-typescript-tutorial-secure-an-express-api/)
 - [Authentication with Auth0, Passportjs](https://auth0.com/blog/create-a-simple-and-secure-node-express-app/)
@@ -471,6 +473,9 @@
 - [Data Modeling for E-ecommerce Site](https://stackoverflow.com/questions/54339223/data-modelling-for-ecommerce-website-in-mongodb)
 - [Product Model with different attributes](https://www.mongodb.com/community/forums/t/ecommerce-product-custom-options-help-needed/132488)
 - [Product Model with different attributes](https://stackoverflow.com/questions/33695269/how-to-define-varying-attributes-for-a-product-system-in-mongoose-node-js)
+- [Product Catalog schema](https://dzone.com/articles/product-catalog-part-1-schema)
+  - [Part 1 - Schema Design](https://edgystuff.tumblr.com/post/91964246640/product-catalog-part-1-schema-design)
+  - [Part 2 - Product Search](https://edgystuff.tumblr.com/post/98177689640/product-catalog-part-2-product-search)
 
 #### Shopping Cart
 
@@ -490,6 +495,7 @@
 #### mongoose
 
 - [Discriminators in mongoose](https://mongoosejs.com/docs/discriminators.html)
+- [An 80/20 Guide to Mongoose Discriminators](http://thecodebarbarian.com/2015/07/24/guide-to-mongoose-discriminators)
 - [Generate slug for mongoose schema](https://stackoverflow.com/questions/59798437/how-to-generate-a-slug-everytime-an-article-is-created-and-saved-in-the-database)
   - [mongoose-slug-generator](https://www.npmjs.com/package/mongoose-slug-generator)
   - [slugify](https://github.com/simov/slugify)
@@ -508,8 +514,8 @@
 
 #### Sample Dataset
 
-- [Rich ecommerce Product Dataset](https://www.reddit.com/r/datasets/comments/9wc0sz/looking_for_a_rich_ecommerce_product_dataset/)
-- [Ecommerce Dataset](https://ganeshrajum.blogspot.com/2022/05/best-ecommerce-datasets-databases.html)
+- [Rich e-commerce Product Dataset](https://www.reddit.com/r/datasets/comments/9wc0sz/looking_for_a_rich_ecommerce_product_dataset/)
+- [E-commerce Dataset](https://ganeshrajum.blogspot.com/2022/05/best-ecommerce-datasets-databases.html)
 
 ### Shopping Cart and Checkout
 
@@ -517,7 +523,10 @@
 
 - [Model design & operations](https://learning.oreilly.com/library/view/mongodb-applied-design/9781449340056/ch05.html)
 - [Shopping Cart with no reservation](https://learnmongodbthehardway.com/schema/shoppingcartnoreservation/)
-- [Data model with mongodb](https://www.infoq.com/articles/data-model-mongodb/) -[](https://commercejs.com/docs/api/#carts)
+- [Data model with mongodb](https://www.infoq.com/articles/data-model-mongodb/)
+- [E-commerce api as reference](https://commercejs.com/docs/api/#carts)
+- [How to add product to shopping cart - Stackoverflow](https://stackoverflow.com/questions/59174763/how-to-add-product-to-shopping-cart-with-nodejs-express-and-mongoose)
+- [Building a shopping cart in node.js](https://devdojo.com/suniljoshi19/building-a-shopping-cart-in-nodejs)
 
 #### Checkout with Stripe Integration
 

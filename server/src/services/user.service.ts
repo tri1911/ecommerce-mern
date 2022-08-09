@@ -9,8 +9,13 @@ const userLogin = async ({ email, password }: UserCredential) => {
 
   if (user && (await user.matchPassword(password))) {
     const { _id, email, firstName, lastName, role } = user;
-    const token = generateToken({ sub: _id.toString() });
-    return { _id, email, firstName, lastName, role, token };
+    return {
+      _id,
+      email,
+      name: `${firstName} ${lastName}`,
+      role,
+      token: generateToken({ sub: _id.toString() }),
+    };
   } else {
     throw new HttpException("Email or password is incorrect", 400);
   }
@@ -25,8 +30,13 @@ const userSignUp = async (newUser: NewUserData) => {
     const { _id, email, firstName, lastName, role } = await UserModel.create(
       newUser
     );
-    const token = generateToken({ sub: _id.toString() });
-    return { _id, email, firstName, lastName, role, token };
+    return {
+      _id,
+      email,
+      name: `${firstName} ${lastName}`,
+      role,
+      token: generateToken({ sub: _id.toString() }),
+    };
   }
 };
 

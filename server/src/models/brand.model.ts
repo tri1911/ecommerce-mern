@@ -11,6 +11,6 @@ const brandSchema = new Schema({
   description: String,
 });
 
-export type IBrand = InferSchemaType<typeof brandSchema>;
+export type Brand = InferSchemaType<typeof brandSchema>;
 
 export default model("Brand", brandSchema);

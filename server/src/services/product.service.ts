@@ -7,7 +7,9 @@ const createNewProduct = async (newProduct: Product) => {
 };
 
 const getSingleProduct = async (id: string) => {
-  const foundProduct = await ProductModel.findById(id);
+  const foundProduct = await ProductModel.findById(id, { reservations: 0 })
+    .populate("brand", "-_id name")
+    .populate("category", "-_id name");
   return foundProduct;
 };
 

@@ -18,6 +18,7 @@ import userRouter from "@routes/user.router";
 import addressRouter from "@routes/address.router";
 import productRouter from "@routes/product.router";
 import categoryRouter from "@routes/category.router";
+import brandRouter from "@routes/brand.router";
 import cartRouter from "@routes/cart.router";
 
 /**
@@ -45,6 +46,7 @@ app.use("/api/users", userRouter);
 app.use("/api/addresses", addressRouter);
 app.use("/api/products", productRouter);
 app.use("/api/categories", categoryRouter);
+app.use("/api/brands", brandRouter);
 app.use("/api/carts", authorize(), cartRouter);
 
 app.use(errorHandler);

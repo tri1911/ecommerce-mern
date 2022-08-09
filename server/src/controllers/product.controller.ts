@@ -21,10 +21,7 @@ const getSingleProduct = asyncHandler(async (request, response) => {
   if (product) {
     response.status(200).json(product);
   } else {
-    throw new HttpException(
-      `Product with id of ${productId} is not found`,
-      404
-    );
+    throw new HttpException("product is not found", 404);
   }
 });
 
