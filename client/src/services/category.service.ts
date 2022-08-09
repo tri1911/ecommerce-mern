@@ -8,10 +8,6 @@ export interface Category {
   children?: Category[];
   ancestors?: Category[];
 }
-// interface Category {
-//   _id: string;
-//   name: string;
-// }
 
 const fetchCategoriesTree = async (maxDepth?: number) => {
   const queryParam = maxDepth ? `?maxDepth=${maxDepth}` : "";

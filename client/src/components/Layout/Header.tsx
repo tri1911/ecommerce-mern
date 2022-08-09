@@ -1,8 +1,7 @@
-import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../hooks";
-import { selectAllCartItems } from "../../slices/cartSlice";
-import { selectAllWishlistItems } from "../../slices/wishlistSlice";
+import classNames from "classnames";
+import { useAppSelector } from "hooks";
+import { selectAllWishlistItems } from "slices/wishlistSlice";
 
 function Logo() {
   return (
@@ -33,7 +32,7 @@ function SearchBar() {
   );
 }
 
-function SingleNavIcon({
+function SingleIcon({
   href,
   icon,
   label,
@@ -53,7 +52,10 @@ function SingleNavIcon({
     >
       {badgeValue !== undefined && badgeValue > 0 && (
         <span
-          className={`absolute -right-0 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs ${badgeRight}`}
+          className={classNames(
+            "absolute -right-0 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs",
+            badgeRight
+          )}
         >
           {badgeValue}
         </span>
@@ -66,33 +68,35 @@ function SingleNavIcon({
   );
 }
 
-function NavIcons() {
-  const cartItems = useAppSelector(selectAllCartItems);
-  const wishlistItems = useAppSelector(selectAllWishlistItems);
+function HeaderIcons() {
   const user = useAppSelector((state) => state.auth.user);
+  const cartItems = useAppSelector((state) => state.cart.data?.items);
+  const wishlistItems = useAppSelector(selectAllWishlistItems);
 
+  /*
   const totalQuantitiesInCart = useMemo(
-    () => cartItems.reduce((sum, item) => sum + item.quantity, 0),
+    () => cartItems && cartItems.reduce((sum, item) => sum + item.quantity, 0),
     [cartItems]
   );
+  */
 
   return (
     <div className="flex items-center space-x-4">
-      <SingleNavIcon
+      <SingleIcon
         href="/account/wishlist"
         icon="far fa-heart"
         label="Wish List"
         badgeValue={wishlistItems.length}
       />
-      <SingleNavIcon
+      <SingleIcon
         href="/cart"
         icon="fas fa-shopping-bag"
         label="Cart"
-        badgeValue={totalQuantitiesInCart}
+        badgeValue={cartItems?.length}
         badgeRight="-right-3"
       />
-      <SingleNavIcon
-        href={user ? "/account/manage" : "/login"}
+      <SingleIcon
+        href={user ? "/account/summary" : "/login"}
         icon="far fa-user"
         label={user ? "Account" : "Login"}
       />
@@ -106,7 +110,7 @@ export default function Header() {
       <section className="container flex items-center justify-between">
         <Logo />
         <SearchBar />
-        <NavIcons />
+        <HeaderIcons />
       </section>
     </header>
   );

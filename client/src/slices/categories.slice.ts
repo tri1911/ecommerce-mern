@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../app/store";
-import categoryService, { Category } from "../services/category.service";
-import { RequestStatus } from "../types";
+import { RequestStatus } from "types";
+import categoryService, { Category } from "services/category.service";
 
 interface CategoriesState {
   status: RequestStatus;
@@ -20,11 +19,11 @@ const categoriesSlice = createSlice({
       .addCase(fetchCategoriesTree.pending, () => ({
         status: "loading",
       }))
-      .addCase(fetchCategoriesTree.fulfilled, (_, { payload }) => ({
+      .addCase(fetchCategoriesTree.fulfilled, (_state, action) => ({
         status: "succeeded",
-        items: payload,
+        items: action.payload,
       }))
-      .addCase(fetchCategoriesTree.rejected, (_, action) => ({
+      .addCase(fetchCategoriesTree.rejected, (_state, action) => ({
         status: "failed",
         error: action.error.message,
       }));
@@ -39,5 +38,3 @@ export const fetchCategoriesTree = createAsyncThunk(
 );
 
 export default categoriesSlice.reducer;
-
-export const selectAllCategories = (state: RootState) => state.categories.items;

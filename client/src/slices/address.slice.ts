@@ -34,7 +34,7 @@ const addressSlice = createSlice({
       })
       .addCase(getAllAddresses.rejected, (state, { payload, error }) => {
         state.status = "failed";
-        state.error = payload?.errorMessage || error.message;
+        state.error = payload?.message || error.message;
       })
       .addCase(createAddress.fulfilled, addressesAdapter.addOne)
       .addCase(updateAddress.fulfilled, addressesAdapter.upsertOne)

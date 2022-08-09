@@ -1,46 +1,84 @@
 import axios from "axios";
-import { UserProfile } from "../types";
-import { generateConfig } from "../utils/generate-auth-config.util";
+import { generateConfig } from "utils/generate-auth-config.util";
 
-const BASE_URL = "http://localhost:3001/api/profile/";
+const baseUrl = "http://localhost:3001/api/users";
 
-const getProfileInfo = async (token: string) => {
-  const { data } = await axios.get<{ user: UserProfile }>(
-    BASE_URL,
+export interface UserProfile {
+  _id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  birthday?: string;
+  gender?: Gender;
+  avatar?: string;
+}
+
+export enum Gender {
+  Male = "male",
+  Female = "female",
+  Other = "other",
+}
+
+const getProfileInfo = async ({
+  userId,
+  token,
+}: {
+  userId: string;
+  token: string;
+}) => {
+  const {
+    data: { user },
+  } = await axios.get<{ user: UserProfile }>(
+    `${baseUrl}/${userId}`,
     generateConfig(token)
   );
-  return data.user;
+  return user;
 };
 
-const updateProfileInfo = async (
-  token: string,
-  profileUpdate: Partial<UserProfile>
-) => {
-  const { data } = await axios.put<{ updatedUser: UserProfile }>(
-    BASE_URL,
-    profileUpdate,
+const updateProfileInfo = async ({
+  userId,
+  token,
+  payload,
+}: {
+  userId: string;
+  token: string;
+  payload: Partial<UserProfile>;
+}) => {
+  const {
+    data: { updatedUser },
+  } = await axios.put<{ updatedUser: UserProfile }>(
+    `${baseUrl}/${userId}`,
+    payload,
     generateConfig(token)
   );
-  return data.updatedUser;
+  return updatedUser;
 };
 
-export interface UpdatePasswordInfo {
+export interface UpdatePasswordPayload {
   currentPassword: string;
   newPassword: string;
 }
 
-const updatePassword = async (
-  token: string,
-  passwordInfo: UpdatePasswordInfo
-) => {
-  const { data } = await axios.put<{ message: string }>(
-    `${BASE_URL}/password`,
-    passwordInfo,
+const updatePassword = async ({
+  userId,
+  token,
+  payload,
+}: {
+  userId: string;
+  token: string;
+  payload: UpdatePasswordPayload;
+}) => {
+  const {
+    data: { updatedUser },
+  } = await axios.put<{ updatedUser: UserProfile }>(
+    `${baseUrl}/${userId}/password`,
+    payload,
     generateConfig(token)
   );
-  return data.message;
+  return updatedUser;
 };
 
-const profileService = { getProfileInfo, updateProfileInfo, updatePassword };
+const profileServices = { getProfileInfo, updateProfileInfo, updatePassword };
 
-export default profileService;
+export default profileServices;

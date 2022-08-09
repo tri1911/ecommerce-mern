@@ -83,39 +83,7 @@ export type ShopDisplayMode = "grid" | "list";
 export type RequestStatus = "idle" | "loading" | "succeeded" | "failed";
 
 export interface RejectErrorPayload {
-  errorMessage: string;
-}
-
-/**
- * User & Auth
- */
-
-export enum Gender {
-  Male = "male",
-  Female = "female",
-  Other = "other",
-}
-
-export enum Role {
-  Admin = "admin",
-  Customer = "customer",
-}
-
-export interface AuthInfo {
-  _id: string;
-  name: string;
-  email: string;
-  role: Role;
-  token: string;
-}
-
-export interface UserProfile {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  birthday?: string;
-  gender?: Gender;
+  message: string;
 }
 
 /**

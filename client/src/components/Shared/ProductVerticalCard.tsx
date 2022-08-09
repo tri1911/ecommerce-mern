@@ -2,7 +2,7 @@
 // import { XCircleIcon } from "@heroicons/react/solid";
 // import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
-// import { useAddCartItem, useAddWishlistItem } from "../../hooks";
+import useShoppingCart from "../../hooks/useShoppingCart";
 // import { ProductContent, ProductImage } from "../../pages/SingleProductPage";
 import { Product } from "../../services/category.service";
 import { Fn } from "../../types";
@@ -92,17 +92,10 @@ export default function ProductVerticalCard({ product }: { product: Product }) {
   //   setIsQuickViewOpen(true);
   // }
 
-  // const { _id, title, image, price, countInStock } = product;
-
   // const { isAddedToWishlist, handleAddToWishlist } =
   //   useAddWishlistItem(product);
 
-  // const { handleAddToCart } = useAddCartItem({
-  //   item: { productId: _id, title, image, price, countInStock },
-  //   size: "m",
-  //   quantity: 1,
-  //   color: "black",
-  // });
+  const { handleAddToCart } = useShoppingCart();
 
   // NOTE: code duplication here - each product card have one modal
   return (
@@ -115,7 +108,10 @@ export default function ProductVerticalCard({ product }: { product: Product }) {
       />
       <ProductCardContent
         product={product}
-        // onAddToCartClicked={handleAddToCart}
+        onAddToCartClicked={handleAddToCart({
+          productId: product._id,
+          quantity: 1,
+        })}
       />
       {/* <Transition appear show={isQuickViewOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeQuickView}>

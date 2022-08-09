@@ -14,16 +14,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
-    // "baseUrl": "./src",
-    // "paths": {
-    //   "@components/*": ["components/*"],
-    //   "@pages/*": ["pages/*"],
-    //   "@services/*": ["services/*"],
-    //   "@slices/*": ["slices/*"],
-    //   "@types/*": ["types/*"],
-    //   "@utils/*": ["utils/*"]
-    // }
+    "jsx": "preserve",
+    "baseUrl": "src"
   },
   "include": ["src"]
 }

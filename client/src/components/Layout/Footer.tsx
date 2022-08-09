@@ -1,14 +1,6 @@
-/* Logo & Text */
-
 import { Link } from "react-router-dom";
 
-function SocialLink({ href = "#", icon }: { href?: string; icon: string }) {
-  return (
-    <Link to={href} className="text-gray-400 hover:text-gray-500">
-      <i className={icon} />
-    </Link>
-  );
-}
+/* Logo & Text */
 
 function FooterText() {
   return (
@@ -25,6 +17,14 @@ function FooterText() {
         <SocialLink icon="fab fa-linkedin-in" />
       </div>
     </div>
+  );
+}
+
+function SocialLink({ href = "#", icon }: { href?: string; icon: string }) {
+  return (
+    <Link to={href} className="text-gray-400 hover:text-gray-500">
+      <i className={icon} />
+    </Link>
   );
 }
 

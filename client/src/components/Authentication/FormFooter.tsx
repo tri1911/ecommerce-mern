@@ -12,7 +12,7 @@ export default function FormFooter({
   return (
     <p className="mt-4 text-gray-600 text-center">
       {text}{" "}
-      <Link to={href} className="text-primary">
+      <Link to={href} className="text-primary hover:underline">
         {action}
       </Link>
     </p>

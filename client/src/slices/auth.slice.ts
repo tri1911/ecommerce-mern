@@ -1,18 +1,19 @@
+import axios from "axios";
 import {
   AnyAction,
   createAsyncThunk,
   createSlice,
   ThunkAction,
 } from "@reduxjs/toolkit";
-import axios from "axios";
-import { RootState } from "../app/store";
-import authService, {
+import { RootState } from "app/store";
+import authServices, {
+  AuthInfo,
   UserCredential,
-  UserRegistrationInfo,
+  UserPayload,
   USER_AUTH_KEY,
-} from "../services/auth.service";
-import { RejectErrorPayload, RequestStatus, AuthInfo } from "../types";
-import { clearProfile } from "./profile.slice";
+} from "services/auth.service";
+import { RejectErrorPayload, RequestStatus } from "types";
+import { clearProfile } from "slices/profile.slice";
 
 /**
  * Slice Configuration
@@ -33,7 +34,6 @@ interface AuthState {
 }
 
 const defaultState = {
-  user: undefined,
   loginStatus: { status: "idle" },
   registerStatus: { status: "idle" },
 } as AuthState;
@@ -65,7 +65,7 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.loginStatus = {
           status: "failed",
-          error: action.payload?.errorMessage || action.error.message,
+          error: action.payload?.message || action.error.message,
         };
       })
       .addCase(register.pending, (state) => {
@@ -78,7 +78,7 @@ const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.registerStatus = {
           status: "failed",
-          error: action.payload?.errorMessage || action.error.message,
+          error: action.payload?.message || action.error.message,
         };
       });
   },
@@ -94,7 +94,43 @@ export const login = createAsyncThunk<
   { rejectValue: RejectErrorPayload }
 >("auth/login", async (credential, thunkApi) => {
   try {
-    return await authService.login(credential);
+    return await authServices.login(credential);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return thunkApi.rejectWithValue(
+        error.response?.data as RejectErrorPayload
+      );
+    } else {
+      throw error;
+    }
+  }
+});
+
+export const loginWithGoogleOAuth = createAsyncThunk<
+  AuthInfo,
+  undefined,
+  { rejectValue: RejectErrorPayload }
+>("auth/google", async (_arg, thunkApi) => {
+  try {
+    return await authServices.loginWithOAuth("google");
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return thunkApi.rejectWithValue(
+        error.response?.data as RejectErrorPayload
+      );
+    } else {
+      throw error;
+    }
+  }
+});
+
+export const loginWithFacebookOAuth = createAsyncThunk<
+  AuthInfo,
+  undefined,
+  { rejectValue: RejectErrorPayload }
+>("auth/facebook", async (_arg, thunkApi) => {
+  try {
+    return await authServices.loginWithOAuth("facebook");
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return thunkApi.rejectWithValue(
@@ -108,11 +144,11 @@ export const login = createAsyncThunk<
 
 export const register = createAsyncThunk<
   AuthInfo,
-  UserRegistrationInfo,
+  UserPayload,
   { rejectValue: RejectErrorPayload }
 >("auth/register", async (userData, thunkApi) => {
   try {
-    return await authService.register(userData);
+    return await authServices.register(userData);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return thunkApi.rejectWithValue(
@@ -126,10 +162,11 @@ export const register = createAsyncThunk<
 
 export const logout =
   (): ThunkAction<void, RootState, unknown, AnyAction> => (dispatch) => {
-    authService.logout();
+    authServices.logout();
     dispatch(resetAuthState());
     dispatch(clearProfile());
   };
 
 export const { resetAuthState } = authSlice.actions;
+
 export default authSlice.reducer;

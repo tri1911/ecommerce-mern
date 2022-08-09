@@ -1,8 +1,21 @@
 import axios from "axios";
-import { AuthInfo } from "../types";
 
-const BASE_URL = "http://localhost:3001/api/auth/";
+const baseUrl = "http://localhost:3001/api/auth";
 export const USER_AUTH_KEY = "loggedInUser";
+
+export enum Role {
+  Admin = "admin",
+  Customer = "customer",
+  Merchant = "merchant",
+}
+
+export interface AuthInfo {
+  _id: string;
+  email: string;
+  name: string;
+  role: Role;
+  token: string;
+}
 
 export interface UserCredential {
   email: string;
@@ -10,12 +23,22 @@ export interface UserCredential {
 }
 
 const login = async (credential: UserCredential): Promise<AuthInfo> => {
-  const { data } = await axios.post<AuthInfo>(BASE_URL + "login", credential);
-  localStorage.setItem(USER_AUTH_KEY, JSON.stringify(data));
-  return data;
+  const {
+    data: { user },
+  } = await axios.post<{ user: AuthInfo }>(`${baseUrl}/local`, credential);
+  localStorage.setItem(USER_AUTH_KEY, JSON.stringify(user));
+  return user;
 };
 
-export interface UserRegistrationInfo {
+const loginWithOAuth = async (provider: "google" | "facebook") => {
+  const {
+    data: { user },
+  } = await axios.get<{ user: AuthInfo }>(`${baseUrl}/${provider}`);
+  localStorage.setItem(USER_AUTH_KEY, JSON.stringify(user));
+  return user;
+};
+
+export interface UserPayload {
   firstName: string;
   lastName: string;
   email: string;
@@ -23,16 +46,21 @@ export interface UserRegistrationInfo {
   password: string;
 }
 
-const register = async (newUser: UserRegistrationInfo): Promise<AuthInfo> => {
-  const { data } = await axios.post<AuthInfo>(BASE_URL + "register", newUser);
-  localStorage.setItem(USER_AUTH_KEY, JSON.stringify(data));
-  return data;
+const register = async (newUser: UserPayload): Promise<AuthInfo> => {
+  const {
+    data: { createdUser },
+  } = await axios.post<{ createdUser: AuthInfo }>(
+    `${baseUrl}/register`,
+    newUser
+  );
+  localStorage.setItem(USER_AUTH_KEY, JSON.stringify(createdUser));
+  return createdUser;
 };
 
 const logout = () => {
   localStorage.removeItem(USER_AUTH_KEY);
 };
 
-const authService = { login, register, logout };
+const authServices = { login, loginWithOAuth, register, logout };
 
-export default authService;
+export default authServices;

@@ -44,32 +44,18 @@ const productsSlice = createSlice({
       .addCase(fetchProductsByCategory.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(
-        fetchProductsByCategory.fulfilled,
-        (
-          state,
-          {
-            payload: {
-              products,
-              metadata,
-              categories,
-              brands,
-              sizes,
-              colors,
-              price,
-            },
-          }
-        ) => {
-          state.status = "succeeded";
-          state.metadata = metadata[0];
-          state.categories = categories;
-          state.brands = brands;
-          state.sizes = sizes;
-          state.colors = colors;
-          state.price = price[0];
-          productsAdapter.setAll(state, products);
-        }
-      );
+      .addCase(fetchProductsByCategory.fulfilled, (state, action) => {
+        const { products, metadata, categories, brands, sizes, colors, price } =
+          action.payload;
+        state.status = "succeeded";
+        state.metadata = metadata[0];
+        state.categories = categories;
+        state.brands = brands;
+        state.sizes = sizes;
+        state.colors = colors;
+        state.price = price[0];
+        productsAdapter.setAll(state, products);
+      });
   },
 });
 

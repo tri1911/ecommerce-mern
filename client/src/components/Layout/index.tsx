@@ -1,9 +1,9 @@
-import React from "react";
-import Header from "./Header";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
+import { ReactNode } from "react";
+import Header from "components/Layout/Header";
+import Navbar from "components/Layout/Navbar";
+import Footer from "components/Layout/Footer";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div>
       <Header />
@@ -12,6 +12,4 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <Footer />
     </div>
   );
-};
-
-export default Layout;
+}

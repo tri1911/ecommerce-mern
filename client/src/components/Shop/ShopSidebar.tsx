@@ -23,9 +23,8 @@ const SubCategoriesList = () => {
       </h3>
       <div className="space-y-2">
         {subcategories?.map(({ _id, name }) => (
-          <div>
+          <div key={_id}>
             <Link
-              key={_id}
               to={`/categories/${_id}`}
               className="text-gray-600 hover:text-primary"
             >

@@ -1,25 +1,25 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import productsReducer from "../slices/products.slice";
-import cartReducer from "../slices/cartSlice";
-import wishlistReducer from "../slices/wishlistSlice";
-import authReducer from "../slices/auth.slice";
-import productReducer from "../slices/product.slice";
-import profileReducer from "../slices/profile.slice";
-import addressesReducer from "../slices/address.slice";
-import categoriesReducer from "../slices/categories.slice";
-import categoryReducer from "../slices/category.slice";
+import authReducer from "slices/auth.slice";
+import profileReducer from "slices/profile.slice";
+import addressesReducer from "slices/address.slice";
+import categoriesReducer from "slices/categories.slice";
+import categoryReducer from "slices/category.slice";
+import productsReducer from "slices/products.slice";
+import productReducer from "slices/product.slice";
+import cartReducer from "slices/cart.slice";
+import wishlistReducer from "slices/wishlistSlice";
 
 export const store = configureStore({
   reducer: {
-    products: productsReducer,
-    product: productReducer,
-    categories: categoriesReducer,
-    category: categoryReducer,
-    cart: cartReducer,
-    wishlist: wishlistReducer,
     auth: authReducer,
     profile: profileReducer,
     addresses: addressesReducer,
+    categories: categoriesReducer,
+    category: categoryReducer,
+    products: productsReducer,
+    product: productReducer,
+    cart: cartReducer,
+    wishlist: wishlistReducer,
   },
 });
 

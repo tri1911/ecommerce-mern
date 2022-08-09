@@ -1,10 +1,11 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { RootState } from "../app/store";
-import profileService, {
-  UpdatePasswordInfo,
-} from "../services/profile.service";
-import { RejectErrorPayload, UserProfile } from "../types";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "app/store";
+import profileServices, {
+  UserProfile,
+  UpdatePasswordPayload,
+} from "services/profile.service";
+import { RejectErrorPayload } from "types";
 
 interface ProfileState {
   data?: UserProfile;
@@ -24,11 +25,11 @@ const profileSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProfileInfo.fulfilled, (_, { payload }) => ({
-        data: payload,
+      .addCase(fetchProfileInfo.fulfilled, (_state, action) => ({
+        data: action.payload,
       }))
-      .addCase(updateProfile.fulfilled, (_, { payload }) => ({
-        data: payload,
+      .addCase(updateProfile.fulfilled, (_state, action) => ({
+        data: action.payload,
       }));
   },
 });
@@ -45,7 +46,8 @@ export const fetchProfileInfo = createAsyncThunk<
   try {
     const loggedUser = getState().auth.user;
     if (loggedUser) {
-      return await profileService.getProfileInfo(loggedUser.token);
+      const { _id: userId, token } = loggedUser;
+      return await profileServices.getProfileInfo({ userId, token });
     } else {
       throw new Error("Login is required before fetching profile");
     }
@@ -62,14 +64,16 @@ export const updateProfile = createAsyncThunk<
   UserProfile,
   Partial<UserProfile>,
   { state: RootState; rejectValue: RejectErrorPayload }
->("profile/update", async (profileUpdate, { getState, rejectWithValue }) => {
+>("profile/update", async (payload, { getState, rejectWithValue }) => {
   try {
     const loggedUser = getState().auth.user;
     if (loggedUser) {
-      return await profileService.updateProfileInfo(
-        loggedUser.token,
-        profileUpdate
-      );
+      const { _id: userId, token } = loggedUser;
+      return await profileServices.updateProfileInfo({
+        userId,
+        token,
+        payload,
+      });
     } else {
       throw new Error("Login is required before updating profile information");
     }
@@ -83,31 +87,26 @@ export const updateProfile = createAsyncThunk<
 });
 
 export const updatePassword = createAsyncThunk<
-  string,
-  UpdatePasswordInfo,
+  UserProfile,
+  UpdatePasswordPayload,
   { state: RootState; rejectValue: RejectErrorPayload }
->(
-  "profile/updatePassword",
-  async (passwordUpdate, { getState, rejectWithValue }) => {
-    try {
-      const loggedUser = getState().auth.user;
-      if (loggedUser) {
-        return await profileService.updatePassword(
-          loggedUser.token,
-          passwordUpdate
-        );
-      } else {
-        throw new Error("Login is required before updating password");
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data as RejectErrorPayload);
-      } else {
-        throw error;
-      }
+>("profile/updatePassword", async (payload, { getState, rejectWithValue }) => {
+  try {
+    const loggedUser = getState().auth.user;
+    if (loggedUser) {
+      const { _id: userId, token } = loggedUser;
+      return await profileServices.updatePassword({ userId, token, payload });
+    } else {
+      throw new Error("Login is required before updating password");
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return rejectWithValue(error.response?.data as RejectErrorPayload);
+    } else {
+      throw error;
     }
   }
-);
+});
 
 export const { clearProfile } = profileSlice.actions;
 export default profileSlice.reducer;
