@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "hooks";
-import { fetchProfileInfo } from "slices/profile.slice";
+import { fetchUserProfile } from "slices/profile.slice";
 import NotificationMessage from "components/Shared/NotificationMessage";
+import { Address } from "services/user.service";
 
 export function InfoCard({
   title,
@@ -47,7 +48,7 @@ function PersonalInfo() {
 
   useEffect(() => {
     if (!profileInfo) {
-      dispatch(fetchProfileInfo())
+      dispatch(fetchUserProfile())
         .unwrap()
         .catch((error) => {
           setErrorMessage(error.errorMessage || error.message);
@@ -76,34 +77,46 @@ function PersonalInfo() {
   );
 }
 
-function ShippingAddress() {
+function AddressCard({ userAddress }: { userAddress?: Address }) {
+  if (!userAddress) {
+    return null;
+  }
+
+  const { fullName, address, city, province, country, phone } = userAddress;
+
   return (
     <InfoCard title="Shipping Address" href="/account/address">
-      <h4 className="text-gray-700 font-medium">Elliot Ho</h4>
-      <p className="text-gray-800">5572 Wales Street</p>
-      <p className="text-gray-800">Vancouver, BC, Canada</p>
-      <p className="text-gray-800">(123) 456-789</p>
-    </InfoCard>
-  );
-}
-
-function BillingAddress() {
-  return (
-    <InfoCard title="Billing Address" href="/account/address">
-      <h4 className="text-gray-700 font-medium">Elliot Ho</h4>
-      <p className="text-gray-800">5572 Wales Street</p>
-      <p className="text-gray-800">Vancouver, BC, Canada</p>
-      <p className="text-gray-800">(123) 456-789</p>
+      <h4 className="text-gray-700 font-medium">{fullName}</h4>
+      <p className="text-gray-800">{address}</p>
+      <p className="text-gray-800">
+        {city}, {province}, {country}
+      </p>
+      <p className="text-gray-800">{phone}</p>
     </InfoCard>
   );
 }
 
 export default function AccountInfo() {
+  const userProfile = useAppSelector((state) => state.profile.data);
+
+  let shippingAddress, billingAddress;
+
+  if (userProfile) {
+    shippingAddress = userProfile.addresses.find(
+      (address) => address._id === userProfile.shippingAddress
+    );
+    billingAddress = userProfile.billingAddress
+      ? userProfile.addresses.find(
+          (address) => address._id === userProfile.billingAddress
+        )
+      : shippingAddress;
+  }
+
   return (
     <div className="grid md:grid-cols-3 gap-4">
       <PersonalInfo />
-      <ShippingAddress />
-      <BillingAddress />
+      <AddressCard userAddress={shippingAddress} />
+      <AddressCard userAddress={billingAddress} />
     </div>
   );
 }

@@ -1,31 +1,20 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "hooks";
-import {
-  deleteAddress,
-  getAllAddresses,
-  selectAddressesRequestError,
-  selectAddressesRequestStatus,
-  selectAllAddresses,
-  updateAddress,
-} from "slices/address.slice";
-import { Address } from "types";
 import { PlusIcon } from "@heroicons/react/outline";
 import { CheckCircleIcon } from "@heroicons/react/solid";
-import NotificationMessage from "components/Shared/NotificationMessage";
-import Spinner from "components/Shared/Spinner";
+import { useAppDispatch, useAppSelector } from "hooks";
+import { Address } from "services/user.service";
+import { removeAddress, updateProfile } from "slices/profile.slice";
 
-function AddressItem({
+function AddressCard({
   address: {
-    id,
-    phone,
+    _id,
     fullName,
+    phone,
     country,
     province,
     city,
     address,
     postalCode,
-    isDefault,
   },
   onRemoveAddress,
   onSetAsDefault,
@@ -34,6 +23,11 @@ function AddressItem({
   onRemoveAddress?: React.MouseEventHandler<HTMLButtonElement>;
   onSetAsDefault?: React.MouseEventHandler<HTMLButtonElement>;
 }) {
+  const userShippingAddress = useAppSelector(
+    (state) => state.profile.data?.shippingAddress
+  );
+  const isDefault = userShippingAddress && _id === userShippingAddress;
+
   return (
     <div className="flex flex-col justify-between rounded bg-white shadow border">
       <div className="divide-y">
@@ -58,7 +52,7 @@ function AddressItem({
 
       <div className="px-3 pb-2 pt-10 text-xs space-x-2 divide-x text-blue-500">
         <Link
-          to={`/account/address/edit?id=${id}`}
+          to={`/account/address/edit?id=${_id}`}
           className="hover:text-orange-400 hover:underline"
         >
           Edit
@@ -82,7 +76,7 @@ function AddressItem({
   );
 }
 
-function AddAddressItem() {
+function AddItem() {
   return (
     <div className="flex justify-center items-center border-2 border-dashed border-gray-300 rounded bg-white shadow divide-y">
       <Link to="/account/address/add" className="p-14">
@@ -96,43 +90,45 @@ function AddAddressItem() {
 }
 
 export default function AddressesList() {
-  const addresses = useAppSelector(selectAllAddresses);
-  const addressesRequestStatus = useAppSelector(selectAddressesRequestStatus);
-  const addressesError = useAppSelector(selectAddressesRequestError);
+  // const addresses = useAppSelector(selectAllAddresses);
+  // const addressesRequestStatus = useAppSelector(selectAddressesRequestStatus);
+  // const addressesError = useAppSelector(selectAddressesRequestError);
+
+  // useEffect(() => {
+  //   if (addressesRequestStatus === "idle") {
+  //     dispatch(getAllAddresses());
+  //   }
+  // }, [addressesRequestStatus, dispatch]);
+
+  const addresses = useAppSelector((state) => state.profile.data?.addresses);
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (addressesRequestStatus === "idle") {
-      dispatch(getAllAddresses());
-    }
-  }, [addressesRequestStatus, dispatch]);
-
   const handleRemoveAddress = (id: string) => () => {
-    dispatch(deleteAddress(id));
+    dispatch(removeAddress(id));
   };
 
   const handleSetDefault = (id: string) => () => {
-    dispatch(updateAddress({ id, isDefault: true }));
+    dispatch(updateProfile({ shippingAddress: id }));
   };
 
-  if (addressesRequestStatus === "loading") {
-    return <Spinner />;
-  } else if (addressesError) {
-    return <NotificationMessage variant="error" text={addressesError} />;
-  } else {
-    return (
-      <div className="grid md:grid-cols-3 gap-4">
-        <AddAddressItem />
-        {addresses.map((address) => (
-          <AddressItem
-            key={address.id}
-            address={address}
-            onRemoveAddress={handleRemoveAddress(address.id)}
-            onSetAsDefault={handleSetDefault(address.id)}
-          />
-        ))}
-      </div>
-    );
-  }
+  // if (addressesRequestStatus === "loading") {
+  //   return <Spinner />;
+  // } else if (addressesError) {
+  //   return <NotificationMessage variant="error" text={addressesError} />;
+  // } else {
+  return (
+    <div className="grid md:grid-cols-3 gap-4">
+      <AddItem />
+      {addresses?.map((address) => (
+        <AddressCard
+          key={address._id}
+          address={address}
+          onRemoveAddress={handleRemoveAddress(address._id)}
+          onSetAsDefault={handleSetDefault(address._id)}
+        />
+      ))}
+    </div>
+  );
+  // }
 }

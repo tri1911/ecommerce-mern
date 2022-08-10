@@ -2,15 +2,16 @@ import { useState } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useAppDispatch } from "hooks";
+import { Address } from "services/user.service";
 import { CITIES, COUNTRIES, PROVINCES } from "utils/constants";
-import { createAddress } from "slices/address.slice";
-import { Address } from "types";
+import { addNewAddress } from "slices/profile.slice";
 import CheckBox from "components/Form/CheckBox";
 import Select from "components/Form/Select";
 import TextInput from "components/Form/TextInput";
 import NotificationMessage from "components/Shared/NotificationMessage";
 
 type Message = { type: "success" | "error"; text: string };
+type AddressAddFormValues = Omit<Address, "_id"> & { isDefault: boolean };
 
 export default function AddressAddForm() {
   const [isSaving, setIsSaving] = useState(false);
@@ -52,17 +53,17 @@ export default function AddressAddForm() {
 
   return (
     <div className="shadow rounded px-6 pt-5 pb-7">
-      <Formik<Omit<Address, "id">>
+      <Formik<AddressAddFormValues>
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values, { resetForm }) => {
+        onSubmit={({ isDefault, ...newAddress }, { resetForm }) => {
           setIsSaving(true);
-          dispatch(createAddress(values))
+          dispatch(addNewAddress({ newAddress, isDefault }))
             .unwrap()
             .then((created) => {
               showMessage({
                 type: "success",
-                text: `Successfully create ${created.fullName}'s address`,
+                text: `Successfully create ${created.firstName}'s address`,
               });
               resetForm();
             })
@@ -70,7 +71,7 @@ export default function AddressAddForm() {
               console.error(error);
               showMessage({
                 type: "error",
-                text: error.errorMessage || error.message,
+                text: error.message,
               });
             })
             .finally(() => {

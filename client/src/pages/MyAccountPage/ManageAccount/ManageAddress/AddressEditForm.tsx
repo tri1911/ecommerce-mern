@@ -1,33 +1,47 @@
-import { Form, Formik } from "formik";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { useAppDispatch, useAppSelector } from "../../../../hooks";
-import { CITIES, COUNTRIES, PROVINCES } from "../../../../utils/constants";
-import {
-  selectAddressById,
-  updateAddress,
-} from "../../../../slices/address.slice";
-import { Address } from "../../../../types";
-import CheckBox from "../../../../components/Form/CheckBox";
-import Select from "../../../../components/Form/Select";
-import TextInput from "../../../../components/Form/TextInput";
-import NotificationMessage from "../../../../components/Shared/NotificationMessage";
+import { useAppDispatch, useAppSelector } from "hooks";
+import { CITIES, COUNTRIES, PROVINCES } from "utils/constants";
+import { Address } from "services/user.service";
+import { updateAddress } from "slices/profile.slice";
+// import {
+//   selectAddressById,
+//   updateAddress,
+// } from "slices/address.slice";
+import CheckBox from "components/Form/CheckBox";
+import Select from "components/Form/Select";
+import TextInput from "components/Form/TextInput";
+import NotificationMessage from "components/Shared/NotificationMessage";
 
 type Message = { type: "success" | "error"; text: string };
-type AddressEditFormValues = Partial<Address>;
+type AddressEditFormValues = Partial<Address> & {
+  isDefault: boolean;
+};
 
 export default function AddressEditForm() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [message, setMessage] = useState<Message | undefined>(undefined);
 
   const [searchParams] = useSearchParams();
-
   const addressId = searchParams.get("id")!;
 
-  const address = useAppSelector((state) =>
-    selectAddressById(state, addressId)
-  );
+  // const address = useAppSelector((state) =>
+  //   selectAddressById(state, addressId)
+  // );
+
+  let address,
+    isDefault = false;
+  const userProfile = useAppSelector((state) => state.profile.data);
+  if (userProfile) {
+    address = userProfile.addresses.find(
+      (address) => address._id === addressId
+    );
+    isDefault =
+      userProfile.shippingAddress !== undefined &&
+      userProfile.shippingAddress === addressId;
+  }
 
   const dispatch = useAppDispatch();
 
@@ -39,7 +53,7 @@ export default function AddressEditForm() {
     province: address?.province,
     country: address?.country,
     postalCode: address?.postalCode,
-    isDefault: address?.isDefault,
+    isDefault,
   };
 
   const phoneRegExp =
@@ -68,20 +82,20 @@ export default function AddressEditForm() {
       <Formik<AddressEditFormValues>
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
+        onSubmit={({ isDefault, ...addressUpdate }) => {
           setIsUpdating(true);
-          dispatch(updateAddress({ id: addressId, ...values }))
+          dispatch(updateAddress({ addressId, addressUpdate, isDefault }))
             .unwrap()
             .then((updated) => {
               showMessage({
                 type: "success",
-                text: `Successfully update ${updated.fullName}'s address`,
+                text: `Successfully update ${updated.firstName}'s address`,
               });
             })
             .catch((error) => {
               showMessage({
                 type: "error",
-                text: error.errorMessage || error.message,
+                text: error.message,
               });
             })
             .finally(() => {

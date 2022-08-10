@@ -78,13 +78,14 @@ const addNewAddress = asyncHandler(async (req, res) => {
   const {
     user: currentUser,
     params: { id },
-    body,
+    body: { newAddress, isDefault },
   } = userSchemas.addNewAddress.parse(req);
 
   if (id === currentUser._id.toString() || currentUser.role === Role.Admin) {
     const updatedUser = await userServices.addNewAddress({
       userId: id,
-      newAddress: body,
+      newAddress,
+      isDefault,
     });
     res.status(201).json({ updatedUser });
   } else {
@@ -98,15 +99,17 @@ const updateAddress = asyncHandler(async (req, res) => {
   const {
     user: currentUser,
     params: { id, addressId },
-    body,
+    body: { addressUpdate, isDefault },
   } = userSchemas.updateAddress.parse(req);
 
   if (id === currentUser._id.toString() || currentUser.role === Role.Admin) {
     const updatedUser = await userServices.updateAddress({
       userId: id,
       addressId,
-      payload: body,
+      addressUpdate,
+      isDefault,
     });
+
     res.status(201).json({ updatedUser });
   } else {
     res

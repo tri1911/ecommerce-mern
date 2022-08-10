@@ -56,7 +56,7 @@ const getUserById = async (userId: Types.ObjectId | string) => {
 
 const updateUserById = async (
   userId: Types.ObjectId | string,
-  payload: Partial<Omit<User, "role" | "password">>
+  payload: Partial<Omit<User, "role" | "password" | "federatedCredentials">>
 ) => {
   const updatedUser = await UserModel.findByIdAndUpdate(userId, payload, {
     new: true,
@@ -96,15 +96,21 @@ const getAllUsers = async () => {
 const addNewAddress = async ({
   userId,
   newAddress,
+  isDefault,
 }: {
   userId: Types.ObjectId | string;
   newAddress: Omit<Address, "_id">;
+  isDefault?: boolean;
 }) => {
   const user = await UserModel.findById(userId);
   if (!user) {
     throw new HttpException("user is not found");
   }
-  user.addresses.push(newAddress);
+  const newId = new Types.ObjectId();
+  user.addresses.push({ _id: newId, ...newAddress });
+  if (isDefault) {
+    user.shippingAddress = newId;
+  }
   const updatedUser = await user.save();
   return updatedUser;
 };
@@ -112,11 +118,13 @@ const addNewAddress = async ({
 const updateAddress = async ({
   userId,
   addressId,
-  payload,
+  addressUpdate,
+  isDefault,
 }: {
   userId: string;
   addressId: string;
-  payload: Partial<Address>;
+  addressUpdate: Partial<Address>;
+  isDefault?: boolean;
 }) => {
   const user = await UserModel.findById(userId);
   if (!user) {
@@ -126,7 +134,16 @@ const updateAddress = async ({
   if (!address) {
     throw new HttpException("address does not exist");
   }
-  Object.assign(address, payload);
+  Object.assign(address, addressUpdate);
+  if (isDefault) {
+    user.shippingAddress = address._id;
+  } else if (
+    user.shippingAddress &&
+    addressId === user.shippingAddress.toString()
+  ) {
+    // update this address is not default shipping address
+    user.shippingAddress = undefined;
+  }
   const updatedUser = await user.save();
   return updatedUser;
 };

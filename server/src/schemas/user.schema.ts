@@ -138,13 +138,19 @@ const updateUserPassword = z.object({
 const addNewAddress = z.object({
   user: userInRequestSchema,
   params: z.object({ id: z.string() }),
-  body: addressSchema,
+  body: z.object({
+    newAddress: addressSchema,
+    isDefault: z.boolean().optional(),
+  }),
 });
 
 const updateAddress = z.object({
   user: userInRequestSchema,
   params: z.object({ id: z.string(), addressId: z.string() }),
-  body: addressSchema.partial(),
+  body: z.object({
+    addressUpdate: addressSchema.partial(),
+    isDefault: z.boolean().optional(),
+  }),
 });
 
 const removeAddress = z.object({

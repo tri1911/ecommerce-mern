@@ -3,10 +3,15 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from "hooks";
 import { updateProfile } from "slices/profile.slice";
-import { Gender, UserProfile } from "services/profile.service";
+import { Gender, User } from "services/user.service";
 import NotificationMessage from "components/Shared/NotificationMessage";
 import TextInput from "components/Form/TextInput";
 import Select from "components/Form/Select";
+
+type ProfileEditValues = Pick<
+  User,
+  "firstName" | "lastName" | "birthday" | "gender" | "email" | "phone"
+>;
 
 export default function ProfileEditForm() {
   const [isUpdating, setIsUpdating] = useState(false);
@@ -20,7 +25,7 @@ export default function ProfileEditForm() {
   const initialValues = {
     firstName: profileInfo?.firstName ?? "",
     lastName: profileInfo?.lastName ?? "",
-    birthday: profileInfo?.birthday?.split("T")[0],
+    birthday: profileInfo?.birthday?.split("T")[0] ?? "",
     gender: profileInfo?.gender,
     email: profileInfo?.email ?? "",
     phone: profileInfo?.phone ?? "",
@@ -47,7 +52,7 @@ export default function ProfileEditForm() {
 
   return (
     <div className="shadow rounded px-6 pt-5 pb-7">
-      <Formik<Omit<UserProfile, "_id">>
+      <Formik<ProfileEditValues>
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={async (values) => {

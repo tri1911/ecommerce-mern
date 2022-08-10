@@ -15,7 +15,6 @@ import connectDB from "configs/mongoose";
 import passportSetup from "configs/passport";
 import authRouter from "@routes/auth.router";
 import userRouter from "@routes/user.router";
-import addressRouter from "@routes/address.router";
 import productRouter from "@routes/product.router";
 import categoryRouter from "@routes/category.router";
 import brandRouter from "@routes/brand.router";
@@ -43,7 +42,6 @@ passportSetup();
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
-app.use("/api/addresses", addressRouter);
 app.use("/api/products", productRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/brands", brandRouter);
