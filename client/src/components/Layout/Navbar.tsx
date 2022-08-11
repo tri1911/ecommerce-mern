@@ -102,7 +102,6 @@ function NavItems() {
     <div className="flex items-center justify-between flex-grow pl-12">
       <div className="flex items-center space-x-6 text-base capitalize">
         <NavItem href="/" text="Home" />
-        <NavItem href="/shop" text="Shop" />
         <NavItem href="/track-order" text="Track Order" />
         <NavItem href="/about" text="About us" />
         <NavItem href="/contact" text="Contact us" />

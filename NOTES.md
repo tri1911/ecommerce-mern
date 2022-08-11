@@ -11,7 +11,16 @@
 - [React App Architecture](https://blog.openreplay.com/react-architecture-patterns-for-your-projects)
 - [Better Express Routing for Node.js](https://caffeinecoding.com/better-express-routing-for-nodejs/)
 
+#### React Folder Structure
+
+- [React Structure](https://reactjs.org/docs/faq-structure.html)
+  - [Atomic Web Design](https://bradfrost.com/blog/post/atomic-web-design/)
+- [React Folder Structure](https://profy.dev/article/react-folder-structure)
+- [React architecture directory structure](https://www.taniarascia.com/react-architecture-directory-structure/)
+
 ### Miscellaneous
+
+- [re-export default imports](https://stackoverflow.com/questions/39999282/re-export-default-in-es-6-modules)
 
 #### Node.js config
 
@@ -29,6 +38,7 @@
 - [Path mapping in TypeScript](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping)
 - [Fix Issue with ts-node-dev](https://medium.com/@fmoessle/typescript-paths-with-ts-node-ts-node-dev-and-jest-671deacf6428)
 - [Absolute imports in create-react-app project](https://create-react-app.dev/docs/importing-a-component/#absolute-imports)
+- [Fix the issue absolute imports not work in create-react-app](https://plusreturn.com/blog/how-to-configure-a-path-alias-in-a-react-typescript-app-for-cleaner-imports/)
 
 ### Questions
 
@@ -61,13 +71,14 @@
 - [Bradtraversy](https://github.com/bradtraversy/proshop_mern)
 - [Mern E-Commerce Example](https://mern-store-80202.herokuapp.com/)
 
-### To-learn deeper (later)
+### To-learn
 
-- React Router v6
-- Redux toolkit tutorials
-- [Formik](https://formik.org/docs/overview)
-- MongoDB & mongoose
-- React Bootstrap?
+1. [Storybook](https://storybook.js.org/tutorials/)
+2. Redux Usage Guides
+3. [Formik](https://formik.org/docs/overview)
+4. React Router v6
+5. MongoDB & mongoose
+6. React Bootstrap?
 
 ### To-Read
 
@@ -534,16 +545,27 @@
 - [How to add product to shopping cart - Stackoverflow](https://stackoverflow.com/questions/59174763/how-to-add-product-to-shopping-cart-with-nodejs-express-and-mongoose)
 - [Building a shopping cart in node.js](https://devdojo.com/suniljoshi19/building-a-shopping-cart-in-nodejs)
 
-#### Checkout with Stripe Integration
-
-- [Stripe Payment Integration - React and Node.js E-Commerce](https://www.youtube.com/watch?v=72iEz5iopqQ)
-
 #### Paypal Integration
 
 - [Standard payments with JS frameworks](https://developer.paypal.com/docs/checkout/standard/customize/single-page-app/)
 - [react-paypal-js](https://www.npmjs.com/package/@paypal/react-paypal-js)
 - [tutorial](https://www.youtube.com/watch?v=AGDaLOawJSc)
 - [examples](https://paypal.github.io/react-paypal-js/?path=/docs/example-paypalbuttons--default)
+
+#### Stripe Integration
+
+- [Stripe.js documentations](https://stripe.com/docs/js)
+- [Stripe Node github](https://github.com/stripe/stripe-node)
+- [Stripe Sample](https://github.com/stripe-samples/accept-a-payment/blob/main/custom-payment-flow/server/node/server.js#L74)
+- [Tutorial - Accept a card payment with React Stripe.js](https://www.youtube.com/watch?v=IhvtIbfDZJI)
+  - [Stripe Advocate](https://github.com/cjavilla-stripe)
+- [Stripe API](https://stripe.com/docs/api/versioning)
+- [Stripe webhook](https://dashboard.stripe.com/webhooks)
+  - [Webhook guidelines](https://stripe.com/docs/webhooks/quickstart)
+- [Custom checkout flows with Order api](https://stripe.com/docs/orders)
+  - [Order api](https://stripe.com/docs/api/orders_v2)
+  - [Quick Start](https://stripe.com/docs/orders/quickstart)
+- [Stripe Pre-built Checkout Quick Start](https://stripe.com/docs/checkout/quickstart)
 
 ### Libraries
 

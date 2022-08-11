@@ -33,18 +33,18 @@ export default function CartDrawer() {
     >
       <section className="mt-6 flex-1 px-4 sm:px-6">
         {cartItems?.map((item) => (
-          <div key={item.productId} className="flex mb-4">
-            <div className="shrink-0 w-20 h-full rounded-sm overflow-hidden">
+          <div key={item.productId} className="flex mb-5">
+            <div className="shrink-0 w-24 h-full rounded-sm overflow-hidden">
               <img
                 src={item.image}
                 alt="product thumbnail"
                 className="w-full h-full"
               />
             </div>
-            <div className="grow ml-3">
+            <div className="grow ml-3 space-y-1">
               <Link
                 to={`/products/${item.productId}`}
-                className="block mb-1 font-roboto text-lg font-medium text-gray-700 hover:text-primary transition"
+                className="block font-roboto text-lg font-medium text-gray-700 hover:text-primary transition"
                 onClick={closeCartModal}
               >
                 {item.title}
