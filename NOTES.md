@@ -469,7 +469,6 @@
 
 - [Jira](https://developer.atlassian.com/cloud/jira/software/rest/intro/)
 - [Notion](https://developers.notion.com/reference/intro)
-- [Fabric](https://knowledgebase.fabric.inc/docs/openapi/oms/reference/#tag/Cart)
 - [Shopify](https://shopify.dev/api/ajax/reference/cart)
 
 ### Validation (for requests)
@@ -544,6 +543,7 @@
 - [E-commerce api as reference](https://commercejs.com/docs/api/#carts)
 - [How to add product to shopping cart - Stackoverflow](https://stackoverflow.com/questions/59174763/how-to-add-product-to-shopping-cart-with-nodejs-express-and-mongoose)
 - [Building a shopping cart in node.js](https://devdojo.com/suniljoshi19/building-a-shopping-cart-in-nodejs)
+- [Amazon Items reservation](https://sellercentral.amazon.com/forums/t/are-items-added-to-customers-cart-removed-from-inventory-before-check-out/4880)
 
 #### Paypal Integration
 
@@ -562,10 +562,17 @@
 - [Stripe API](https://stripe.com/docs/api/versioning)
 - [Stripe webhook](https://dashboard.stripe.com/webhooks)
   - [Webhook guidelines](https://stripe.com/docs/webhooks/quickstart)
+  - [Handle verification outcomes](https://stripe.com/docs/identity/handle-verification-outcomes)
 - [Custom checkout flows with Order api](https://stripe.com/docs/orders)
   - [Order api](https://stripe.com/docs/api/orders_v2)
   - [Quick Start](https://stripe.com/docs/orders/quickstart)
 - [Stripe Pre-built Checkout Quick Start](https://stripe.com/docs/checkout/quickstart)
+  - [Redirect to Checkout at front-end](https://stripe.com/docs/js/checkout)
+- [Expand line_items for checkout session response](https://stripe.com/docs/videos/developer-foundations?video=expand)
+
+#### Reference APIs
+
+- [Fabric](https://knowledgebase.fabric.inc/docs/openapi/checkout_v2/reference/)
 
 ### Libraries
 

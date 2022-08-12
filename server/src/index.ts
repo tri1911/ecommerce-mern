@@ -20,6 +20,9 @@ import categoryRouter from "@routes/category.router";
 import brandRouter from "@routes/brand.router";
 import cartRouter from "@routes/cart.router";
 
+import stripeWithPaymentIntent from "@routes/stripe/payment-intent.router";
+import stripeCheckout from "@routes/stripe/checkout.router";
+
 /**
  * App Variables
  */
@@ -36,7 +39,15 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(helmet());
 app.use(cors());
-app.use(express.json());
+
+// Use JSON parser for all non-webhook routes
+app.use((req, res, next) => {
+  if (req.originalUrl === "/api/stripe-checkout/webhook") {
+    next();
+  } else {
+    express.json()(req, res, next);
+  }
+});
 
 passportSetup();
 
@@ -46,6 +57,8 @@ app.use("/api/products", productRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/brands", brandRouter);
 app.use("/api/carts", authorize(), cartRouter);
+app.use("/api/stripe-payment-intent", stripeWithPaymentIntent);
+app.use("/api/stripe-checkout", stripeCheckout);
 
 app.use(errorHandler);
 app.use(notFoundHandler);

@@ -28,6 +28,7 @@
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
+    "stripe": "^10.1.0",
     "zod": "^3.17.3"
   },
   "devDependencies": {

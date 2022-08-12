@@ -17,6 +17,8 @@ const cartItemSchema = new Schema({
   },
 });
 
+export type CartItem = InferSchemaType<typeof cartItemSchema>;
+
 const cartSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, required: true, ref: "User" },

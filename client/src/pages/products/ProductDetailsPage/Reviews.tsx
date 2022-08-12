@@ -31,7 +31,7 @@ function SingleReview({ rating }: { rating: number }) {
       <div className="__profile flex space-x-3">
         <div className="__avatar w-9 h-9 rounded-full overflow-hidden">
           <img
-            src="/images/avatar.png"
+            src="/images/my-avatar.jpeg"
             alt="avatar"
             className="w-full object-cover"
           />

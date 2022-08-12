@@ -23,4 +23,9 @@ export default {
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     callbackURL: process.env.FACEBOOK_CALLBACK_URL,
   },
+  stripe: {
+    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+    secretKey: process.env.STRIPE_SECRET_KEY,
+    webhookEndpointSecret: process.env.STRIPE_WEBHOOK_ENDPOINT_SECRET,
+  },
 };
