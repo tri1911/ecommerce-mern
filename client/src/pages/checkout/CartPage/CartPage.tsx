@@ -6,6 +6,7 @@ import { getCart, selectAllCartItems } from "slices/cart.slice";
 import { CartItem } from "services/cart.service";
 import Breadcrumbs from "components/Shared/Breadcrumbs";
 import QuantitySelector from "components/Shared/QuantitySelector";
+import useStripeCheckout from "hooks/useStripeCheckout";
 
 // TODO: change the layout to grid (since the columns are not line up properly)
 function CartItemRow({ item }: { item: CartItem }) {
@@ -58,7 +59,13 @@ function CartItemRow({ item }: { item: CartItem }) {
   );
 }
 
-function CartSummary({ cartItems }: { cartItems: CartItem[] }) {
+function CartSummary({
+  cartItems,
+  onCheckoutPressed,
+}: {
+  cartItems: CartItem[];
+  onCheckoutPressed?: React.MouseEventHandler<HTMLButtonElement>;
+}) {
   const priceInTotal = useMemo(
     () =>
       cartItems.reduce((sum, { price, quantity }) => sum + price * quantity, 0),
@@ -104,12 +111,12 @@ function CartSummary({ cartItems }: { cartItems: CartItem[] }) {
         </button>
       </div>
       {/* CheckoutBtn */}
-      <Link
-        to="/checkout"
+      <button
         className="bg-primary border border-primary text-white px-4 py-3 font-medium rounded-md uppercase hover:bg-transparent hover:text-primary transition text-sm w-full block text-center"
+        onClick={onCheckoutPressed}
       >
         Process to checkout
-      </Link>
+      </button>
     </section>
   );
 }
@@ -125,6 +132,8 @@ export default function CartPage() {
     }
   }, [dispatch, cartItems]);
 
+  const { handleCheckout } = useStripeCheckout();
+
   if (!cartItems) {
     return null;
   }
@@ -132,7 +141,7 @@ export default function CartPage() {
   // TODO: add a `svg` image
   return (
     <div>
-      <Breadcrumbs crumbs={[{ label: "Shopping Cart" }]} />
+      <Breadcrumbs crumbs={[{ label: "Cart" }]} />
       {cartItems.length === 0 ? (
         <div className="pt-4 pb-16 text-center">
           <h3 className="font-medium text-xl">Your shopping cart is empty.</h3>
@@ -159,7 +168,10 @@ export default function CartPage() {
               ))}
             </div>
           </section>
-          <CartSummary cartItems={cartItems} />
+          <CartSummary
+            cartItems={cartItems}
+            onCheckoutPressed={handleCheckout}
+          />
         </div>
       )}
     </div>

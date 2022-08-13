@@ -40,7 +40,7 @@ app.use(cors());
 
 // Use JSON parser for all non-webhook routes
 app.use((req, res, next) => {
-  if (req.originalUrl === "/api/stripe-checkout/webhook") {
+  if (req.originalUrl === "/api/stripe/webhook") {
     next();
   } else {
     express.json()(req, res, next);

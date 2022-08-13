@@ -2,6 +2,8 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import { store } from "app/store";
 import "index.css";
 import App from "App";
@@ -44,11 +46,7 @@ import {
   OrderCompletePage,
 } from "pages/checkout";
 
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
 import ExperimentPage from "components/experiment";
-import StripeCheckoutWithPaymentIntent from "stripe-experiment/payment-intent/CheckoutPage";
-import StripeCheckoutPage from "stripe-experiment/stripe-checkout/ProductsPreviewPage";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -123,11 +121,6 @@ const root = createRoot(container);
             </Route>
             {/* Testings */}
             <Route path="/experiment" element={<ExperimentPage />} />
-            <Route
-              path="/stripe-payment-intent"
-              element={<StripeCheckoutWithPaymentIntent />}
-            />
-            <Route path="/stripe-checkout" element={<StripeCheckoutPage />} />
           </Routes>
         </BrowserRouter>
       </Provider>

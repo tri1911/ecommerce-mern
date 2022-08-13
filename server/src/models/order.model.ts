@@ -15,47 +15,59 @@ import { Schema, model, InferSchemaType } from "mongoose";
 
 // line items information within the order
 // (extract from `checkout.session.line_items.data`)
-const itemSchema = new Schema({
-  productId: { type: Schema.Types.ObjectId, required: true, ref: "Product" },
-  name: { type: String, required: true },
-  image: { type: String, required: true },
-  unitAmount: { type: Number, required: true },
-  quantity: { type: Number, required: true },
-});
+const itemSchema = new Schema(
+  {
+    productId: { type: Schema.Types.ObjectId, required: true, ref: "Product" },
+    name: { type: String, required: true },
+    image: { type: String, required: true },
+    unitAmount: { type: Number, required: true },
+    quantity: { type: Number, required: true },
+  },
+  { _id: false }
+);
 
 // shipping address associated with this order
 // (extract from `checkout.session.shipping_details`)
-const shippingDetailsSchema = new Schema({
-  name: String,
-  address: String,
-  city: String,
-  province: String,
-  country: String,
-  postalCode: String,
-});
+const shippingDetailsSchema = new Schema(
+  {
+    name: String,
+    address: String,
+    city: String,
+    province: String,
+    country: String,
+    postalCode: String,
+  },
+  { _id: false }
+);
 
 // billing address retrieved from `checkout.session.payment_intent.payment_method`
-const billingDetailsSchema = new Schema({
-  email: String,
-  name: String,
-  address: String,
-  city: String,
-  province: String,
-  country: String,
-  postalCode: String,
-});
+const billingDetailsSchema = new Schema(
+  {
+    email: String,
+    name: String,
+    address: String,
+    city: String,
+    province: String,
+    country: String,
+    postalCode: String,
+  },
+  { _id: false }
+);
 
 // the payment method used for this order
 // (extract from `checkout.session.payment_intent.payment_method)
-const paymentMethodSchema = new Schema({
-  billingDetails: billingDetailsSchema,
-  brand: String,
-  funding: String,
-  last4: String,
-  country: String,
-  expMonth: Number,
-  expYear: Number,
-});
+const paymentMethodSchema = new Schema(
+  {
+    billingDetails: billingDetailsSchema,
+    brand: String,
+    funding: String,
+    last4: String,
+    country: String,
+    expMonth: Number,
+    expYear: Number,
+  },
+  { _id: false }
+);
 
 const orderSchema = new Schema(
   {
@@ -72,7 +84,7 @@ const orderSchema = new Schema(
     paymentMethod: paymentMethodSchema,
     deliveredAt: { type: Date },
     // Stripe info
-    checkoutSessionId: { type: String, required: true },
+    stripeCheckoutId: { type: String, required: true },
   },
   { timestamps: true } // createdAt = purchasedDate
 );

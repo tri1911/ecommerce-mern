@@ -125,7 +125,7 @@ const emptyCart = async (userId: Types.ObjectId) => {
 };
 
 /**
- * at the time of checkout, attempt to reserve all requested cart items
+ * When customer open a checkout session, attempt to reserve all requested cart items
  */
 
 const cartItemsReservation = async (userId: Types.ObjectId) => {

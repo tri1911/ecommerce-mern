@@ -49,9 +49,11 @@ router.post(
 
     const session = await stripe.checkout.sessions.create({
       customer_email: loggedInUser.email,
-      client_reference_id: loggedInUser._id.toString(),
       // customer: "cus_MEJs6LLtRD5EkO",
-      // payment_intent_data: { setup_future_usage: "off_session" },
+      client_reference_id: loggedInUser._id.toString(),
+      payment_intent_data: {
+        setup_future_usage: "off_session",
+      },
       mode: "payment",
       submit_type: "pay",
       shipping_address_collection: {
@@ -59,7 +61,7 @@ router.post(
       },
       billing_address_collection: "auto",
       line_items: validateLineItems(cart?.items ?? []),
-      success_url: `${MY_DOMAIN}?success=true`,
+      success_url: "http://localhost:3000/order-complete",
       cancel_url: `${MY_DOMAIN}?canceled=true`,
       // Configured to expire after 30 mins
       expires_at: Math.floor(Date.now() / 1000) + 1800,
@@ -155,8 +157,12 @@ router.post(
     switch (event.type) {
       case "checkout.session.completed":
         const session = event.data.object;
-        // Fulfill the purchase..
+        // Fulfill the purchase...
         await fulfillOrder(session as Stripe.Checkout.Session);
+        break;
+      case "checkout.session.expired":
+        // Roll-back items to inventory...
+        logger.info("Checkout session has been expired!");
         break;
       default:
         // Unexpected event type
@@ -238,6 +244,21 @@ const extractPaymentMethod = (
   };
 };
 
+const extractShippingDetails = (
+  shippingDetails: Stripe.Checkout.Session.ShippingDetails
+) => {
+  const { name, address } = shippingDetails;
+
+  return {
+    name: name,
+    address: address?.line1,
+    city: address?.city,
+    province: address?.state,
+    country: address?.country,
+    postalCode: address?.postal_code,
+  };
+};
+
 const fulfillOrder = async (session: Stripe.Checkout.Session) => {
   const expandedSession = await stripe.checkout.sessions.retrieve(session.id, {
     expand: ["line_items.data.price.product", "payment_intent.payment_method"],
@@ -252,28 +273,22 @@ const fulfillOrder = async (session: Stripe.Checkout.Session) => {
     payment_intent,
   } = expandedSession;
 
-  const createdOrder = await OrderModel.create({
+  await OrderModel.create({
     userId: client_reference_id as string,
     status: "processing",
     items: extractOrderItems(line_items?.data ?? []),
     amountSubTotal: amount_subtotal,
     amountTotal: amount_total,
-    shippingDetails: {
-      name: shipping_details?.name,
-      address: shipping_details?.address?.line1,
-      city: shipping_details?.address?.city,
-      province: shipping_details?.address?.state,
-      country: shipping_details?.address?.country,
-      postalCode: shipping_details?.address?.postal_code,
-    },
-    paymentMethod: extractPaymentMethod(
-      (payment_intent as Stripe.PaymentIntent)
-        .payment_method as Stripe.PaymentMethod
-    ),
-    checkoutSessionId: session.id,
+    shippingDetails:
+      shipping_details && extractShippingDetails(shipping_details),
+    paymentMethod:
+      payment_intent &&
+      extractPaymentMethod(
+        (payment_intent as Stripe.PaymentIntent)
+          .payment_method as Stripe.PaymentMethod
+      ),
+    stripeCheckoutId: session.id,
   });
-
-  console.log("order", createdOrder);
 };
 
 export default router;
