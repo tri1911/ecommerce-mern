@@ -1,10 +1,10 @@
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { store } from "app/store";
+import stripeServices from "services/stripe.service";
 import "index.css";
 import App from "App";
 import HomePage from "pages/home/HomePage";
@@ -52,12 +52,7 @@ const container = document.getElementById("root")!;
 const root = createRoot(container);
 
 (async () => {
-  const {
-    data: { publishableKey },
-  } = await axios.get<{ publishableKey: string }>(
-    "http://localhost:3001/api/stripe/config"
-  );
-
+  const publishableKey = await stripeServices.getPublishableKey();
   const stripePromise = loadStripe(publishableKey);
 
   root.render(

@@ -14,7 +14,7 @@ const getOrdersByUser = asyncHandler(async (req, res) => {
     currentUser.role === Role.Admin
   ) {
     const orders = await orderServices.getOrdersByUser(currentUser._id);
-    res.status(200).json({ data: orders });
+    res.status(200).json({ orders });
   } else {
     res
       .status(403)
