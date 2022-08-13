@@ -59,9 +59,9 @@ function PersonalInfo({ profile }: { profile?: User }) {
   );
 }
 
-function AddressCard({ address }: { address?: Address }) {
+function AddressCard({ title, address }: { title: string; address?: Address }) {
   return (
-    <InfoCard title="Shipping Address" href="/account/address">
+    <InfoCard title={title} href="/account/address">
       {!address ? (
         <DraftPlaceholderCard />
       ) : (
@@ -110,8 +110,8 @@ export default function AccountInfo() {
   ) : (
     <div className="grid md:grid-cols-3 gap-4">
       <PersonalInfo profile={profile} />
-      <AddressCard address={shippingAddress} />
-      <AddressCard address={billingAddress} />
+      <AddressCard title="Shipping Address" address={shippingAddress} />
+      <AddressCard title="Billing Address" address={billingAddress} />
     </div>
   );
 }

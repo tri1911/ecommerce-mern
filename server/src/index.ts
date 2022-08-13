@@ -19,9 +19,7 @@ import productRouter from "@routes/product.router";
 import categoryRouter from "@routes/category.router";
 import brandRouter from "@routes/brand.router";
 import cartRouter from "@routes/cart.router";
-
-import stripeWithPaymentIntent from "@routes/stripe/payment-intent.router";
-import stripeCheckout from "@routes/stripe/checkout.router";
+import stripeRouter from "@routes/stripe.router";
 
 /**
  * App Variables
@@ -57,8 +55,7 @@ app.use("/api/products", productRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/brands", brandRouter);
 app.use("/api/carts", authorize(), cartRouter);
-app.use("/api/stripe-payment-intent", stripeWithPaymentIntent);
-app.use("/api/stripe-checkout", stripeCheckout);
+app.use("/api/stripe", stripeRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);

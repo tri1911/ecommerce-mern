@@ -284,6 +284,8 @@
 
 ### Checkout Flow
 
+#### To-read
+
 - [commerlayer-react-checkout](https://github.com/commercelayer/commercelayer-react-checkout)
 - [Build a checkout form in React](https://emilyxiong.medium.com/step-to-step-guide-on-building-a-checkout-form-in-react-5f28af1c1fdf)
 
@@ -535,6 +537,8 @@
 
 ### Shopping Cart and Checkout
 
+- [Youtube Tutorial - Build Shopping Cart w/ Stripe](https://www.youtube.com/playlist?list=PL63c_Ws9ecIRnNHCSqmIzfsMAYZrN71L6)
+
 #### Shopping Cart
 
 - [Model design & operations](https://learning.oreilly.com/library/view/mongodb-applied-design/9781449340056/ch05.html)
@@ -569,6 +573,7 @@
 - [Stripe Pre-built Checkout Quick Start](https://stripe.com/docs/checkout/quickstart)
   - [Redirect to Checkout at front-end](https://stripe.com/docs/js/checkout)
 - [Expand line_items for checkout session response](https://stripe.com/docs/videos/developer-foundations?video=expand)
+- [Creating an order in the database with Stripe webhooks](https://www.youtube.com/watch?v=_TVrn-pyTo8)
 
 #### Reference APIs
 

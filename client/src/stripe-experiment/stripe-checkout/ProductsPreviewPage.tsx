@@ -1,10 +1,19 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
+import { useStripe } from "@stripe/react-stripe-js";
+import { useAppSelector } from "hooks";
+import { generateConfig } from "utils/generate-auth-config.util";
 
-const ProductDisplay = () => (
+const ProductDisplay = ({
+  onSubmit,
+}: {
+  onSubmit?: React.FormEventHandler<HTMLFormElement>;
+}) => (
   <section className="w-screen h-screen flex items-center justify-center">
     <form
-      action="http://localhost:3001/api/stripe-checkout/create-checkout-session"
-      method="POST"
+      // action="http://localhost:3001/api/stripe-checkout/create-checkout-session"
+      // method="POST"
+      onSubmit={onSubmit}
     >
       <button className="default-btn" type="submit">
         Checkout
@@ -37,5 +46,39 @@ export default function ProductsPreviewPage() {
     }
   }, []);
 
-  return message ? <Message message={message} /> : <ProductDisplay />;
+  const stripe = useStripe();
+
+  const currentUser = useAppSelector((state) => state.auth.user);
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+
+    if (!currentUser || !stripe) {
+      return;
+    }
+
+    try {
+      const {
+        data: { sessionId },
+      } = await axios.post<{ sessionId: string }>(
+        "http://localhost:3001/api/stripe/create-checkout-session",
+        {},
+        generateConfig(currentUser.token)
+      );
+
+      const { error } = await stripe.redirectToCheckout({ sessionId });
+
+      if (error) {
+        throw error;
+      }
+    } catch (err) {
+      setMessage((err as Error).message);
+    }
+  };
+
+  return message ? (
+    <Message message={message} />
+  ) : (
+    <ProductDisplay onSubmit={handleSubmit} />
+  );
 }

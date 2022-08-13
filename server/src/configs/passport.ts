@@ -27,8 +27,10 @@ const jwtAuthSetup = () => {
         async (jwtPayload: JwtAuthPayload, done: VerifiedCallback) => {
           try {
             const user = await UserModel.findById(jwtPayload.sub, {
-              password: 0,
-              federatedCredentials: 0,
+              email: 1,
+              firstName: 1,
+              lastName: 1,
+              role: 1,
             }).lean();
             if (user) {
               return done(null, user);
