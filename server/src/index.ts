@@ -20,6 +20,7 @@ import categoryRouter from "@routes/category.router";
 import brandRouter from "@routes/brand.router";
 import cartRouter from "@routes/cart.router";
 import stripeRouter from "@routes/stripe.router";
+import orderRouter from "@routes/order.router";
 
 /**
  * App Variables
@@ -56,6 +57,7 @@ app.use("/api/categories", categoryRouter);
 app.use("/api/brands", brandRouter);
 app.use("/api/carts", authorize(), cartRouter);
 app.use("/api/stripe", stripeRouter);
+app.use("/api/orders", orderRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);

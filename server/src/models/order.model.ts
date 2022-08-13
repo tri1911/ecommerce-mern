@@ -91,6 +91,12 @@ const orderSchema = new Schema(
 
 orderSchema.index({ userId: 1 });
 
+orderSchema.set("toJSON", {
+  transform: (_document, returnedObject) => {
+    delete returnedObject.__v;
+  },
+});
+
 export type OrderItem = InferSchemaType<typeof itemSchema>;
 export type PaymentMethod = InferSchemaType<typeof paymentMethodSchema>;
 export type Order = InferSchemaType<typeof orderSchema>;
