@@ -3,8 +3,8 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { RootState } from "../app/store";
-import { RequestStatus } from "../types";
+import { RootState } from "app/store";
+import { RequestStatus } from "types";
 import categoryService, {
   Brand,
   Category,
@@ -14,7 +14,7 @@ import categoryService, {
   Product,
   ProductsFilter,
   Size,
-} from "../services/category.service";
+} from "services/category.service";
 
 const productsAdapter = createEntityAdapter<Product>({
   selectId: (product) => product._id,

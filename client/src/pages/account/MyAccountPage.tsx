@@ -104,7 +104,7 @@ function Sidebar() {
         </LinksGroupWrapper>
         <LinksGroupWrapper>
           <MainLink
-            href="/account/order"
+            href="/account/orders"
             text="My Order History"
             icon="fas fa-gift"
           />

@@ -1,12 +1,16 @@
 import classNames from "classnames";
+import { useAppSelector } from "hooks";
 import { Link } from "react-router-dom";
+import { Order } from "services/order.service";
+import { selectAllOrders } from "slices/orders.slice";
 
-function OrderThumbnail() {
+function OrderThumbnail({ image }: { image: string }) {
   return (
     <img
-      src="/images/products/product1.jpg"
-      alt=""
-      className="w-20 h-14 lg:w-16 lg:h-14 object-cover mr-4"
+      // src="/images/products/product1.jpg"
+      src={image}
+      alt="order thumbnail"
+      className="w-20 h-14 lg:w-16 lg:h-14 object-cover mr-4 rounded"
     />
   );
 }
@@ -22,14 +26,15 @@ function OrderInfoItem({ title, info }: { title: string; info: string }) {
   );
 }
 
-type OrderStatus = "in progress" | "delivered" | "canceled";
+type OrderStatus = "processing" | "delivered" | "cancelled";
 
-function OrderStatusItem({ status = "in progress" }: { status?: OrderStatus }) {
+function OrderStatusInfo({ status = "processing" }: { status?: OrderStatus }) {
   return (
     <>
       <h4 className="mb-1 text-base text-gray-800 font-medium capitalize hidden md:block">
         Status
       </h4>
+      {/* on small screen devices */}
       <h5 className="mb-1 text-base font-medium md:hidden">
         <span className="mr-2 inline-block font-normal text-xs">x3</span>
         $120
@@ -37,9 +42,9 @@ function OrderStatusItem({ status = "in progress" }: { status?: OrderStatus }) {
       <p
         className={classNames(
           "font-roboto capitalize",
-          { "text-yellow-600": status === "in progress" },
+          { "text-yellow-600": status === "processing" },
           { "text-green-600": status === "delivered" },
-          { "text-red-600": status === "canceled" }
+          { "text-red-600": status === "cancelled" }
         )}
       >
         {status}
@@ -48,10 +53,10 @@ function OrderStatusItem({ status = "in progress" }: { status?: OrderStatus }) {
   );
 }
 
-function ViewOrderBtn() {
+function ViewOrderBtn({ orderId }: { orderId: string }) {
   return (
     <Link
-      to="/account/order/details"
+      to={`/account/orders/${orderId}`}
       className="default-btn w-fit text-sm px-4 py-2 bg-white text-primary hover:bg-primary hover:text-white"
     >
       View Order
@@ -59,44 +64,54 @@ function ViewOrderBtn() {
   );
 }
 
-export function OrderSummaryCard() {
+export function OrderSummaryCard({ order }: { order: Order }) {
   return (
-    <li className="__wrapper grid grid-cols-2 md:grid-cols-5 gap-y-4 md:gap-y-6 p-5 border border-gray-200 rounded">
-      <div className="__images col-span-2 md:col-span-4 flex items-center justify-start">
-        <OrderThumbnail />
-        <OrderThumbnail />
+    <li className="grid grid-cols-2 md:grid-cols-5 gap-y-4 md:gap-y-6 p-5 border border-gray-200 rounded">
+      {/* Thumbnails */}
+      <div className="col-span-2 md:col-span-4 flex items-center justify-start">
+        {order.items.map((item) => (
+          <OrderThumbnail key={item.productId} image={item.image} />
+        ))}
       </div>
-      <div className="__view-order-btn row-start-3 col-start-2 md:row-start-1 md:col-start-5 self-center">
-        <ViewOrderBtn />
+      {/* View Order Button */}
+      <div className="row-start-3 col-start-2 md:row-start-1 md:col-start-5 self-center">
+        <ViewOrderBtn orderId={order._id} />
+      </div>
+      {/* Order Summary Infos */}
+      <div>
+        <OrderInfoItem
+          title="Order Number"
+          info={order._id.slice(0, 10).toUpperCase()}
+        />
       </div>
       <div>
-        <OrderInfoItem title="Order Number" info="23E34RT3" />
-      </div>
-      <div>
-        <OrderInfoItem title="Purchased" info="01 March 2021" />
+        <OrderInfoItem title="Purchased" info={order.createdAt.split("T")[0]} />
       </div>
       <div className="hidden md:block">
-        <OrderInfoItem title="Quantity" info="x3" />
+        <OrderInfoItem title="Quantity" info={`x${order.items.length}`} />
       </div>
       <div className="hidden md:block">
-        <OrderInfoItem title="Total" info="$120" />
+        <OrderInfoItem title="Total" info={`$${order.amountTotal}`} />
       </div>
       <div>
-        <OrderStatusItem status="delivered" />
+        <OrderStatusInfo status={order.status as OrderStatus} />
       </div>
     </li>
   );
 }
 
 export default function RecentOrders() {
+  const orders = useAppSelector(selectAllOrders);
+
   return (
     <div className="shadow rounded bg-white px-4 pt-6 pb-8">
       <h3 className="font-medium capitalize text-gray-800 text-lg">
         Recent Orders
       </h3>
       <ul className="mt-6 space-y-6">
-        <OrderSummaryCard />
-        <OrderSummaryCard />
+        {orders.map((order) => (
+          <OrderSummaryCard key={order._id} order={order} />
+        ))}
       </ul>
     </div>
   );

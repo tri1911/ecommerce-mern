@@ -3,7 +3,7 @@ import { generateConfig } from "utils/generate-auth-config.util";
 
 const baseUrl = "http://localhost:3001/api/orders";
 
-interface OrderItem {
+export interface OrderItem {
   productId: string;
   name: string;
   image: string;
@@ -19,10 +19,10 @@ interface AddressDetails {
   postalCode: string;
 }
 
-interface ShippingDetails extends AddressDetails {
+export interface ShippingDetails extends AddressDetails {
   name: string;
 }
-interface BillingDetails extends AddressDetails {
+export interface BillingDetails extends AddressDetails {
   name: string;
   email: string;
 }

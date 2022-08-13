@@ -5,17 +5,25 @@ import {
 } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 import orderServices, { Order } from "services/order.service";
+import { RequestStatus } from "types";
 
 const ordersAdapter = createEntityAdapter<Order>({
   selectId: (order) => order._id,
 });
 
+interface OrdersState {
+  status: RequestStatus;
+}
+
 const ordersSlice = createSlice({
   name: "orders",
-  initialState: ordersAdapter.getInitialState(),
+  initialState: ordersAdapter.getInitialState<OrdersState>({ status: "idle" }),
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getOrdersByUser.fulfilled, ordersAdapter.setAll);
+    builder.addCase(getOrdersByUser.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      ordersAdapter.setAll(state, action.payload);
+    });
   },
 });
 

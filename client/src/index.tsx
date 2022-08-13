@@ -76,9 +76,9 @@ const root = createRoot(container);
                   <Route path="add" element={<AddressAdd />} />
                 </Route>
                 <Route path="password" element={<PasswordUpdate />} />
-                <Route path="order">
+                <Route path="orders">
                   <Route index element={<MyOrders />} />
-                  <Route path="details" element={<OrderDetails />} />
+                  <Route path=":orderId" element={<OrderDetails />} />
                 </Route>
                 <Route path="order-return">
                   <Route index element={<OrderReturns />} />
