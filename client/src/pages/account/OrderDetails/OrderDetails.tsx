@@ -78,6 +78,7 @@ function OrderTimeline({ order: { status } }: { order: Order }) {
         ))}
       </div>
       {/* message */}
+      {/* TODO: update appropriate message based on the status */}
       <div className="relative max-w-2xl flex flex-col items-start justify-between border border-gray-200 py-3 px-6 mt-7 bg-white shadow text-sm text-gray-800">
         <p className="mb-2">23 Jul 2021 at 18:56</p>
         <p>
@@ -169,7 +170,7 @@ function TotalSummaryCard({
   order: {
     amountSubTotal,
     amountTotal,
-    paymentMethod: { brand, funding, last4 },
+    paymentMethod: { brand, last4 },
   },
 }: {
   order: Order;

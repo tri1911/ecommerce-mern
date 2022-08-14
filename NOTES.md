@@ -574,6 +574,7 @@
   - [Redirect to Checkout at front-end](https://stripe.com/docs/js/checkout)
 - [Expand line_items for checkout session response](https://stripe.com/docs/videos/developer-foundations?video=expand)
 - [Creating an order in the database with Stripe webhooks](https://www.youtube.com/watch?v=_TVrn-pyTo8)
+- [Cors error with Stripe Checkout](https://stackoverflow.com/questions/68630229/stripe-checkout-example-running-into-cors-error-from-localhost)
 
 #### Reference APIs
 
