@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import categorySchemas from "@schemas/category.schema";
-import categoryServices, { ProductsFilter } from "@services/category.service";
+import categoryServices from "@services/category.service";
+import { ProductsFilter } from "@services/product.service";
 
 const createNewCategory = asyncHandler(async (request, response) => {
   const {
@@ -58,7 +59,7 @@ const getProductsByCategory = asyncHandler(async (request, response) => {
 
   const result = await categoryServices.getProductsByCategory({
     categoryId,
-    filter,
+    secondaryFilter: filter,
     currentPage: currentPage ? Number(currentPage) : undefined,
     pageSize: pageSize ? Number(pageSize) : undefined,
     sortQuery,

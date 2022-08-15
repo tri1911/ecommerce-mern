@@ -1,7 +1,7 @@
+import { Types } from "mongoose";
 import { HttpException } from "@utils/custom-errors.util";
 import CategoryModel from "@models/category.model";
-import ProductModel from "@models/product.model";
-import { Types } from "mongoose";
+import productService, { ProductsFilter } from "./product.service";
 
 const createNewCategory = async (newCategory: {
   name: string;
@@ -45,50 +45,15 @@ const getSingleCategory = async (id: string) => {
   return { ...category, ancestors };
 };
 
-export type ProductsFilter = {
-  brand?: { $in: string[] };
-  sizes?: { $in: string[] };
-  colors?: { $in: string[] };
-  price?: { $gte?: number; $lte?: number };
-};
-
-interface ProductsByCategoryResult {
-  products: Array<{
-    _id: string;
-    title: string;
-    image: string;
-    price: number;
-    ratings: { count: number; average: number };
-  }>;
-  metadata: Array<{
-    total: number;
-    pageSize: number;
-    currentPage: number;
-  }>;
-  categories: Array<{
-    // _id is actually the name of this category
-    _id: string;
-    count: number;
-  }>;
-  brands: Array<{
-    // _id is actually the name of this brand
-    _id: string;
-    count: number;
-  }>;
-  sizes: Array<{ _id: string }>;
-  colors: Array<{ _id: string }>;
-  price: Array<{ priceRangeMin: number; priceRangeMax: number }>;
-}
-
 const getProductsByCategory = async ({
   categoryId,
-  filter,
-  currentPage = 1,
-  pageSize = 12,
+  secondaryFilter,
+  currentPage,
+  pageSize,
   sortQuery,
 }: {
   categoryId: string;
-  filter: ProductsFilter;
+  secondaryFilter: ProductsFilter;
   currentPage?: number;
   pageSize?: number;
   sortQuery?: Record<string, 1 | -1>;
@@ -107,85 +72,13 @@ const getProductsByCategory = async ({
     );
   }
 
-  // main operation
-  const resultAsArray = await ProductModel.aggregate<ProductsByCategoryResult>([
-    { $match: categoryFilter },
-    {
-      $lookup: {
-        from: "categories",
-        localField: "category",
-        foreignField: "_id",
-        // only care `name` property
-        pipeline: [{ $project: { _id: 0, name: 1 } }],
-        as: "category",
-      },
-    },
-    {
-      $lookup: {
-        from: "brands",
-        localField: "brand",
-        foreignField: "_id",
-        // only care `name` property
-        pipeline: [{ $project: { _id: 0, name: 1 } }],
-        as: "brand",
-      },
-    },
-    {
-      $project: {
-        title: 1,
-        image: 1,
-        countInStock: 1,
-        price: 1,
-        // re-format the populated `brand`, `category` arrays (of objects) to a string
-        brand: { $arrayElemAt: ["$brand.name", 0] },
-        category: { $arrayElemAt: ["$category.name", 0] },
-        sizes: 1,
-        colors: 1,
-        ratings: 1,
-      },
-    },
-    {
-      $facet: {
-        products: [
-          { $match: filter },
-          { $sort: sortQuery ?? { createdAt: -1 } },
-          { $skip: pageSize * (currentPage - 1) },
-          // just get fields required for product summary cards
-          { $project: { title: 1, image: 1, price: 1, ratings: 1 } },
-          { $limit: pageSize },
-        ],
-        metadata: [
-          { $match: filter },
-          // count number of filtered documents, and assign to the field name of `total`
-          { $count: "total" },
-          // embed `page length` and `current page` fields into the resulted `metadata` property as well
-          {
-            $addFields: {
-              // pages: { $ceil: { $divide: ["$total", pageSize] } },
-              pageSize,
-              currentPage,
-            },
-          },
-        ],
-        categories: [{ $sortByCount: "$category" }],
-        brands: [{ $sortByCount: "$brand" }],
-        sizes: [{ $unwind: "$sizes" }, { $group: { _id: "$sizes" } }],
-        colors: [{ $unwind: "$colors" }, { $group: { _id: "$colors" } }],
-        price: [
-          {
-            $group: {
-              _id: null,
-              priceRangeMin: { $min: "$price" },
-              priceRangeMax: { $max: "$price" },
-            },
-          },
-          { $project: { _id: 0 } },
-        ],
-      },
-    },
-  ]);
-
-  return resultAsArray[0];
+  return await productService.getProducts({
+    primaryFilter: categoryFilter,
+    secondaryFilter,
+    currentPage,
+    pageSize,
+    sortQuery,
+  });
 };
 
 export default {

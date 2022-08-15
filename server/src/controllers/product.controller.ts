@@ -1,12 +1,12 @@
 import asyncHandler from "express-async-handler";
 import { HttpException } from "@utils/custom-errors.util";
 import productSchema from "@schemas/product.schema";
-import productService from "@services/product.service";
+import productServices from "@services/product.service";
 
 const createNewProduct = asyncHandler(async (request, response) => {
   const { body: newProduct } = productSchema.createNewProduct.parse(request);
 
-  const createdProduct = await productService.createNewProduct(newProduct);
+  const createdProduct = await productServices.createNewProduct(newProduct);
 
   response.status(201).json({ status: "success", data: createdProduct });
 });
@@ -16,7 +16,7 @@ const getSingleProduct = asyncHandler(async (request, response) => {
     params: { id: productId },
   } = productSchema.getSingleProduct.parse(request);
 
-  const product = await productService.getSingleProduct(productId);
+  const product = await productServices.getSingleProduct(productId);
 
   if (product) {
     response.status(200).json(product);
@@ -31,7 +31,7 @@ const updateProduct = asyncHandler(async (request, response) => {
     body: data,
   } = productSchema.updateProduct.parse(request);
 
-  const updatedProduct = await productService.updateProduct(id, data);
+  const updatedProduct = await productServices.updateProduct(id, data);
 
   response.status(204).json({ status: "success", data: updatedProduct });
 });
@@ -41,7 +41,7 @@ const deleteProduct = asyncHandler(async (request, response) => {
     params: { id: productId },
   } = productSchema.deleteProduct.parse(request);
 
-  await productService.deleteProduct(productId);
+  await productServices.deleteProduct(productId);
 
   response.status(204).json({ status: "success" });
 });
@@ -50,38 +50,15 @@ const getNewProducts = asyncHandler(async (req, res) => {
   const {
     query: { limit },
   } = productSchema.getNewProducts.parse(req);
-  const products = await productService.getNewProducts({
-    limit: Number(limit),
+
+  const products = await productServices.getProducts({
+    pageSize: limit ? Number(limit) : undefined,
+    sortQuery: { createdAt: -1 },
+    getFacets: false,
   });
+
   res.status(200).json({ products });
 });
-
-/*
-const getAllProducts = asyncHandler(async (request, response) => {
-  const {
-    query: { page, length, sort, ...rest },
-  } = productSchema.getAllProducts.parse(request);
-
-  const filter = JSON.parse(
-    JSON.stringify(rest).replace(/\b(gte|lte|in)\b/g, (match) => `$${match}`)
-  ) as ProductsFilter;
-
-  const pagination = {
-    page: page ? parseInt(page) : undefined,
-    length: length ? parseInt(length) : undefined,
-  };
-
-  const sortQuery = sort ? sort.split(",").join(" ") : undefined;
-
-  const data = await productService.getAllProducts({
-    filter,
-    pagination,
-    sortQuery,
-  });
-
-  response.status(200).json({ status: "success", data });
-});
-*/
 
 export default {
   createNewProduct,
