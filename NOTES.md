@@ -109,6 +109,14 @@
 
 - [Search Suggestion](https://leetcode.com/problems/search-suggestions-system/)
 
+### Images Free Source
+
+- [reddit](https://www.reddit.com/r/webdev/comments/bp0ue1/where_can_i_find_free_stock_images_for_my_website/)
+- [unsplash](https://unsplash.com/)
+- [pixabay](https://pixabay.com/images/search/adidas/)
+- [pexels](https://www.pexels.com/)
+- [pngegg](https://www.pngegg.com/)
+
 ## Front-end
 
 ### UI Template, Tutorial as References
@@ -260,6 +268,7 @@
 - [Flowbite](https://flowbite.com/)
 - [Flowbite - React components](https://github.com/themesberg/flowbite-react/tree/main/src/lib/components)
 - [Alert](https://v1.tailwindcss.com/components/alerts)
+- [Merakiui](https://merakiui.com/components/)
 
 ### Icons
 
@@ -335,6 +344,7 @@
 - [Flowbite - React doc](https://flowbite-react.com/carousel)
 - [Swiper library](https://swiperjs.com/react)
   - [Github link](https://github.com/nolimits4web/Swiper)
+  - [Custom Navigation elements](https://github.com/nolimits4web/swiper/issues/3855)
 - [Tutorial that uses Swiper.js (at 34:11)](https://www.youtube.com/watch?v=5d6ZMzBegCU)
 - [slick library](https://github.com/kenwheeler/slick)
 

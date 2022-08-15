@@ -2,12 +2,12 @@ import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
 import { RejectErrorPayload, RequestStatus } from "../types";
-import productService, { Product } from "../services/product.service";
+import productService, { ProductDetails } from "../services/product.service";
 
 interface ProductState {
   status: RequestStatus;
   error?: string;
-  data?: Product;
+  data?: ProductDetails;
 }
 
 const productSlice = createSlice({
@@ -31,7 +31,7 @@ const productSlice = createSlice({
 });
 
 export const fetchSingleProduct = createAsyncThunk<
-  Product,
+  ProductDetails,
   string,
   { rejectValue: RejectErrorPayload }
 >("product/fetchSingleProduct", async (productId, thunkApi) => {

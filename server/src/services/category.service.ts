@@ -54,14 +54,10 @@ export type ProductsFilter = {
 
 interface ProductsByCategoryResult {
   products: Array<{
+    _id: string;
     title: string;
     image: string;
-    countInStock: number;
     price: number;
-    brand: string;
-    category: { _id: string; name: string };
-    sizes: string[];
-    colors: string[];
     ratings: { count: number; average: number };
   }>;
   metadata: Array<{
@@ -70,11 +66,12 @@ interface ProductsByCategoryResult {
     currentPage: number;
   }>;
   categories: Array<{
+    // _id is actually the name of this category
     _id: string;
-    name: string;
     count: number;
   }>;
   brands: Array<{
+    // _id is actually the name of this brand
     _id: string;
     count: number;
   }>;
@@ -118,6 +115,7 @@ const getProductsByCategory = async ({
         from: "categories",
         localField: "category",
         foreignField: "_id",
+        // only care `name` property
         pipeline: [{ $project: { _id: 0, name: 1 } }],
         as: "category",
       },
@@ -127,6 +125,7 @@ const getProductsByCategory = async ({
         from: "brands",
         localField: "brand",
         foreignField: "_id",
+        // only care `name` property
         pipeline: [{ $project: { _id: 0, name: 1 } }],
         as: "brand",
       },
@@ -137,6 +136,7 @@ const getProductsByCategory = async ({
         image: 1,
         countInStock: 1,
         price: 1,
+        // re-format the populated `brand`, `category` arrays (of objects) to a string
         brand: { $arrayElemAt: ["$brand.name", 0] },
         category: { $arrayElemAt: ["$category.name", 0] },
         sizes: 1,
@@ -150,16 +150,20 @@ const getProductsByCategory = async ({
           { $match: filter },
           { $sort: sortQuery ?? { createdAt: -1 } },
           { $skip: pageSize * (currentPage - 1) },
+          // just get fields required for product summary cards
+          { $project: { title: 1, image: 1, price: 1, ratings: 1 } },
           { $limit: pageSize },
         ],
         metadata: [
           { $match: filter },
+          // count number of filtered documents, and assign to the field name of `total`
           { $count: "total" },
+          // embed `page length` and `current page` fields into the resulted `metadata` property as well
           {
             $addFields: {
               // pages: { $ceil: { $divide: ["$total", pageSize] } },
-              pageSize: pageSize,
-              currentPage: currentPage,
+              pageSize,
+              currentPage,
             },
           },
         ],

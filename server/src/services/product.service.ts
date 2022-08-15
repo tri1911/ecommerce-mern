@@ -24,10 +24,13 @@ const deleteProduct = async (id: string) => {
   await ProductModel.findByIdAndDelete(id);
 };
 
-const getNewArrivalProducts = async ({ length }: { length?: number }) => {
-  const products = await ProductModel.find({})
+const getNewProducts = async ({ limit = 10 }: { limit?: number }) => {
+  const products = await ProductModel.find(
+    {},
+    { title: 1, image: 1, price: 1, ratings: 1 }
+  )
     .sort("-createdAt")
-    .limit(length ?? 10);
+    .limit(limit);
   return products;
 };
 
@@ -65,5 +68,5 @@ export default {
   getSingleProduct,
   updateProduct,
   deleteProduct,
-  getNewArrivalProducts,
+  getNewProducts,
 };

@@ -22,18 +22,12 @@ const fetchSingleCategory = async (id: string) => {
   return data.category;
 };
 
-// NOTE: types definition duplication with the one in server
-
+// NOTE: types definition duplicates with the one in server
 export interface Product {
   _id: string;
   title: string;
   image: string;
-  countInStock: number;
   price: number;
-  brand: string;
-  category: { _id: string; name: string };
-  sizes: string[];
-  colors: string[];
   ratings: { count: number; average: number };
 }
 
@@ -45,7 +39,6 @@ export interface MetaData {
 
 export interface Category {
   _id: string;
-  name: string;
   count: number;
 }
 

@@ -5,8 +5,9 @@ import { selectAllWishlistItems } from "slices/wishlistSlice";
 
 function Logo() {
   return (
-    <Link to="/" className="block w-32">
-      <img src="/images/svg/logo.svg" alt="my logo" className="w-full" />
+    <Link to="/" className="block w-40">
+      {/* <img src="/images/svg/logo.svg" alt="my logo" className="w-full" /> */}
+      <img src="/images/my-logo.png" alt="my logo" className="w-full" />
     </Link>
   );
 }
@@ -106,7 +107,7 @@ function HeaderIcons() {
 
 export default function Header() {
   return (
-    <header className="py-4 shadow-sm bg-pink-100 lg:bg-white">
+    <header className="py-4 shadow-sm bg-white">
       <section className="container flex items-center justify-between">
         <Logo />
         <SearchBar />

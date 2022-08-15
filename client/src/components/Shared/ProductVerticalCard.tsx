@@ -2,10 +2,10 @@
 // import { XCircleIcon } from "@heroicons/react/solid";
 // import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
-import useShoppingCart from "../../hooks/useShoppingCart";
-// import { ProductContent, ProductImage } from "../../pages/SingleProductPage";
-import { Product } from "../../services/category.service";
-import { Fn } from "../../types";
+import useShoppingCart from "hooks/useShoppingCart";
+// import { ProductContent, ProductImage } from "pages/SingleProductPage";
+import { Product } from "services/category.service";
+import { Fn } from "types";
 import Rating from "./Rating";
 
 function ProductCardHeader({

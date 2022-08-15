@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { Link } from "react-router-dom";
 
 import { Fn } from "types";
-import { Product } from "services/product.service";
+import { ProductDetails } from "services/product.service";
 import useShoppingCart from "hooks/useShoppingCart";
 
 import QuantitySelector from "components/Shared/QuantitySelector";
@@ -231,7 +231,11 @@ function SocialShareIcons() {
   );
 }
 
-export default function ProductContent({ product }: { product: Product }) {
+export default function ProductContent({
+  product,
+}: {
+  product: ProductDetails;
+}) {
   const [selectedInfos, setSelectedInfos] = useState<{
     size?: string;
     color?: string;

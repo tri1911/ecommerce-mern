@@ -3,7 +3,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "hooks";
 import Breadcrumbs from "components/Shared/Breadcrumbs";
 import Spinner from "components/Shared/Spinner";
-import ShopSideBar from "components/Shop/ShopSideBar";
+import ShopSideBar from "components/Shop/ShopSidebar";
 import {
   fetchProductsByCategory,
   selectAllProducts,

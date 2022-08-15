@@ -1,8 +1,9 @@
 import axios from "axios";
+import { Product } from "./category.service";
 
 const baseUrl = "http://localhost:3001/api/products";
 
-export interface Product {
+export interface ProductDetails {
   _id: string;
   sku: string;
   title: string;
@@ -24,10 +25,19 @@ export interface Product {
 }
 
 const getProductById = async (id: string) => {
-  const response = await axios.get<Product>(`${baseUrl}/${id}`);
+  const response = await axios.get<ProductDetails>(`${baseUrl}/${id}`);
   return response.data;
 };
 
-const productServices = { getProductById };
+const getNewProducts = async (limit?: number) => {
+  const {
+    data: { products },
+  } = await axios.get<{ products: Product[] }>(
+    `${baseUrl}/new` + (limit ? `?limit=${limit}` : undefined)
+  );
+  return products;
+};
+
+const productServices = { getProductById, getNewProducts };
 
 export default productServices;

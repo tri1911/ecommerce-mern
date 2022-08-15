@@ -46,14 +46,14 @@ const deleteProduct = asyncHandler(async (request, response) => {
   response.status(204).json({ status: "success" });
 });
 
-const getNewArrivalProducts = asyncHandler(async (request, response) => {
+const getNewProducts = asyncHandler(async (req, res) => {
   const {
-    query: { length },
-  } = productSchema.getNewArrivalProducts.parse(request);
-  const products = await productService.getNewArrivalProducts({
-    length: Number(length),
+    query: { limit },
+  } = productSchema.getNewProducts.parse(req);
+  const products = await productService.getNewProducts({
+    limit: Number(limit),
   });
-  response.status(200).json({ products });
+  res.status(200).json({ products });
 });
 
 /*
@@ -88,5 +88,5 @@ export default {
   getSingleProduct,
   updateProduct,
   deleteProduct,
-  getNewArrivalProducts,
+  getNewProducts,
 };

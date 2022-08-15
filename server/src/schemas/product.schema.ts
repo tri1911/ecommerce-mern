@@ -57,9 +57,9 @@ const deleteProduct = z.object({
   }),
 });
 
-const getNewArrivalProducts = z.object({
+const getNewProducts = z.object({
   query: z.object({
-    length: z.string().optional(),
+    limit: z.string().optional(),
   }),
 });
 
@@ -68,5 +68,5 @@ export default {
   getSingleProduct,
   updateProduct,
   deleteProduct,
-  getNewArrivalProducts,
+  getNewProducts,
 };
