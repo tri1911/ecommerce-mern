@@ -12,13 +12,20 @@ import BestSellingSection from "./BestSellingSection";
 import RecommendationSection from "./RecommendationSection";
 
 export default function HomePage() {
-  const { newArrivals, status } = useAppSelector((state) => state.home);
+  const { status, newArrivals, recommendations, topRated } = useAppSelector(
+    (state) => state.home
+  );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (status === "idle") {
-      // fetch 10 newest products from server
-      dispatch(getNewProducts(10));
+      dispatch(
+        getNewProducts({
+          newArrivalsLimit: 8,
+          recommendationsLimit: 12,
+          topRatedLimit: 3,
+        })
+      );
     }
   }, [dispatch, status]);
 
@@ -28,12 +35,12 @@ export default function HomePage() {
       <Features />
       <Offers />
       <CategoriesList />
-      <BestSellingSection />
+      <BestSellingSection topRated={topRated} />
       <Advertisement />
       <ProductsCarouselSection title="New Arrivals" products={newArrivals} />
       <RecommendationSection
         title="Recommended for you"
-        products={newArrivals}
+        products={recommendations}
       />
     </div>
   );

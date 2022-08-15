@@ -60,10 +60,40 @@ const getNewProducts = asyncHandler(async (req, res) => {
   res.status(200).json({ products });
 });
 
+// TODO: get proper product recommendations
+const getRecommendedProducts = asyncHandler(async (req, res) => {
+  const {
+    query: { limit },
+  } = productSchema.getRecommendedProducts.parse(req);
+
+  const products = await productServices.getProducts({
+    pageSize: limit ? Number(limit) : undefined,
+    getFacets: false,
+  });
+
+  res.status(200).json({ products });
+});
+
+const getTopRatedProducts = asyncHandler(async (req, res) => {
+  const {
+    query: { limit },
+  } = productSchema.getTopRatedProducts.parse(req);
+
+  const products = await productServices.getProducts({
+    pageSize: limit ? Number(limit) : undefined,
+    sortQuery: { "ratings.average": -1 },
+    getFacets: false,
+  });
+
+  res.status(200).json({ products });
+});
+
 export default {
   createNewProduct,
   getSingleProduct,
   updateProduct,
   deleteProduct,
   getNewProducts,
+  getRecommendedProducts,
+  getTopRatedProducts,
 };

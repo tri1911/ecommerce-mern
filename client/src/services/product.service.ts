@@ -38,6 +38,29 @@ const getNewProducts = async (limit?: number) => {
   return products;
 };
 
-const productServices = { getProductById, getNewProducts };
+const getRecommendedProducts = async (limit?: number) => {
+  const {
+    data: { products },
+  } = await axios.get<{ products: Product[] }>(
+    `${baseUrl}/recommendation` + (limit ? `?limit=${limit}` : undefined)
+  );
+  return products;
+};
+
+const getTopRatedProducts = async (limit?: number) => {
+  const {
+    data: { products },
+  } = await axios.get<{ products: Product[] }>(
+    `${baseUrl}/top-rated` + (limit ? `?limit=${limit}` : undefined)
+  );
+  return products;
+};
+
+const productServices = {
+  getProductById,
+  getNewProducts,
+  getRecommendedProducts,
+  getTopRatedProducts,
+};
 
 export default productServices;

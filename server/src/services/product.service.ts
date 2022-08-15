@@ -25,18 +25,6 @@ const deleteProduct = async (id: string) => {
   await ProductModel.findByIdAndDelete(id);
 };
 
-/*
-const getNewProducts = async ({ limit = 10 }: { limit?: number }) => {
-  const products = await ProductModel.find(
-    {},
-    { title: 1, image: 1, price: 1, ratings: 1 }
-  )
-    .sort("-createdAt")
-    .limit(limit);
-  return products;
-};
-*/
-
 export interface ProductsFilter {
   brand?: { $in: string[] };
   category?: { $in: string[] };

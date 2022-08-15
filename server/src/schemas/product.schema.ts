@@ -63,10 +63,24 @@ const getNewProducts = z.object({
   }),
 });
 
+const getRecommendedProducts = z.object({
+  query: z.object({
+    limit: z.string().optional(),
+  }),
+});
+
+const getTopRatedProducts = z.object({
+  query: z.object({
+    limit: z.string().optional(),
+  }),
+});
+
 export default {
   createNewProduct,
   getSingleProduct,
   updateProduct,
   deleteProduct,
   getNewProducts,
+  getRecommendedProducts,
+  getTopRatedProducts,
 };

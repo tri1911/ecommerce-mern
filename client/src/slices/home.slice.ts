@@ -4,11 +4,18 @@ import { Product } from "services/category.service";
 import productServices from "services/product.service";
 
 interface HomeState {
-  newArrivals: Product[];
   status: RequestStatus;
+  newArrivals: Product[];
+  recommendations: Product[];
+  topRated: Product[];
 }
 
-const initialState: HomeState = { newArrivals: [], status: "idle" };
+const initialState: HomeState = {
+  status: "idle",
+  newArrivals: [],
+  recommendations: [],
+  topRated: [],
+};
 
 const homeSlice = createSlice({
   name: "home",
@@ -20,16 +27,31 @@ const homeSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getNewProducts.fulfilled, (_state, action) => ({
-        newArrivals: action.payload,
         status: "succeeded",
+        newArrivals: action.payload.newArrivals,
+        recommendations: action.payload.recommendations,
+        topRated: action.payload.topRated,
       }));
   },
 });
 
 export const getNewProducts = createAsyncThunk(
   "home/getNewProducts",
-  async (limit: number) => {
-    return await productServices.getNewProducts(limit);
+  async ({
+    newArrivalsLimit,
+    recommendationsLimit,
+    topRatedLimit,
+  }: {
+    newArrivalsLimit: number;
+    recommendationsLimit: number;
+    topRatedLimit: number;
+  }) => {
+    const newArrivals = await productServices.getNewProducts(newArrivalsLimit);
+    const recommendations = await productServices.getRecommendedProducts(
+      recommendationsLimit
+    );
+    const topRated = await productServices.getTopRatedProducts(topRatedLimit);
+    return { newArrivals, recommendations, topRated };
   }
 );
 
