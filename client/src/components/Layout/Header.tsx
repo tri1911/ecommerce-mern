@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import { useAppSelector } from "hooks";
-import { selectAllWishlistItems } from "slices/wishlists.slice";
+import useWishlist from "hooks/useWishlist";
+// import { selectAllWishlistItems } from "slices/wishlists.slice";
 
 function Logo() {
   return (
@@ -72,7 +73,7 @@ function SingleIcon({
 function HeaderIcons() {
   const user = useAppSelector((state) => state.auth.user);
   const cartItems = useAppSelector((state) => state.cart.data?.items);
-  const wishlistItems = useAppSelector(selectAllWishlistItems);
+  const { items } = useWishlist();
 
   /*
   const totalQuantitiesInCart = useMemo(
@@ -87,7 +88,7 @@ function HeaderIcons() {
         href="/account/wishlist"
         icon="far fa-heart"
         label="Wish List"
-        badgeValue={wishlistItems.length}
+        badgeValue={items?.length}
       />
       <SingleIcon
         href="/cart"

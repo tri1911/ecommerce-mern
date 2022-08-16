@@ -28,7 +28,13 @@ const wishlistSlice = createSlice({
       .addCase(fetchWishlist.rejected, (state, action) => ({
         status: "failed",
         error: action.payload?.message || action.error.message,
-      }));
+      }))
+      .addCase(addWishlistItem.fulfilled, (state, action) => {
+        state.items = action.payload;
+      })
+      .addCase(removeWishlistItem.fulfilled, (state, action) => {
+        state.items = action.payload;
+      });
   },
 });
 

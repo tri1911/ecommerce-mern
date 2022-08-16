@@ -10,12 +10,16 @@ import ProductsCarouselSection from "./ProductsCarouselSection";
 import Advertisement from "./Advertisement";
 import BestSellingSection from "./BestSellingSection";
 import RecommendationSection from "./RecommendationSection";
+import useWishlist from "hooks/useWishlist";
 
 export default function HomePage() {
   const { status, newArrivals, recommendations, topRated } = useAppSelector(
     (state) => state.home
   );
   const dispatch = useAppDispatch();
+
+  const loggedInUser = useAppSelector((state) => state.auth.user);
+  const { status: wishlistRequestStatus, getUserWishlist } = useWishlist();
 
   useEffect(() => {
     if (status === "idle") {
@@ -28,6 +32,13 @@ export default function HomePage() {
       );
     }
   }, [dispatch, status]);
+
+  // request user wishlist once user logged in
+  useEffect(() => {
+    if (loggedInUser && wishlistRequestStatus === "idle") {
+      getUserWishlist();
+    }
+  }, [loggedInUser, wishlistRequestStatus, getUserWishlist]);
 
   return (
     <div>

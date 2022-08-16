@@ -5,7 +5,7 @@ import {
   cartItemRemoved,
   itemQuantityUpdated,
   setShowCartDrawer,
-} from "../slices/cart.slice";
+} from "slices/cart.slice";
 
 const useShoppingCart = () => {
   const dispatch = useAppDispatch();

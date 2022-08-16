@@ -1,45 +1,44 @@
 import { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from ".";
 import {
-  selectWishlistIds,
-  wishlistItemAdded,
-  wishlistItemRemoved,
-} from "../slices/wishlists.slice";
-import { Product } from "../types";
+  addWishlistItem,
+  removeWishlistItem,
+  fetchWishlist,
+} from "slices/wishlists.slice";
+import { useAppDispatch, useAppSelector } from ".";
 
-export const useAddWishlistItem = (product: Product) => {
+const useWishlist = () => {
   const dispatch = useAppDispatch();
-  const wishlistIds = useAppSelector(selectWishlistIds);
+  const { items, status } = useAppSelector((state) => state.wishlist);
 
-  const isAddedToWishlist = wishlistIds.includes(product._id);
+  const addedToWishlist = (productId: string) =>
+    items?.map((item) => item._id).includes(productId);
 
-  const handleAddToWishlist = useCallback(() => {
-    const { _id, name, image, inStockQty, price } = product;
+  const handleAddToWishlist = useCallback(
+    (productId: string) => () => {
+      dispatch(addWishlistItem(productId));
+    },
+    [dispatch]
+  );
 
-    if (!isAddedToWishlist) {
-      dispatch(
-        wishlistItemAdded({
-          productId: _id,
-          name,
-          image,
-          price,
-          inStockQty,
-        })
-      );
-    } else {
-      dispatch(wishlistItemRemoved(_id));
-    }
-  }, [product, isAddedToWishlist, dispatch]);
+  const handleRemoveWishlistItem = useCallback(
+    (productId: string) => () => {
+      dispatch(removeWishlistItem(productId));
+    },
+    [dispatch]
+  );
 
-  return { isAddedToWishlist, handleAddToWishlist };
+  const getUserWishlist = useCallback(() => {
+    dispatch(fetchWishlist());
+  }, [dispatch]);
+
+  return {
+    items,
+    status,
+    addedToWishlist,
+    handleAddToWishlist,
+    handleRemoveWishlistItem,
+    getUserWishlist,
+  };
 };
 
-export const useRemoveWishlistItem = (productId: string) => {
-  const dispatch = useAppDispatch();
-
-  const handleRemoveWishlistItem = useCallback(() => {
-    dispatch(wishlistItemRemoved(productId));
-  }, [dispatch, productId]);
-
-  return { handleRemoveWishlistItem };
-};
+export default useWishlist;

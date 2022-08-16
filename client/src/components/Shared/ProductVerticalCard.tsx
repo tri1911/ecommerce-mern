@@ -7,16 +7,19 @@ import useShoppingCart from "hooks/useShoppingCart";
 import { Product } from "services/category.service";
 import { Fn } from "types";
 import Rating from "./Rating";
+import useWishlist from "hooks/useWishlist";
 
 function ProductCardHeader({
   image,
-  isAddedToWishlist,
-  onWishlistClicked,
+  addedToWishlist,
+  onAddToWishlistClicked,
+  onRemoveFromWishlistClicked,
   openQuickView,
 }: {
   image: string;
-  isAddedToWishlist?: boolean;
-  onWishlistClicked?: React.MouseEventHandler<HTMLButtonElement>;
+  addedToWishlist?: boolean;
+  onAddToWishlistClicked?: React.MouseEventHandler<HTMLButtonElement>;
+  onRemoveFromWishlistClicked?: React.MouseEventHandler<HTMLButtonElement>;
   openQuickView?: Fn<[], void>;
 }) {
   return (
@@ -33,9 +36,13 @@ function ProductCardHeader({
         </button>
         <button
           className="text-white text-lg w-9 h-9 rounded-full bg-primary hover:bg-gray-800 transition flex items-center justify-center"
-          onClick={onWishlistClicked}
+          onClick={
+            addedToWishlist
+              ? onRemoveFromWishlistClicked
+              : onAddToWishlistClicked
+          }
         >
-          <i className={isAddedToWishlist ? "fas fa-heart" : "far fa-heart"} />
+          <i className={addedToWishlist ? "fas fa-heart" : "far fa-heart"} />
         </button>
       </div>
     </div>
@@ -94,8 +101,8 @@ export default function ProductVerticalCard({ product }: { product: Product }) {
   //   setIsQuickViewOpen(true);
   // }
 
-  // const { isAddedToWishlist, handleAddToWishlist } =
-  //   useAddWishlistItem(product);
+  const { addedToWishlist, handleAddToWishlist, handleRemoveWishlistItem } =
+    useWishlist();
 
   const { handleAddToCart } = useShoppingCart();
 
@@ -104,8 +111,9 @@ export default function ProductVerticalCard({ product }: { product: Product }) {
     <div className="group rounded bg-white border border-gray-200 shadow-md overflow-hidden">
       <ProductCardHeader
         image={product.image}
-        // isAddedToWishlist={isAddedToWishlist}
-        // onWishlistClicked={handleAddToWishlist}
+        addedToWishlist={addedToWishlist(product._id)}
+        onAddToWishlistClicked={handleAddToWishlist(product._id)}
+        onRemoveFromWishlistClicked={handleRemoveWishlistItem(product._id)}
         // openQuickView={openQuickView}
       />
       <ProductCardContent

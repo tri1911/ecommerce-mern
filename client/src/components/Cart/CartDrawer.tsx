@@ -1,11 +1,11 @@
 import { XIcon } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
-import Drawer from "../Shared/Drawer";
+import Drawer from "components/Shared/Drawer";
 
 import { useMemo } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import useShoppingCart from "../../hooks/useShoppingCart";
-import { selectAllCartItems, setShowCartDrawer } from "../../slices/cart.slice";
+import { useAppDispatch, useAppSelector } from "hooks";
+import useShoppingCart from "hooks/useShoppingCart";
+import { selectAllCartItems, setShowCartDrawer } from "slices/cart.slice";
 
 export default function CartDrawer() {
   const showCartDrawer = useAppSelector((state) => state.cart.showCartDrawer);

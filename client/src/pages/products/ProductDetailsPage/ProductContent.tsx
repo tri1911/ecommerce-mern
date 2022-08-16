@@ -8,6 +8,7 @@ import useShoppingCart from "hooks/useShoppingCart";
 
 import QuantitySelector from "components/Shared/QuantitySelector";
 import Rating from "components/Shared/Rating";
+import useWishlist from "hooks/useWishlist";
 
 function RatingWrapper({
   rating,
@@ -187,21 +188,25 @@ function AddToCartBtn({
 }
 
 function AddToWishlist({
-  wasAddedToWishlist,
+  addedToWishlist,
   onAddToWishlistClicked,
+  onRemoveFromWishlistClicked,
 }: {
-  wasAddedToWishlist?: boolean;
-  onAddToWishlistClicked?: Fn<[], void>;
+  addedToWishlist?: boolean;
+  onAddToWishlistClicked?: React.MouseEventHandler<HTMLButtonElement>;
+  onRemoveFromWishlistClicked?: React.MouseEventHandler<HTMLButtonElement>;
 }) {
   return (
     <button
       className="px-8 py-2 border border-primary rounded text-sm font-medium text-primary bg-white uppercase hover:bg-primary hover:text-white transition"
-      onClick={onAddToWishlistClicked}
+      onClick={
+        addedToWishlist ? onRemoveFromWishlistClicked : onAddToWishlistClicked
+      }
     >
       <span className="mr-2">
-        <i className={wasAddedToWishlist ? "fas fa-heart" : "far fa-heart"} />
+        <i className={addedToWishlist ? "fas fa-heart" : "far fa-heart"} />
       </span>
-      {wasAddedToWishlist ? "Remove from Wishlist" : "Wishlist"}
+      {addedToWishlist ? "Remove from Wishlist" : "Wishlist"}
     </button>
   );
 }
@@ -263,9 +268,8 @@ export default function ProductContent({
   } = product;
 
   const { handleAddToCart } = useShoppingCart();
-
-  // const { isAddedToWishlist, handleAddToWishlist } =
-  //   useAddWishlistItem(product);
+  const { addedToWishlist, handleAddToWishlist, handleRemoveWishlistItem } =
+    useWishlist();
 
   return (
     <div>
@@ -312,7 +316,11 @@ export default function ProductContent({
             quantity: selectedQuantity,
           })}
         />
-        <AddToWishlist />
+        <AddToWishlist
+          addedToWishlist={addedToWishlist(_id)}
+          onAddToWishlistClicked={handleAddToWishlist(_id)}
+          onRemoveFromWishlistClicked={handleRemoveWishlistItem(_id)}
+        />
       </div>
       <SocialShareIcons />
     </div>
