@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import { useAppSelector } from "hooks";
-import { selectAllWishlistItems } from "slices/wishlistSlice";
+import { selectAllWishlistItems } from "slices/wishlists.slice";
 
 function Logo() {
   return (

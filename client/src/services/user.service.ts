@@ -93,6 +93,10 @@ const updatePassword = async ({
   return updatedUser;
 };
 
+/**
+ * Address
+ */
+
 const addNewAddress = async ({
   userId,
   token,
@@ -155,6 +159,77 @@ const removeAddress = async ({
   return updatedUser;
 };
 
+/**
+ * Wishlist
+ */
+
+export interface WishlistItem {
+  _id: string;
+  title: string;
+  image: string;
+  price: number;
+  countInStock: number;
+}
+
+interface Wishlist {
+  _id: string;
+  user: string;
+  items: WishlistItem[];
+}
+
+const addWishlistItem = async ({
+  userId,
+  token,
+  productId,
+}: {
+  userId: string;
+  token: string;
+  productId: string;
+}) => {
+  const {
+    data: { updatedWishlist },
+  } = await axios.post<{ updatedWishlist: Wishlist }>(
+    `${baseUrl}/${userId}/wishlist`,
+    { productId },
+    generateConfig(token)
+  );
+  return updatedWishlist.items;
+};
+
+const removeWishlistItem = async ({
+  userId,
+  token,
+  productId,
+}: {
+  userId: string;
+  token: string;
+  productId: string;
+}) => {
+  const {
+    data: { updatedWishlist },
+  } = await axios.delete<{ updatedWishlist: Wishlist }>(
+    `${baseUrl}/${userId}/wishlist/${productId}`,
+    generateConfig(token)
+  );
+  return updatedWishlist.items;
+};
+
+const getUserWishlist = async ({
+  userId,
+  token,
+}: {
+  userId: string;
+  token: string;
+}) => {
+  const {
+    data: { wishlist },
+  } = await axios.get<{ wishlist: Wishlist }>(
+    `${baseUrl}/${userId}/wishlist`,
+    generateConfig(token)
+  );
+  return wishlist.items;
+};
+
 const userServices = {
   getUserById,
   updateUserById,
@@ -162,6 +237,9 @@ const userServices = {
   addNewAddress,
   updateAddress,
   removeAddress,
+  addWishlistItem,
+  removeWishlistItem,
+  getUserWishlist,
 };
 
 export default userServices;

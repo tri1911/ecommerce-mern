@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAppSelector } from "hooks";
 import { useRemoveWishlistItem } from "hooks/useWishlist";
-import { selectAllWishlistItems } from "slices/wishlistSlice";
+import { selectAllWishlistItems } from "slices/wishlists.slice";
 import { WishlistItem } from "types";
 
 function WishlistItemRow({ item }: { item: WishlistItem }) {

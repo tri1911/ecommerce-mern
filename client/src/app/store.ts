@@ -8,7 +8,7 @@ import productsReducer from "slices/products.slice";
 import productReducer from "slices/product.slice";
 import cartReducer from "slices/cart.slice";
 import ordersReducer from "slices/orders.slice";
-import wishlistReducer from "slices/wishlistSlice";
+import wishlistReducer from "slices/wishlists.slice";
 
 export const store = configureStore({
   reducer: {

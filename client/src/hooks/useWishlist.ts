@@ -4,7 +4,7 @@ import {
   selectWishlistIds,
   wishlistItemAdded,
   wishlistItemRemoved,
-} from "../slices/wishlistSlice";
+} from "../slices/wishlists.slice";
 import { Product } from "../types";
 
 export const useAddWishlistItem = (product: Product) => {
