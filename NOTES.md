@@ -533,6 +533,7 @@
 - [Working with Mongoose in TS](https://thecodebarbarian.com/working-with-mongoose-in-typescript.html)
 - [How to use findOneAndUpdate](https://mongoosejs.com/docs/tutorials/findoneandupdate.html)
 - [Update element in sub-array with mongoose](https://stackoverflow.com/questions/15691224/mongoose-update-values-in-array-of-objects)
+- [What is mongoose Types.Array?](https://masteringjs.io/tutorials/mongoose/array)
 
 #### Nested Categories
 

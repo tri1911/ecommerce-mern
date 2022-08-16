@@ -3,6 +3,7 @@ import { HttpException } from "@utils/custom-errors.util";
 import userSchemas from "@schemas/user.schema";
 import userServices from "@services/user.service";
 import reviewServices from "@services/review.service";
+import wishlistServices from "@services/wishlist.service";
 import { Role } from "@models/user.model";
 
 const getUserById = asyncHandler(async (req, res) => {
@@ -164,6 +165,66 @@ const getReviewsByUser = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * Wishlist
+ */
+
+const addWishlistItem = asyncHandler(async (req, res) => {
+  const {
+    user: currentUser,
+    params: { id },
+    body: { productId },
+  } = userSchemas.addWishlistItem.parse(req);
+
+  if (id === currentUser._id.toString() || currentUser.role === Role.Admin) {
+    const updatedWishlist = await wishlistServices.addWishlistItem({
+      userId: currentUser._id,
+      productId,
+    });
+    res.status(200).json({ updatedWishlist });
+  } else {
+    res
+      .status(403)
+      .json({ message: "You are not allowed to access to this resource" });
+  }
+});
+const removeWishlistItem = asyncHandler(async (req, res) => {
+  const {
+    user: currentUser,
+    params: { id, productId },
+  } = userSchemas.removeWishlistItem.parse(req);
+
+  if (id === currentUser._id.toString() || currentUser.role === Role.Admin) {
+    const updatedWishlist = await wishlistServices.removeWishlistItem({
+      userId: currentUser._id,
+      productId,
+    });
+    res.status(200).json({ updatedWishlist });
+  } else {
+    res
+      .status(403)
+      .json({ message: "You are not allowed to access to this resource" });
+  }
+});
+
+const getUserWishlist = asyncHandler(async (req, res) => {
+  const {
+    user: currentUser,
+    params: { id },
+  } = userSchemas.getUserWishlist.parse(req);
+
+  if (id === currentUser._id.toString() || currentUser.role === Role.Admin) {
+    const wishlist = await wishlistServices.getUserWishlist({
+      userId: currentUser._id,
+    });
+    res.status(200).json({ wishlist });
+  } else {
+    res
+      .status(403)
+      .json({ message: "You are not allowed to access to this resource" });
+  }
+});
+
 export default {
   getUserById,
   updateUserById,
@@ -173,4 +234,7 @@ export default {
   updateAddress,
   removeAddress,
   getReviewsByUser,
+  addWishlistItem,
+  removeWishlistItem,
+  getUserWishlist,
 };

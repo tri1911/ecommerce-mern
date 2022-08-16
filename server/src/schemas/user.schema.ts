@@ -159,10 +159,39 @@ const removeAddress = z.object({
 });
 
 /**
- * User's Review-related Requests Schemas
+ * Reviews
  */
 
 const getReviewsByUser = z.object({
+  user: userInRequestSchema,
+  params: z.object({ id: z.string() }),
+});
+
+/**
+ * Wishlist
+ */
+
+const addWishlistItem = z.object({
+  user: userInRequestSchema,
+  params: z.object({ id: z.string() }),
+  body: z.object({
+    productId: z.preprocess((arg) => {
+      if (typeof arg == "string") return new Types.ObjectId(arg);
+    }, z.instanceof(Types.ObjectId)),
+  }),
+});
+
+const removeWishlistItem = z.object({
+  user: userInRequestSchema,
+  params: z.object({
+    id: z.string(),
+    productId: z.preprocess((arg) => {
+      if (typeof arg == "string") return new Types.ObjectId(arg);
+    }, z.instanceof(Types.ObjectId)),
+  }),
+});
+
+const getUserWishlist = z.object({
   user: userInRequestSchema,
   params: z.object({ id: z.string() }),
 });
@@ -177,4 +206,7 @@ export default {
   updateAddress,
   removeAddress,
   getReviewsByUser,
+  addWishlistItem,
+  removeWishlistItem,
+  getUserWishlist,
 };
