@@ -280,7 +280,7 @@ export default function ProductContent({
         sku={sku}
       />
       <ProductPrice price={price} />
-      {/* Short Summary Description */}
+      {/* Product Overview */}
       <p className="mt-4 text-gray-600">{description.substring(0, 100)}</p>
       <ProductSizeSelector
         sizes={sizes}

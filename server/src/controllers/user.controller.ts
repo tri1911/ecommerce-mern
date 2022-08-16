@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import { HttpException } from "@utils/custom-errors.util";
 import userSchemas from "@schemas/user.schema";
 import userServices from "@services/user.service";
+import reviewServices from "@services/review.service";
 import { Role } from "@models/user.model";
 
 const getUserById = asyncHandler(async (req, res) => {
@@ -74,6 +75,10 @@ const getAllUsers = asyncHandler(async (_req, res) => {
   res.status(200).json(users);
 });
 
+/**
+ * Addresses
+ */
+
 const addNewAddress = asyncHandler(async (req, res) => {
   const {
     user: currentUser,
@@ -137,6 +142,28 @@ const removeAddress = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * Reviews
+ */
+
+const getReviewsByUser = asyncHandler(async (req, res) => {
+  const {
+    user: currentUser,
+    params: { id },
+  } = userSchemas.getReviewsByUser.parse(req);
+
+  if (id === currentUser._id.toString() || currentUser.role === Role.Admin) {
+    const reviews = await reviewServices.getReviewsByUser({
+      userId: currentUser._id,
+    });
+    res.status(200).json({ reviews });
+  } else {
+    res
+      .status(403)
+      .json({ message: "You are not allowed to access to this resource" });
+  }
+});
+
 export default {
   getUserById,
   updateUserById,
@@ -145,4 +172,5 @@ export default {
   addNewAddress,
   updateAddress,
   removeAddress,
+  getReviewsByUser,
 };

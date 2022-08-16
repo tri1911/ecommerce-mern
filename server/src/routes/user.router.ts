@@ -8,6 +8,8 @@ const router = express.Router();
 // only admin
 router.get("/", authorize(Role.Admin), userControllers.getAllUsers);
 // all authenticated users
+// NOTE: should be api/users/:id/reviews or api/reviews/:userId ?
+router.get("/:id/reviews", authorize(), userControllers.getReviewsByUser);
 router.get("/:id", authorize(), userControllers.getUserById);
 router.put("/:id", authorize(), userControllers.updateUserById);
 router.put("/:id/password", authorize(), userControllers.updateUserPassword);

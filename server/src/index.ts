@@ -13,6 +13,7 @@ import notFoundHandler from "@middlewares/not-found.middleware";
 import authorize from "@middlewares/authorize.middleware";
 import connectDB from "configs/mongoose";
 import passportSetup from "configs/passport";
+// routes
 import authRouter from "@routes/auth.router";
 import userRouter from "@routes/user.router";
 import productRouter from "@routes/product.router";
@@ -21,6 +22,7 @@ import brandRouter from "@routes/brand.router";
 import cartRouter from "@routes/cart.router";
 import stripeRouter from "@routes/stripe.router";
 import orderRouter from "@routes/order.router";
+import reviewRouter from "@routes/review.router";
 
 /**
  * App Variables
@@ -58,6 +60,7 @@ app.use("/api/brands", brandRouter);
 app.use("/api/carts", authorize(), cartRouter);
 app.use("/api/stripe", stripeRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/reviews", reviewRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);

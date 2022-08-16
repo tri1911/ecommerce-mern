@@ -116,15 +116,16 @@ const getProducts = async ({
           },
         },
         {
+          // or use https://mongoosejs.com/docs/api/aggregate.html#aggregate_Aggregate-facet
           $facet: {
             // list of result products
             products: [
               { $match: secondaryFilter },
               { $sort: sortQuery },
               { $skip: pageSize * (currentPage - 1) },
+              { $limit: pageSize },
               // just get some of fields that are required to show product's preview infos
               { $project: { title: 1, image: 1, price: 1, ratings: 1 } },
-              { $limit: pageSize },
             ],
             // aggregate the metadata for the result docs
             metadata: [

@@ -7,12 +7,13 @@ import { useAppSelector, useAppDispatch } from "hooks";
 // import Breadcrumbs from "components/Shared/Breadcrumbs";
 import Spinner from "components/Shared/Spinner";
 import { fetchSingleProduct, selectProductDetails } from "slices/product.slice";
-// import { selectAllProducts } from "slices/products.slice";
+import { selectAllProducts } from "slices/products.slice";
 import ProductImage from "./ProductImage";
 import ProductContent from "./ProductContent";
 import ProductInfo from "./ProductInfo";
 import QA from "./QA";
 import Reviews from "./Reviews";
+import ProductsCarouselSection from "pages/home/ProductsCarouselSection";
 
 export default function ProductDetailsPage() {
   const { productId } = useParams();
@@ -31,7 +32,7 @@ export default function ProductDetailsPage() {
     }
   }, [dispatch, productId, product]);
 
-  // const products = useAppSelector(selectAllProducts);
+  const products = useAppSelector(selectAllProducts);
 
   if (!product) {
     return null;
@@ -84,10 +85,10 @@ export default function ProductDetailsPage() {
           </Tab.Panels>
         </Tab.Group>
       </section>
-      {/* <ProductSection
+      <ProductsCarouselSection
         title="related products"
         products={products.slice(0, 4)}
-      /> */}
+      />
     </div>
   );
 }

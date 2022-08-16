@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import { HttpException } from "@utils/custom-errors.util";
 import productSchema from "@schemas/product.schema";
 import productServices from "@services/product.service";
+import reviewServices from "@services/review.service";
 
 const createNewProduct = asyncHandler(async (request, response) => {
   const { body: newProduct } = productSchema.createNewProduct.parse(request);
@@ -88,6 +89,24 @@ const getTopRatedProducts = asyncHandler(async (req, res) => {
   res.status(200).json({ products });
 });
 
+/**
+ * Reviews
+ */
+
+const getReviewsByProduct = asyncHandler(async (req, res) => {
+  const {
+    params: { id },
+    body: { sort },
+  } = productSchema.getReviewsByProduct.parse(req);
+
+  const data = await reviewServices.getReviewsByProduct({
+    productId: id,
+    sort,
+  });
+
+  res.status(200).json({ data });
+});
+
 export default {
   createNewProduct,
   getSingleProduct,
@@ -96,4 +115,5 @@ export default {
   getNewProducts,
   getRecommendedProducts,
   getTopRatedProducts,
+  getReviewsByProduct,
 };

@@ -92,6 +92,8 @@
 - [Compare two objects in js](https://www.educative.io/answers/how-to-compare-two-objects-in-javascript)
 - Create a [range of number](https://www.technicalfeeder.com/2021/07/how-to-generate-number-range-array-int-and-float/)
   - can write like so `Array.from({length: 5}, (v, i) => i);`
+- [Mapped Types](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html)
+  - [index signature as literal string](https://stackoverflow.com/questions/40725773/typescript-literal-types-used-as-key-to-indexer)
 
 ### Markdown
 

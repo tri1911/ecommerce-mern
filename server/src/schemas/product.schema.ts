@@ -1,5 +1,6 @@
-import { Types } from "mongoose";
 import { z } from "zod";
+import { Types } from "mongoose";
+import { reviewSortKeys } from "@services/review.service";
 
 const productSchema = z.object({
   sku: z.string(),
@@ -8,13 +9,15 @@ const productSchema = z.object({
   image: z.string(),
   additionalImages: z.string().array(),
   countInStock: z.number(),
-  reservations: z.array(
-    z.object({
-      userId: z.instanceof(Types.ObjectId),
-      quantity: z.number(),
-      modifiedAt: z.date(),
-    })
-  ),
+  reservations: z
+    .array(
+      z.object({
+        userId: z.instanceof(Types.ObjectId),
+        quantity: z.number(),
+        modifiedAt: z.date(),
+      })
+    )
+    .optional(),
   price: z.number(),
   brand: z.preprocess((arg) => {
     if (typeof arg == "string") return new Types.ObjectId(arg);
@@ -75,6 +78,21 @@ const getTopRatedProducts = z.object({
   }),
 });
 
+/**
+ * Reviews
+ */
+
+const getReviewsByProduct = z.object({
+  params: z.object({
+    id: z.preprocess((arg) => {
+      if (typeof arg == "string") return new Types.ObjectId(arg);
+    }, z.instanceof(Types.ObjectId)),
+  }),
+  body: z.object({
+    sort: z.enum(reviewSortKeys).optional(),
+  }),
+});
+
 export default {
   createNewProduct,
   getSingleProduct,
@@ -83,4 +101,5 @@ export default {
   getNewProducts,
   getRecommendedProducts,
   getTopRatedProducts,
+  getReviewsByProduct,
 };

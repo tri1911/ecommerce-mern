@@ -158,6 +158,15 @@ const removeAddress = z.object({
   params: z.object({ id: z.string(), addressId: z.string() }),
 });
 
+/**
+ * User's Review-related Requests Schemas
+ */
+
+const getReviewsByUser = z.object({
+  user: userInRequestSchema,
+  params: z.object({ id: z.string() }),
+});
+
 export default {
   userLogin,
   userSignUp,
@@ -167,4 +176,5 @@ export default {
   addNewAddress,
   updateAddress,
   removeAddress,
+  getReviewsByUser,
 };
