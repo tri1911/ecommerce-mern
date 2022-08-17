@@ -1,8 +1,9 @@
+import { useState } from "react";
 import classNames from "classnames";
+import { Popover } from "@headlessui/react";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
 import { StarIcon } from "@heroicons/react/solid";
-import { useState } from "react";
-import { Popover } from "@headlessui/react";
+import { useLocation } from "react-router-dom";
 
 function RatingSection({ title }: { title: string }) {
   const [rating, setRating] = useState(0);
@@ -46,6 +47,9 @@ function RatingSection({ title }: { title: string }) {
 }
 
 export default function ReviewDetails() {
+  const { state } = useLocation();
+  console.log("state", state);
+
   return (
     <div className="px-6 py-7 rounded shadow-md">
       <h4 className="mb-4 text-lg leading-5 font-medium text-gray-800">

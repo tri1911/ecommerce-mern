@@ -38,7 +38,12 @@ const createReview = async (payload: Review) => {
   return createdReview;
 };
 
-const updateReview = async ({ product, user, rating, desc }: Review) => {
+const updateReview = async ({
+  product,
+  user,
+  rating,
+  desc,
+}: Omit<Review, "order" | "purchasedAt">) => {
   const foundProduct = await ProductModel.findById(product);
   if (!foundProduct) {
     throw new HttpException("Product does not exist", 404);

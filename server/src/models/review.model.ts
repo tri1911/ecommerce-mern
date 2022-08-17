@@ -2,8 +2,10 @@ import { Schema, model, InferSchemaType } from "mongoose";
 
 const reviewSchema = new Schema(
   {
-    product: { type: Schema.Types.ObjectId, required: true, ref: "Product" },
     user: { type: Schema.Types.ObjectId, required: true, ref: "User" },
+    order: { type: Schema.Types.ObjectId, ref: "Order", required: true },
+    product: { type: Schema.Types.ObjectId, required: true, ref: "Product" },
+    purchasedAt: { type: Date, required: true },
     rating: { type: Number, required: true, min: 0, max: 5 },
     desc: { type: String, required: true },
   },

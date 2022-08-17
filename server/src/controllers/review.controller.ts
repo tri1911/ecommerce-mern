@@ -7,14 +7,13 @@ const createReview = asyncHandler(async (req, res) => {
   const {
     user,
     params: { productId },
-    body: { rating, desc },
+    body,
   } = reviewSchemas.createReview.parse(req);
 
   const createdReview = await reviewServices.createReview({
     user: user._id,
     product: new Types.ObjectId(productId),
-    rating,
-    desc,
+    ...body,
   });
 
   res.status(201).json({ createdReview });

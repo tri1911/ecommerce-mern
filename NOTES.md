@@ -59,6 +59,8 @@
 
 ### References
 
+- [Order Management Software Specification](https://www.ibm.com/docs/en/order-management-sw/9.5.0?topic=orders-creating-return-order)
+
 #### E-commerce sites
 
 - [Vessi](https://ca.vessi.com/)

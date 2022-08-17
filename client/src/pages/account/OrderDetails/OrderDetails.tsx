@@ -1,21 +1,24 @@
-import { useAppSelector } from "hooks";
+import { Fragment } from "react";
+import classNames from "classnames";
 import { Link, useParams } from "react-router-dom";
+import { useAppSelector } from "hooks";
 import { selectOrderById } from "slices/orders.slice";
-import {
+import type {
   Order,
   OrderItem,
   ShippingDetails,
   BillingDetails,
 } from "services/order.service";
+import { Menu, Transition } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/solid";
 import { InfoCard } from "../ProfileSummary/PersonalInfo";
-import classNames from "classnames";
 
 function OrderInfo({ order }: { order: Order }) {
   return (
     <div className="flex items-center justify-between flex-wrap">
       <div>
         <h5 className="text-base font-medium text-gray-800 mb-1">Sold By</h5>
-        <p className="text-primary text-sm">Elliot Shop</p>
+        <p className="text-primary text-sm">Elliot</p>
       </div>
       <div>
         <h5 className="text-base font-medium text-gray-800 mb-1">
@@ -36,7 +39,8 @@ function OrderInfo({ order }: { order: Order }) {
           to="/account/reviews/details"
           className="default-btn inline-block w-fit py-2 px-4 font-roboto text-base tracking-wide capitalize text-primary bg-white hover:text-white hover:bg-primary"
         >
-          Write a Review
+          {/* Write a Review */}
+          Cancel Order
         </Link>
       </div>
     </div>
@@ -91,9 +95,85 @@ function OrderTimeline({ order: { status } }: { order: Order }) {
   );
 }
 
-function OrderItemRow({ item }: { item: OrderItem }) {
+function OrderItemMenu({
+  orderId,
+  purchasedAt,
+  item,
+}: {
+  orderId: string;
+  purchasedAt: string;
+  item: OrderItem;
+}) {
   return (
-    <li className="flex items-center flex-wrap">
+    <Menu
+      as="div"
+      className="relative mt-4 ml-auto flex items-center md:block md:mt-0"
+    >
+      <Menu.Button className="inline-flex w-fit justify-center rounded-md px-4 py-2 border border-primary bg-white font-roboto capitalize text-sm font-medium text-primary hover:bg-primary hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75">
+        Actions
+        <ChevronDownIcon className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
+      </Menu.Button>
+      <Transition
+        as={Fragment}
+        enter="transition ease-out duration-100"
+        enterFrom="transform opacity-0 scale-95"
+        enterTo="transform opacity-100 scale-100"
+        leave="transition ease-in duration-75"
+        leaveFrom="transform opacity-100 scale-100"
+        leaveTo="transform opacity-0 scale-95"
+      >
+        <Menu.Items className="z-10 px-1 py-1 absolute right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Item>
+            {({ active }) => (
+              <Link
+                to={`/account/reviews/details`}
+                state={{
+                  orderId,
+                  purchasedAt,
+                  item,
+                }}
+                className={classNames(
+                  { "bg-primary text-white": active },
+                  { "text-gray-900": !active },
+                  "flex w-full items-center rounded-md px-2 py-2 text-sm"
+                )}
+              >
+                Write Review
+              </Link>
+            )}
+          </Menu.Item>
+          <Menu.Item>
+            {({ active }) => (
+              <Link
+                to="/account/order-return/details"
+                className={classNames(
+                  { "bg-primary text-white": active },
+                  { "text-gray-900": !active },
+                  "inline-block text-left w-full rounded-md px-2 py-2 text-sm"
+                )}
+              >
+                Return Item
+                <p className="text-xs text-gray-400">Until 24 Sep 2021</p>
+              </Link>
+            )}
+          </Menu.Item>
+        </Menu.Items>
+      </Transition>
+    </Menu>
+  );
+}
+
+function OrderItemRow({
+  orderId,
+  purchasedAt,
+  item,
+}: {
+  orderId: string;
+  purchasedAt: string;
+  item: OrderItem;
+}) {
+  return (
+    <li className="flex items-start flex-wrap">
       <div className="w-16 h-16 overflow-hidden">
         <img
           // src="/images/products/headphone-3.png"
@@ -112,21 +192,28 @@ function OrderItemRow({ item }: { item: OrderItem }) {
       <div className="mt-4 ml-auto md:mt-0">
         <h5 className="text-base font-medium">Qty: {item.quantity}</h5>
       </div>
-      <div className="mt-4 ml-auto flex items-center md:block md:mt-0">
+      {/* <div className="mt-4 ml-auto flex items-center md:block md:mt-0">
         <h5 className="text-primary hover:text-primary/75 transition font-medium uppercase mr-4 md:mr-0 md:mb-1">
           <Link to="/account/order-return/details">Return</Link>
         </h5>
         <p className="text-sm text-gray-800">Until 24 Sep 2021</p>
-      </div>
+      </div> */}
+      <OrderItemMenu orderId={orderId} purchasedAt={purchasedAt} item={item} />
     </li>
   );
 }
 
-function OrderItems({ items }: { items: OrderItem[] }) {
+function OrderItems({ order }: { order: Order }) {
   return (
     <ul className="mt-14 space-y-8">
-      {items.map((item) => (
-        <OrderItemRow key={item.productId} item={item} />
+      {order.items.map((item) => (
+        // NOTE: prop drilling here...
+        <OrderItemRow
+          key={item.productId}
+          orderId={order._id}
+          purchasedAt={order.createdAt}
+          item={item}
+        />
       ))}
     </ul>
   );
@@ -213,7 +300,7 @@ export default function OrderDetails() {
         <h4 className="text-lg leading-6 font-medium mb-6">Order Details</h4>
         <OrderInfo order={order} />
         <OrderTimeline order={order} />
-        <OrderItems items={order.items} />
+        <OrderItems order={order} />
       </div>
       <div className="grid md:grid-cols-3 gap-4">
         <ShippingDetailsCard shippingDetails={order.shippingDetails} />
