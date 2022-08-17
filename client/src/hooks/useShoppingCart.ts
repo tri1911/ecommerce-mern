@@ -1,6 +1,7 @@
 import { useCallback } from "react";
-import { useAppDispatch } from ".";
+import { useAppDispatch, useAppSelector } from ".";
 import {
+  getCart,
   cartItemAdded,
   cartItemRemoved,
   itemQuantityUpdated,
@@ -8,7 +9,16 @@ import {
 } from "slices/cart.slice";
 
 const useShoppingCart = () => {
+  const { status, data, showCartDrawer } = useAppSelector(
+    (state) => state.cart
+  );
+  const items = data?.items;
+
   const dispatch = useAppDispatch();
+
+  const fetchCart = useCallback(() => {
+    dispatch(getCart());
+  }, [dispatch]);
 
   const handleAddToCart = useCallback(
     (payload: { productId: string; quantity: number }) => () => {
@@ -32,7 +42,25 @@ const useShoppingCart = () => {
     [dispatch]
   );
 
-  return { handleAddToCart, handleDeleteCartItem, handleUpdateItemQuantity };
+  const openCartDrawer = useCallback(() => {
+    dispatch(setShowCartDrawer(true));
+  }, [dispatch]);
+
+  const closeCartDrawer = useCallback(() => {
+    dispatch(setShowCartDrawer(false));
+  }, [dispatch]);
+
+  return {
+    status,
+    showCartDrawer,
+    openCartDrawer,
+    closeCartDrawer,
+    items,
+    fetchCart,
+    handleAddToCart,
+    handleDeleteCartItem,
+    handleUpdateItemQuantity,
+  };
 };
 
 export default useShoppingCart;

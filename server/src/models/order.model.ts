@@ -69,6 +69,7 @@ const paymentMethodSchema = new Schema(
   { _id: false }
 );
 
+// NOTE: include seller?
 const orderSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, required: true, ref: "User" },

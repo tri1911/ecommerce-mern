@@ -15,7 +15,7 @@ function OrderInfo({ order }: { order: Order }) {
     <div className="flex items-center justify-between flex-wrap">
       <div>
         <h5 className="text-base font-medium text-gray-800 mb-1">Sold By</h5>
-        <p className="text-primary text-sm">Apple</p>
+        <p className="text-primary text-sm">Elliot Shop</p>
       </div>
       <div>
         <h5 className="text-base font-medium text-gray-800 mb-1">

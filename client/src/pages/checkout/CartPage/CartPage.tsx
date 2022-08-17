@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
-import { useMemo, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "hooks";
+import { useMemo } from "react";
 import useShoppingCart from "hooks/useShoppingCart";
-import { getCart, selectAllCartItems } from "slices/cart.slice";
-import { CartItem } from "services/cart.service";
-import Breadcrumbs from "components/Shared/Breadcrumbs";
-import QuantitySelector from "components/Shared/QuantitySelector";
 import useStripeCheckout from "hooks/useStripeCheckout";
+import { type CartItem } from "services/cart.service";
+import Breadcrumbs from "components/Shared/Breadcrumbs";
+import Spinner from "components/Shared/Spinner";
+import QuantitySelector from "components/Shared/QuantitySelector";
 
 // TODO: change the layout to grid (since the columns are not line up properly)
 function CartItemRow({ item }: { item: CartItem }) {
@@ -122,17 +121,13 @@ function CartSummary({
 }
 
 export default function CartPage() {
-  const cartItems = useAppSelector(selectAllCartItems);
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (!cartItems) {
-      dispatch(getCart());
-    }
-  }, [dispatch, cartItems]);
+  const { status, items: cartItems } = useShoppingCart();
 
   const { handleCheckout } = useStripeCheckout();
+
+  if (status === "loading") {
+    return <Spinner />;
+  }
 
   if (!cartItems) {
     return null;

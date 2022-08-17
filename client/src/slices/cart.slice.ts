@@ -1,13 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RequestStatus } from "types";
 import { RootState } from "../app/store";
 import cartServices, { CartItem, Cart } from "../services/cart.service";
 
 interface CartState {
+  status: RequestStatus;
   data?: Cart;
   showCartDrawer: boolean;
 }
 
 const initialState: CartState = {
+  status: "idle",
   showCartDrawer: false,
 };
 
@@ -21,7 +24,11 @@ const cartSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getCart.pending, (state) => {
+        state.status = "loading";
+      })
       .addCase(getCart.fulfilled, (state, action) => {
+        state.status = "succeeded";
         state.data = action.payload;
       })
       .addCase(cartItemAdded.fulfilled, (state, action) => {
@@ -101,7 +108,6 @@ export const cartItemRemoved = createAsyncThunk<
 
 const { reducer, actions } = cartSlice;
 
-export const selectAllCartItems = (state: RootState) => state.cart.data?.items;
 export const { setShowCartDrawer } = actions;
 
 export default reducer;

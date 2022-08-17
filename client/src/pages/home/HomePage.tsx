@@ -11,6 +11,7 @@ import Advertisement from "./Advertisement";
 import BestSellingSection from "./BestSellingSection";
 import RecommendationSection from "./RecommendationSection";
 import useWishlist from "hooks/useWishlist";
+import useShoppingCart from "hooks/useShoppingCart";
 
 export default function HomePage() {
   const { status, newArrivals, recommendations, topRated } = useAppSelector(
@@ -19,7 +20,6 @@ export default function HomePage() {
   const dispatch = useAppDispatch();
 
   const loggedInUser = useAppSelector((state) => state.auth.user);
-  const { status: wishlistRequestStatus, getUserWishlist } = useWishlist();
 
   useEffect(() => {
     if (status === "idle") {
@@ -34,11 +34,22 @@ export default function HomePage() {
   }, [dispatch, status]);
 
   // request user wishlist once user logged in
+  const { status: wishlistRequestStatus, getUserWishlist } = useWishlist();
+
   useEffect(() => {
     if (loggedInUser && wishlistRequestStatus === "idle") {
       getUserWishlist();
     }
   }, [loggedInUser, wishlistRequestStatus, getUserWishlist]);
+
+  // request user wishlist once user logged in
+  const { status: cartRequestStatus, fetchCart } = useShoppingCart();
+
+  useEffect(() => {
+    if (loggedInUser && cartRequestStatus === "idle") {
+      fetchCart();
+    }
+  }, [loggedInUser, cartRequestStatus, fetchCart]);
 
   return (
     <div>

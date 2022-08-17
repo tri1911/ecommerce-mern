@@ -2,14 +2,11 @@ import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
-
-import { useAppSelector } from "hooks";
-import { selectAllCartItems } from "slices/cart.slice";
-import { CartItem } from "services/cart.service";
-
+import { type CartItem } from "services/cart.service";
 import Breadcrumbs from "components/Shared/Breadcrumbs";
 import TextInput from "components/Form/TextInput";
 import CheckBox from "components/Form/CheckBox";
+import useShoppingCart from "hooks/useShoppingCart";
 
 function OrderItem({ item: { title, price, quantity } }: { item: CartItem }) {
   return (
@@ -85,7 +82,7 @@ export default function CheckoutPage() {
       .oneOf([true], "You must accept the terms and conditions."),
   });
 
-  const cartItems = useAppSelector(selectAllCartItems);
+  const { items: cartItems } = useShoppingCart();
 
   const subtotal = useMemo(
     () =>

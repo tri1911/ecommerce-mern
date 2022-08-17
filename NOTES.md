@@ -238,6 +238,8 @@
 - [Redirect in React Router](https://stackoverflow.com/questions/69868956/how-to-redirect-in-react-router-v6)
 - [URLSearchParams in JavaScript](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 - [Optional Parameter in v6](https://stackoverflow.com/questions/70005601/alternate-way-for-optional-parameters-in-v6)
+- [Pass data between pages in React](https://stackoverflow.com/questions/52238637/react-router-how-to-pass-data-between-pages-in-react#:~:text=You%20can%20use%20the%20Link,you%20want%20to%20pass%20on.)
+- [Pass data states through React Router Links](https://www.kindacode.com/article/react-router-passing-data-states-through-links/)
 
 ### Redux
 

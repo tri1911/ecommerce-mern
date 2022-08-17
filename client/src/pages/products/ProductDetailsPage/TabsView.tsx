@@ -30,7 +30,11 @@ export default function TabsView() {
         </Tab.List>
         <Tab.Panels>
           <Tab.Panel className="lg:w-4/5 xl:w-3/5 pt-6">
-            <ProductInfo />
+            {data ? (
+              <ProductInfo product={data} />
+            ) : (
+              <p className="text-red-600">Product cannot be found.</p>
+            )}
           </Tab.Panel>
           <Tab.Panel className="pt-6">
             <QA />

@@ -26,7 +26,7 @@ function OrderInfoItem({ title, info }: { title: string; info: string }) {
   );
 }
 
-type OrderStatus = "processing" | "delivered" | "cancelled";
+type OrderStatus = "processing" | "shipped" | "delivered" | "cancelled";
 
 function OrderStatusInfo({ status = "processing" }: { status?: OrderStatus }) {
   return (
@@ -43,6 +43,7 @@ function OrderStatusInfo({ status = "processing" }: { status?: OrderStatus }) {
         className={classNames(
           "font-roboto capitalize",
           { "text-yellow-600": status === "processing" },
+          { "text-sky-600": status === "shipped" },
           { "text-green-600": status === "delivered" },
           { "text-red-600": status === "cancelled" }
         )}

@@ -1,4 +1,6 @@
-export default function ProductInfo() {
+import { ProductDetails } from "services/product.service";
+
+export default function ProductInfo({ product }: { product: ProductDetails }) {
   return (
     <>
       <div className="space-y-3 text-gray-600">
@@ -28,23 +30,26 @@ export default function ProductInfo() {
             <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
               Color
             </th>
-            <td className="py-2 px-4 border border-gray-300">
-              Black, Brown, Red
+            <td className="py-2 px-4 border border-gray-300 capitalize">
+              {/* e.g. Black, Brown, Red */}
+              {product.colors.join(", ")}
             </td>
           </tr>
           <tr>
             <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
               Material
             </th>
-            <td className="py-2 px-4 border border-gray-300">
-              Artificial Leather
+            <td className="py-2 px-4 border border-gray-300 capitalize">
+              {product.material ? product.material : "Artificial Leather"}
             </td>
           </tr>
           <tr>
             <th className="py-2 px-4 border border-gray-300 w-40 font-medium">
               Weight
             </th>
-            <td className="py-2 px-4 border border-gray-300">55kg</td>
+            <td className="py-2 px-4 border border-gray-300 capitalize">
+              {product.weight ? product.weight : "55 kg"}
+            </td>
           </tr>
         </tbody>
       </table>

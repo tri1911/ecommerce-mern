@@ -1,15 +1,16 @@
-import { XIcon } from "@heroicons/react/solid";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import useShoppingCart from "hooks/useShoppingCart";
+import { XIcon } from "@heroicons/react/solid";
 import Drawer from "components/Shared/Drawer";
 
-import { useMemo } from "react";
-import { useAppDispatch, useAppSelector } from "hooks";
-import useShoppingCart from "hooks/useShoppingCart";
-import { selectAllCartItems, setShowCartDrawer } from "slices/cart.slice";
-
 export default function CartDrawer() {
-  const showCartDrawer = useAppSelector((state) => state.cart.showCartDrawer);
-  const cartItems = useAppSelector(selectAllCartItems);
+  const {
+    items: cartItems,
+    showCartDrawer,
+    handleDeleteCartItem,
+    closeCartDrawer,
+  } = useShoppingCart();
 
   const totalPrice = useMemo(
     () =>
@@ -17,19 +18,11 @@ export default function CartDrawer() {
     [cartItems]
   );
 
-  const { handleDeleteCartItem } = useShoppingCart();
-
-  const dispatch = useAppDispatch();
-
-  const closeCartModal = () => {
-    dispatch(setShowCartDrawer(false));
-  };
-
   return (
     <Drawer
       title="Shopping Cart"
       isOpen={showCartDrawer}
-      closeModal={closeCartModal}
+      closeModal={closeCartDrawer}
     >
       <section className="mt-6 flex-1 px-4 sm:px-6">
         {cartItems?.map((item) => (
@@ -45,7 +38,7 @@ export default function CartDrawer() {
               <Link
                 to={`/products/${item.productId}`}
                 className="block font-roboto text-lg font-medium text-gray-700 hover:text-primary transition"
-                onClick={closeCartModal}
+                onClick={closeCartDrawer}
               >
                 {item.title}
               </Link>
@@ -75,7 +68,7 @@ export default function CartDrawer() {
           <Link
             to="/cart"
             className="flex-1 default-btn py-2 text-sm"
-            onClick={closeCartModal}
+            onClick={closeCartDrawer}
           >
             View Cart
           </Link>
@@ -83,7 +76,7 @@ export default function CartDrawer() {
             to="/checkout"
             type="button"
             className="flex-1 default-btn py-2 text-sm bg-white text-primary hover:bg-primary hover:text-white"
-            onClick={closeCartModal}
+            onClick={closeCartDrawer}
           >
             Check out
           </Link>
