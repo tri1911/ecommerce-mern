@@ -1,6 +1,8 @@
-import classNames from "classnames";
+import { useEffect } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "hooks";
+import useOrder from "hooks/useOrder";
 import { logout } from "slices/auth.slice";
 import Breadcrumbs from "components/Shared/Breadcrumbs";
 
@@ -148,6 +150,14 @@ function Sidebar() {
 
 // TODO: Dropdown menu in mobile screen & hide the sidebar
 export default function MyAccountPage() {
+  const { status: fetchOrderStatus, fetchOrders } = useOrder();
+
+  useEffect(() => {
+    if (fetchOrderStatus === "idle") {
+      fetchOrders();
+    }
+  }, [fetchOrderStatus, fetchOrders]);
+
   return (
     <div>
       <Breadcrumbs crumbs={[{ label: "My Account" }]} />
