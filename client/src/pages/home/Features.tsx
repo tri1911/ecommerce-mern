@@ -20,7 +20,7 @@ function SingleFeature({
 
 export default function Features() {
   return (
-    <div className="container py-16">
+    <section className="container py-16">
       <div className="lg:w-10/12 grid md:grid-cols-3 gap-3 lg:gap-6 mx-auto justify-center">
         <SingleFeature
           image="images/icons/delivery-van.svg"
@@ -38,6 +38,6 @@ export default function Features() {
           desc="Customer support"
         />
       </div>
-    </div>
+    </section>
   );
 }

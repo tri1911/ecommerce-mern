@@ -1,14 +1,13 @@
 import { useState } from "react";
-import classNames from "classnames";
 import { Link } from "react-router-dom";
-
+import classNames from "classnames";
 import { Fn } from "types";
 import { ProductDetails } from "services/product.service";
 import useShoppingCart from "hooks/useShoppingCart";
-
+import useWishlist from "hooks/useWishlist";
+import { ShoppingCartIcon } from "@heroicons/react/outline";
 import QuantitySelector from "components/Shared/QuantitySelector";
 import Rating from "components/Shared/Rating";
-import useWishlist from "hooks/useWishlist";
 
 function RatingWrapper({
   rating,
@@ -180,7 +179,7 @@ function AddToCartBtn({
       disabled={disabled}
     >
       <span className="mr-2">
-        <i className="fas fa-shopping-bag" />
+        <ShoppingCartIcon className="w-5 h-5" />
       </span>{" "}
       Add to cart
     </button>
@@ -206,7 +205,7 @@ function AddToWishlist({
       <span className="mr-2">
         <i className={addedToWishlist ? "fas fa-heart" : "far fa-heart"} />
       </span>
-      {addedToWishlist ? "Remove from Wishlist" : "Wishlist"}
+      {addedToWishlist ? "Remove" : "Wishlist"}
     </button>
   );
 }

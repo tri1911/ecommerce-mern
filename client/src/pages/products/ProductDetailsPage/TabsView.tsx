@@ -3,9 +3,11 @@ import { Tab } from "@headlessui/react";
 import ProductInfo from "./ProductInfo";
 import QA from "./QA";
 import Reviews from "./Reviews";
+import { useAppSelector } from "hooks";
 
 export default function TabsView() {
   const tabTitles = ["Product Info", "Question & Answers", "Review (10)"];
+  const { data, reviews } = useAppSelector((state) => state.product);
 
   return (
     <section className="container pb-16">
@@ -34,7 +36,11 @@ export default function TabsView() {
             <QA />
           </Tab.Panel>
           <Tab.Panel className="pt-6">
-            <Reviews />
+            <Reviews
+              total={data!.ratings.count}
+              average={data!.ratings.average}
+              aggregated={reviews!}
+            />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>

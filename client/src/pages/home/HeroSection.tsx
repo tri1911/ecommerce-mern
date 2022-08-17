@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
@@ -11,7 +11,7 @@ import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper";
 import { PaginationOptions } from "swiper/types";
 
-function HeroSlide({
+function HeroContent({
   image,
   background,
 }: {
@@ -51,25 +51,41 @@ export default function HeroSection() {
   const pagination: PaginationOptions = {
     clickable: true,
   };
+  const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
+  const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
 
   return (
-    <>
+    <section className="relative">
       <Swiper
         pagination={pagination}
-        navigation={true}
+        navigation={{ prevEl, nextEl }}
         modules={[Pagination, Navigation]}
+        loop={true}
       >
         <SwiperSlide>
-          <HeroSlide image="hero-1.png" background="hero-bg-1.jpeg" />
+          <HeroContent image="hero-1.png" background="hero-bg-1.jpeg" />
         </SwiperSlide>
         <SwiperSlide>
-          <HeroSlide image="hero-2.png" background="hero-bg-2.jpeg" />
+          <HeroContent image="hero-2.png" background="hero-bg-2.jpeg" />
         </SwiperSlide>
         <SwiperSlide>
-          <HeroSlide image="hero-3.png" background="hero-bg-1.jpeg" />
+          <HeroContent image="hero-3.png" background="hero-bg-1.jpeg" />
         </SwiperSlide>
       </Swiper>
-    </>
+      {/* Custom Nav Buttons */}
+      <button
+        className="absolute top-1/2 left-2 z-10 focus:outline-none text-gray-900 hover:text-primary"
+        ref={(element) => setPrevEl(element)}
+      >
+        <ChevronLeftIcon className="w-10 h-10" />
+      </button>
+      <button
+        className="absolute top-1/2 right-2 z-10 focus:outline-none text-gray-900 hover:text-primary"
+        ref={(element) => setNextEl(element)}
+      >
+        <ChevronRightIcon className="w-10 h-10" />
+      </button>
+    </section>
   );
 }
 

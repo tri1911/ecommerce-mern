@@ -1,13 +1,17 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../app/store";
-import { RejectErrorPayload, RequestStatus } from "../types";
-import productService, { ProductDetails } from "../services/product.service";
+import { RootState } from "app/store";
+import { RejectErrorPayload, RequestStatus } from "types";
+import productServices, {
+  type ProductDetails,
+  type AggregatedProductReviews,
+} from "services/product.service";
 
 interface ProductState {
   status: RequestStatus;
   error?: string;
   data?: ProductDetails;
+  reviews?: AggregatedProductReviews;
 }
 
 const productSlice = createSlice({
@@ -16,27 +20,30 @@ const productSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchSingleProduct.pending, (state) => {
+      .addCase(fetchProductDetails.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchSingleProduct.fulfilled, (state, { payload }) => {
+      .addCase(fetchProductDetails.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        state.data = payload;
+        state.data = payload.details;
+        state.reviews = payload.reviews;
       })
-      .addCase(fetchSingleProduct.rejected, (_, { payload, error }) => ({
+      .addCase(fetchProductDetails.rejected, (_, { payload, error }) => ({
         status: "failed",
         error: payload?.message || error.message,
       }));
   },
 });
 
-export const fetchSingleProduct = createAsyncThunk<
-  ProductDetails,
+export const fetchProductDetails = createAsyncThunk<
+  { details: ProductDetails; reviews: AggregatedProductReviews },
   string,
   { rejectValue: RejectErrorPayload }
->("product/fetchSingleProduct", async (productId, thunkApi) => {
+>("product/fetchProductDetails", async (productId, thunkApi) => {
   try {
-    return await productService.getProductById(productId);
+    const details = await productServices.getProductById(productId);
+    const reviews = await productServices.getProductReviews(productId);
+    return { details, reviews };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return thunkApi.rejectWithValue(

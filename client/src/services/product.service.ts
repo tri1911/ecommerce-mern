@@ -56,11 +56,38 @@ const getTopRatedProducts = async (limit?: number) => {
   return products;
 };
 
+/**
+ * Product Reviews
+ */
+
+export interface ProductReview {
+  _id: string;
+  rating: number;
+  desc: string;
+  createdAt: string;
+  user: { name: string; avatar?: string };
+}
+
+export interface AggregatedProductReviews {
+  reviews: ProductReview[];
+  ratings: Array<{ _id: number; count: number }>;
+}
+
+const getProductReviews = async (productId: string) => {
+  const {
+    data: { data },
+  } = await axios.get<{ data: AggregatedProductReviews }>(
+    `${baseUrl}/${productId}/reviews`
+  );
+  return data;
+};
+
 const productServices = {
   getProductById,
   getNewProducts,
   getRecommendedProducts,
   getTopRatedProducts,
+  getProductReviews,
 };
 
 export default productServices;

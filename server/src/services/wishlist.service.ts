@@ -10,7 +10,7 @@ const addWishlistItem = async ({
 }) => {
   const updatedWishlist = await WishlistModel.findOneAndUpdate(
     { user: userId },
-    { $push: { items: productId } },
+    { $addToSet: { items: productId } },
     { upsert: true, new: true }
   ).populate("items", { title: 1, image: 1, price: 1, countInStock: 1 });
 

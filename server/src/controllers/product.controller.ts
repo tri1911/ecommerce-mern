@@ -1,11 +1,11 @@
 import asyncHandler from "express-async-handler";
 import { HttpException } from "@utils/custom-errors.util";
-import productSchema from "@schemas/product.schema";
+import productSchemas from "@schemas/product.schema";
 import productServices from "@services/product.service";
 import reviewServices from "@services/review.service";
 
 const createNewProduct = asyncHandler(async (request, response) => {
-  const { body: newProduct } = productSchema.createNewProduct.parse(request);
+  const { body: newProduct } = productSchemas.createNewProduct.parse(request);
 
   const createdProduct = await productServices.createNewProduct(newProduct);
 
@@ -15,7 +15,7 @@ const createNewProduct = asyncHandler(async (request, response) => {
 const getSingleProduct = asyncHandler(async (request, response) => {
   const {
     params: { id: productId },
-  } = productSchema.getSingleProduct.parse(request);
+  } = productSchemas.getSingleProduct.parse(request);
 
   const product = await productServices.getSingleProduct(productId);
 
@@ -30,7 +30,7 @@ const updateProduct = asyncHandler(async (request, response) => {
   const {
     params: { id },
     body: data,
-  } = productSchema.updateProduct.parse(request);
+  } = productSchemas.updateProduct.parse(request);
 
   const updatedProduct = await productServices.updateProduct(id, data);
 
@@ -40,7 +40,7 @@ const updateProduct = asyncHandler(async (request, response) => {
 const deleteProduct = asyncHandler(async (request, response) => {
   const {
     params: { id: productId },
-  } = productSchema.deleteProduct.parse(request);
+  } = productSchemas.deleteProduct.parse(request);
 
   await productServices.deleteProduct(productId);
 
@@ -50,7 +50,7 @@ const deleteProduct = asyncHandler(async (request, response) => {
 const getNewProducts = asyncHandler(async (req, res) => {
   const {
     query: { limit },
-  } = productSchema.getNewProducts.parse(req);
+  } = productSchemas.getNewProducts.parse(req);
 
   const products = await productServices.getProducts({
     pageSize: limit ? Number(limit) : undefined,
@@ -65,7 +65,7 @@ const getNewProducts = asyncHandler(async (req, res) => {
 const getRecommendedProducts = asyncHandler(async (req, res) => {
   const {
     query: { limit },
-  } = productSchema.getRecommendedProducts.parse(req);
+  } = productSchemas.getRecommendedProducts.parse(req);
 
   const products = await productServices.getProducts({
     pageSize: limit ? Number(limit) : undefined,
@@ -78,7 +78,7 @@ const getRecommendedProducts = asyncHandler(async (req, res) => {
 const getTopRatedProducts = asyncHandler(async (req, res) => {
   const {
     query: { limit },
-  } = productSchema.getTopRatedProducts.parse(req);
+  } = productSchemas.getTopRatedProducts.parse(req);
 
   const products = await productServices.getProducts({
     pageSize: limit ? Number(limit) : undefined,
@@ -97,7 +97,7 @@ const getReviewsByProduct = asyncHandler(async (req, res) => {
   const {
     params: { id },
     body: { sort },
-  } = productSchema.getReviewsByProduct.parse(req);
+  } = productSchemas.getReviewsByProduct.parse(req);
 
   const data = await reviewServices.getReviewsByProduct({
     productId: id,

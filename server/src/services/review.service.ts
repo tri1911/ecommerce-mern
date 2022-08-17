@@ -89,6 +89,17 @@ const reviewSorts: {
   "-rating": { rating: -1 },
 };
 
+interface AggregatedProductReviews {
+  reviews: Array<{
+    _id: Types.ObjectId;
+    rating: number;
+    desc: string;
+    createdAt: Date;
+    user: { name: string; avatar?: string };
+  }>;
+  ratings: Array<{ _id: number; count: number }>;
+}
+
 const getReviewsByProduct = async ({
   productId,
   limit = 3,
@@ -111,7 +122,7 @@ const getReviewsByProduct = async ({
   // references:
   // https://www.mongodb.com/docs/manual/reference/operator/aggregation/bucket/
   // https://mongoosejs.com/docs/api/aggregate.html#aggregate_Aggregate-facet
-  const result = ReviewModel.aggregate([
+  const result = await ReviewModel.aggregate<AggregatedProductReviews>([
     { $match: { product: productId } },
   ]).facet({
     reviews: [
@@ -140,7 +151,7 @@ const getReviewsByProduct = async ({
           rating: 1,
           desc: 1,
           createdAt: 1,
-          user: { $arrayElemAt: ["$user.name", 0] },
+          user: { $arrayElemAt: ["$user", 0] },
         },
       },
     ],
@@ -148,14 +159,14 @@ const getReviewsByProduct = async ({
       {
         $bucket: {
           groupBy: "$rating",
-          boundaries: [0, 1, 2, 3, 4, 5],
+          boundaries: [1, 2, 3, 4, 5],
           output: { count: { $sum: 1 } },
         },
       },
     ],
   });
 
-  return result;
+  return result[0];
 };
 
 const getReviewsByUser = async ({
