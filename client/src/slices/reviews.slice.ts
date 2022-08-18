@@ -42,9 +42,14 @@ const reviewSlice = createSlice({
   },
 });
 
+export type CreateReviewPayload = Pick<
+  Review,
+  "order" | "purchasedAt" | "product" | "rating" | "desc"
+>;
+
 export const createReview = createAsyncThunk<
   Review,
-  Pick<Review, "order" | "purchasedAt" | "product" | "rating" | "desc">,
+  CreateReviewPayload,
   { state: RootState; rejectValue: RejectErrorPayload }
 >("reviews/createReview", async (payload, { getState, rejectWithValue }) => {
   try {

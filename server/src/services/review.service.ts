@@ -164,7 +164,8 @@ const getReviewsByProduct = async ({
       {
         $bucket: {
           groupBy: "$rating",
-          boundaries: [1, 2, 3, 4, 5],
+          boundaries: [1, 2, 3, 4, 5, Infinity],
+          default: "Other",
           output: { count: { $sum: 1 } },
         },
       },
