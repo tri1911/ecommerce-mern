@@ -3,11 +3,11 @@ import { generateConfig } from "utils/generate-auth-config.util";
 
 const baseUrl = "http://localhost:3001/api/reviews";
 
-export interface Review {
+export interface UserReview {
   _id: string;
   user: string;
   order: string;
-  product: string;
+  product: { _id: string; title: string; image: string };
   purchasedAt: string;
   rating: number;
   desc: string;
@@ -31,7 +31,7 @@ const createReview = async ({
 }) => {
   const {
     data: { createdReview },
-  } = await axios.post<{ createdReview: Review }>(
+  } = await axios.post<{ createdReview: UserReview }>(
     `${baseUrl}/${product}`,
     {
       order,

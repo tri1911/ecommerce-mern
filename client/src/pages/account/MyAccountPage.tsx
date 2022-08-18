@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "hooks";
 import useOrder from "hooks/useOrder";
 import { logout } from "slices/auth.slice";
 import Breadcrumbs from "components/Shared/Breadcrumbs";
+import { useFetchUserReviews } from "hooks/useReview";
 
 function WelcomeCard({ name }: { name?: string }) {
   return (
@@ -151,12 +152,19 @@ function Sidebar() {
 // TODO: Dropdown menu in mobile screen & hide the sidebar
 export default function MyAccountPage() {
   const { status: fetchOrderStatus, fetchOrders } = useOrder();
+  const { getAllUserReviews, fetchUserReviewsStatus } = useFetchUserReviews();
 
   useEffect(() => {
     if (fetchOrderStatus === "idle") {
       fetchOrders();
     }
   }, [fetchOrderStatus, fetchOrders]);
+
+  useEffect(() => {
+    if (fetchUserReviewsStatus === "idle") {
+      getAllUserReviews();
+    }
+  }, [fetchUserReviewsStatus, getAllUserReviews]);
 
   return (
     <div>

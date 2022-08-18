@@ -1,13 +1,34 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState, useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "hooks";
-import { createReview, type CreateReviewPayload } from "slices/reviews.slice";
+import {
+  createReview,
+  fetchUserReviews,
+  type CreateReviewPayload,
+} from "slices/reviews.slice";
 import { useNavigate } from "react-router-dom";
 
-const useReview = () => {
+export const useFetchUserReviews = () => {
+  const { status: fetchUserReviewsStatus } = useAppSelector(
+    (state) => state.reviews
+  );
+
+  const dispatch = useAppDispatch();
+
+  const getAllUserReviews = useCallback(() => {
+    dispatch(fetchUserReviews());
+  }, [dispatch]);
+
+  return { getAllUserReviews, fetchUserReviewsStatus };
+};
+
+export const useCreateReview = () => {
   const [productRating, setProductRating] = useState(0);
   const [sellerRating, setSellerRating] = useState(0);
   const [deliveryRating, setDeliveryRating] = useState(0);
   const [description, setDescription] = useState("");
+
+  // track the review creation process
+  const [loading, setLoading] = useState(false);
 
   const canSubmit = [
     productRating,
@@ -25,19 +46,23 @@ const useReview = () => {
   const navigate = useNavigate();
 
   const handleCreateReview = useCallback(
-    (payload: CreateReviewPayload) => async () => {
-      dispatch(createReview(payload));
+    (payload: CreateReviewPayload) => () => {
+      setLoading(true);
+      dispatch(createReview(payload))
+        .unwrap()
+        .then((originalPromiseResult) => {
+          console.log("originalPromiseResult", originalPromiseResult);
+          navigate("/account/reviews");
+        })
+        .catch((rejectedValueOrSerializedError) => {
+          console.log(rejectedValueOrSerializedError.payload.message);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     },
-    [dispatch]
+    [dispatch, navigate]
   );
-
-  const { status } = useAppSelector((state) => state.reviews);
-
-  useEffect(() => {
-    if (status === "succeeded") {
-      navigate("/account/reviews");
-    }
-  }, [navigate, status]);
 
   return {
     productRating,
@@ -50,8 +75,6 @@ const useReview = () => {
     handleDescriptionChanged,
     canSubmit,
     handleCreateReview,
-    status,
+    loading,
   };
 };
-
-export default useReview;

@@ -7,7 +7,7 @@ import { ExclamationCircleIcon } from "@heroicons/react/outline";
 import { StarIcon } from "@heroicons/react/solid";
 import { type OrderItem } from "services/order.service";
 import type { Fn } from "types";
-import useReview from "hooks/useReview";
+import { useCreateReview } from "hooks/useReview";
 
 function ItemSummary({
   image,
@@ -202,8 +202,8 @@ export default function ReviewDetails() {
     handleDescriptionChanged,
     canSubmit,
     handleCreateReview,
-    status,
-  } = useReview();
+    loading,
+  } = useCreateReview();
 
   return (
     <div className="px-6 py-7 rounded shadow-md">
@@ -239,7 +239,7 @@ export default function ReviewDetails() {
         <div>
           <button
             type="button"
-            className="default-btn w-fit px-4 py-2 disabled:cursor-not-allowed disabled:bg-primary/80 disabled:text-white"
+            className="default-btn w-32 px-4 py-2 disabled:cursor-not-allowed disabled:bg-primary/80 disabled:text-white disabled:border-transparent"
             disabled={!state || !canSubmit}
             onClick={
               state
@@ -253,9 +253,9 @@ export default function ReviewDetails() {
                 : undefined
             }
           >
-            {status === "loading" ? (
+            {loading ? (
               <svg
-                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                className="animate-spin mx-auto h-5 w-5 text-white"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"

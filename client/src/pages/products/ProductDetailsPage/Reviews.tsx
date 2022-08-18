@@ -23,7 +23,7 @@ function SingleRatingRate({
         />
       </div>
       <span className="w-8 inline-block pl-2 text-xs text-gray-800">
-        {percentage}%
+        {percentage.toFixed(0)}%
       </span>
     </li>
   );
@@ -148,7 +148,9 @@ function SingleReview({
 }
 
 function ReviewsList({ reviews }: { reviews: ProductReview[] }) {
-  return (
+  return reviews.length === 0 ? (
+    <p className="text-center text-sm text-gray-800">There is no review yet</p>
+  ) : (
     <ul className="divide-y flex-col space-y-7 mt-8 sm:mt-0">
       {reviews.map((review) => (
         <li key={review._id} className="pt-5">

@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useMemo } from "react";
 import classNames from "classnames";
 import { Link, useParams } from "react-router-dom";
 import { useAppSelector } from "hooks";
@@ -12,6 +12,7 @@ import type {
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { InfoCard } from "../ProfileSummary/PersonalInfo";
+import { selectAllReviews } from "slices/reviews.slice";
 
 function OrderInfo({ order }: { order: Order }) {
   return (
@@ -104,6 +105,11 @@ function OrderItemMenu({
   purchasedAt: string;
   item: OrderItem;
 }) {
+  const reviews = useAppSelector(selectAllReviews);
+  const alreadyReviewed = useMemo(() => {
+    return reviews.map((review) => review.product._id).includes(item.productId);
+  }, [reviews, item.productId]);
+
   return (
     <Menu
       as="div"
@@ -122,26 +128,28 @@ function OrderItemMenu({
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="z-10 px-1 py-1 absolute right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <Menu.Item>
-            {({ active }) => (
-              <Link
-                to={`/account/reviews/details`}
-                state={{
-                  orderId,
-                  purchasedAt,
-                  item,
-                }}
-                className={classNames(
-                  { "bg-primary text-white": active },
-                  { "text-gray-900": !active },
-                  "flex w-full items-center rounded-md px-2 py-2 text-sm"
-                )}
-              >
-                Write Review
-              </Link>
-            )}
-          </Menu.Item>
+        <Menu.Items className="z-10 px-1 py-1 absolute right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          {!alreadyReviewed && (
+            <Menu.Item>
+              {({ active }) => (
+                <Link
+                  to={`/account/reviews/details`}
+                  state={{
+                    orderId,
+                    purchasedAt,
+                    item,
+                  }}
+                  className={classNames(
+                    { "bg-primary text-white": active },
+                    { "text-gray-900": !active },
+                    "flex w-full items-center rounded px-2 py-2 text-sm"
+                  )}
+                >
+                  Write Review
+                </Link>
+              )}
+            </Menu.Item>
+          )}
           <Menu.Item>
             {({ active }) => (
               <Link
@@ -149,7 +157,7 @@ function OrderItemMenu({
                 className={classNames(
                   { "bg-primary text-white": active },
                   { "text-gray-900": !active },
-                  "inline-block text-left w-full rounded-md px-2 py-2 text-sm"
+                  "inline-block text-left w-full rounded px-2 py-2 text-sm"
                 )}
               >
                 Return Item

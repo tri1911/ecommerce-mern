@@ -1,5 +1,6 @@
 import axios from "axios";
 import { generateConfig } from "utils/generate-auth-config.util";
+import { UserReview } from "./review.service";
 
 const baseUrl = "http://localhost:3001/api/users";
 
@@ -230,6 +231,20 @@ const getUserWishlist = async ({
   return wishlist.items;
 };
 
+/**
+ * User's reviews
+ */
+
+const fetchUserReviews = async (userId: string, token: string) => {
+  const {
+    data: { reviews },
+  } = await axios.get<{ reviews: UserReview[] }>(
+    `${baseUrl}/${userId}/reviews`,
+    generateConfig(token)
+  );
+  return reviews;
+};
+
 const userServices = {
   getUserById,
   updateUserById,
@@ -240,6 +255,7 @@ const userServices = {
   addWishlistItem,
   removeWishlistItem,
   getUserWishlist,
+  fetchUserReviews,
 };
 
 export default userServices;

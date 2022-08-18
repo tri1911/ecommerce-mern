@@ -44,7 +44,7 @@ const cartSlice = createSlice({
 });
 
 export const getCart = createAsyncThunk<Cart, undefined, { state: RootState }>(
-  "/cart/getCart",
+  "cart/getCart",
   async (_arg, { getState }) => {
     const loggedInUser = getState().auth.user;
     if (loggedInUser) {
@@ -62,7 +62,7 @@ export const cartItemAdded = createAsyncThunk<
   Cart,
   Pick<CartItem, "productId" | "quantity">,
   { state: RootState }
->("/cart/addCartItem", async (payload, { getState }) => {
+>("cart/addCartItem", async (payload, { getState }) => {
   const loggedInUser = getState().auth.user;
   if (loggedInUser) {
     return await cartServices.addCartItem(
@@ -78,7 +78,7 @@ export const itemQuantityUpdated = createAsyncThunk<
   Cart,
   Pick<CartItem, "productId" | "quantity">,
   { state: RootState }
->("/cart/updateItemQuantity", async (payload, { getState }) => {
+>("cart/updateItemQuantity", async (payload, { getState }) => {
   const loggedInUser = getState().auth.user;
   if (loggedInUser) {
     return await cartServices.updateItemQuantity(
@@ -94,7 +94,7 @@ export const cartItemRemoved = createAsyncThunk<
   Cart,
   string,
   { state: RootState }
->("/cart/removeCartItem", async (productId, { getState }) => {
+>("cart/removeCartItem", async (productId, { getState }) => {
   const loggedInUser = getState().auth.user;
   if (loggedInUser) {
     return await cartServices.removeCartItem(

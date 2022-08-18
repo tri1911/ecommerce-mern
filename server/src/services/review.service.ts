@@ -35,7 +35,7 @@ const createReview = async (payload: Review) => {
     (average * count + payload.rating) / (count + 1);
   await foundProduct.save();
 
-  return createdReview;
+  return createdReview.populate("product", { title: 1, image: 1 });
 };
 
 const updateReview = async ({
@@ -185,6 +185,7 @@ const getReviewsByUser = async ({
   page?: number;
 }) => {
   const foundUser = await UserModel.findById(userId);
+
   if (!foundUser) {
     throw new HttpException("User does not exist", 404);
   }
@@ -193,8 +194,7 @@ const getReviewsByUser = async ({
     .sort({ createdAt: -1 })
     .skip(limit * (page - 1))
     .limit(limit)
-    .select({ rating: 1, desc: 1, createdAt: 1 });
-
+    .populate("product", { title: 1, image: 1 });
   return reviews;
 };
 
