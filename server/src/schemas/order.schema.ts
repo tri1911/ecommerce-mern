@@ -8,4 +8,19 @@ const getOrdersByUser = z.object({
   }),
 });
 
-export default { getOrdersByUser };
+const cancelOrder = z.object({
+  user: userInRequestSchema,
+  params: z.object({
+    userId: z.string(),
+    orderId: z.string(),
+  }),
+});
+
+const getCancellations = z.object({
+  user: userInRequestSchema,
+  params: z.object({
+    userId: z.string(),
+  }),
+});
+
+export default { getOrdersByUser, cancelOrder, getCancellations };
