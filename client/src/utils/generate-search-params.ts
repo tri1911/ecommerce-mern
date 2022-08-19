@@ -9,6 +9,7 @@ import type {
 type Ops = "[in][]" | "[gte]" | "[lte]" | "";
 
 const operators: { [key in SearchParamKeys]: Ops } = {
+  category: "[in][]",
   brand: "[in][]",
   sizes: "[in][]",
   colors: "[in][]",

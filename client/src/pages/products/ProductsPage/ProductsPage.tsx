@@ -23,9 +23,7 @@ const PAGE_SIZE = 12;
 
 const ProductsPage = () => {
   const { categoryId } = useParams();
-
   const [searchParams] = useSearchParams();
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -34,6 +32,7 @@ const ProductsPage = () => {
         fetchProductsByCategory({
           categoryId,
           queries: {
+            category: searchParams.getAll("category"),
             brand: searchParams.getAll("brand"),
             sizes: searchParams.getAll("size"),
             colors: searchParams.getAll("color"),

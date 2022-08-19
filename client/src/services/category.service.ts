@@ -72,6 +72,7 @@ export interface FetchResult {
 }
 
 export type SearchParamKeys =
+  | "category"
   | "brand"
   | "sizes"
   | "colors"

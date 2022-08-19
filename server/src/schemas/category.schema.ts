@@ -24,6 +24,11 @@ const getProductsByCategory = z.object({
     id: z.string({ required_error: "Category Id is required" }),
   }),
   query: z.object({
+    category: z
+      .object({
+        in: z.string().array(),
+      })
+      .optional(),
     brand: z
       .object({
         in: z.string().array(),
