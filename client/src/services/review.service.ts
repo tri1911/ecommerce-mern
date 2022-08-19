@@ -9,41 +9,60 @@ export interface UserReview {
   order: string;
   product: { _id: string; title: string; image: string };
   purchasedAt: string;
-  rating: number;
+  productRating: number;
+  sellerRating: number;
+  deliveryRating: number;
   desc: string;
   createdAt: string;
 }
 
+export interface ReviewPayload {
+  orderId: string;
+  productId: string;
+  purchasedAt: string;
+  productRating: number;
+  sellerRating: number;
+  deliveryRating: number;
+  desc: string;
+}
+
 const createReview = async ({
   token,
-  order,
-  purchasedAt,
-  product,
-  rating,
-  desc,
+  ...payload
 }: {
   token: string;
-  order: string;
-  purchasedAt: string;
-  product: string;
-  rating: number;
-  desc: string;
-}) => {
+} & ReviewPayload) => {
   const {
     data: { createdReview },
   } = await axios.post<{ createdReview: UserReview }>(
-    `${baseUrl}/${product}`,
-    {
-      order,
-      purchasedAt,
-      rating,
-      desc,
-    },
+    baseUrl,
+    payload,
     generateConfig(token)
   );
   return createdReview;
 };
 
-const reviewServices = { createReview };
+export type UpdateReviewPayload = Omit<
+  ReviewPayload,
+  "orderId" | "purchasedAt"
+>;
+
+const updateReview = async ({
+  token,
+  ...update
+}: {
+  token: string;
+} & UpdateReviewPayload) => {
+  const {
+    data: { updatedReview },
+  } = await axios.put<{ updatedReview: UserReview }>(
+    baseUrl,
+    update,
+    generateConfig(token)
+  );
+  return updatedReview;
+};
+
+const reviewServices = { createReview, updateReview };
 
 export default reviewServices;

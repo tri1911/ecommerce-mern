@@ -103,7 +103,7 @@ function ReviewCTAButton() {
 }
 
 function SingleReview({
-  review: { rating, desc, createdAt, user },
+  review: { productRating: rating, desc, user },
 }: {
   review: ProductReview;
 }) {

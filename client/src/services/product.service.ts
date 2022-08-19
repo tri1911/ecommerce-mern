@@ -62,7 +62,7 @@ const getTopRatedProducts = async (limit?: number) => {
 
 export interface ProductReview {
   _id: string;
-  rating: number;
+  productRating: number;
   desc: string;
   createdAt: string;
   user: { name: string; avatar?: string };

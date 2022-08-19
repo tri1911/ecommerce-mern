@@ -5,9 +5,9 @@ import { format } from "date-fns";
 import { Popover } from "@headlessui/react";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
 import { StarIcon } from "@heroicons/react/solid";
-import { type OrderItem } from "services/order.service";
+import { type UserReview } from "services/review.service";
 import type { Fn } from "types";
-import { useCreateReview } from "hooks/useReview";
+import { useCreateOrUpdateReview } from "hooks/useReview";
 
 function ItemSummary({
   image,
@@ -180,7 +180,10 @@ function ImagesUpload() {
 interface LocationState {
   orderId: string;
   purchasedAt: string;
-  item: OrderItem;
+  productId: string;
+  name: string;
+  image: string;
+  existingReview: UserReview;
 }
 
 export default function ReviewDetails() {
@@ -202,8 +205,9 @@ export default function ReviewDetails() {
     handleDescriptionChanged,
     canSubmit,
     handleCreateReview,
+    handleUpdateReview,
     loading,
-  } = useCreateReview();
+  } = useCreateOrUpdateReview(state?.existingReview);
 
   return (
     <div className="px-6 py-7 rounded shadow-md">
@@ -212,8 +216,8 @@ export default function ReviewDetails() {
       </h4>
       <div className="space-y-5 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-y-7 sm:gap-x-12">
         <ItemSummary
-          image={state?.item.image}
-          name={state?.item.name}
+          image={state?.image}
+          name={state?.name}
           purchasedAt={state?.purchasedAt}
         />
         <InteractiveRating
@@ -240,16 +244,26 @@ export default function ReviewDetails() {
           <button
             type="button"
             className="default-btn w-32 px-4 py-2 disabled:cursor-not-allowed disabled:bg-primary/80 disabled:text-white disabled:border-transparent"
-            disabled={!state || !canSubmit}
+            disabled={!state || !canSubmit || loading}
             onClick={
               state
-                ? handleCreateReview({
-                    order: state.orderId,
-                    purchasedAt: state.purchasedAt,
-                    product: state.item.productId,
-                    rating: (productRating + sellerRating + deliveryRating) / 3,
-                    desc: description,
-                  })
+                ? state.existingReview
+                  ? handleUpdateReview({
+                      productId: state.productId,
+                      productRating,
+                      sellerRating,
+                      deliveryRating,
+                      desc: description,
+                    })
+                  : handleCreateReview({
+                      orderId: state.orderId,
+                      purchasedAt: state.purchasedAt,
+                      productId: state.productId,
+                      productRating,
+                      sellerRating,
+                      deliveryRating,
+                      desc: description,
+                    })
                 : undefined
             }
           >
@@ -274,6 +288,8 @@ export default function ReviewDetails() {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 />
               </svg>
+            ) : state && state.existingReview ? (
+              "Edit"
             ) : (
               "Submit"
             )}

@@ -2,15 +2,13 @@ import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { useAppSelector } from "hooks";
 import { selectAllReviews } from "slices/reviews.slice";
-import { StarIcon as StarIconSolid } from "@heroicons/react/solid";
-import { StarIcon as StarIconOutline } from "@heroicons/react/outline";
+import { StarIcon } from "@heroicons/react/solid";
 import type { UserReview } from "services/review.service";
+import classNames from "classnames";
 
-function ReviewRow({
-  review: { order, purchasedAt, product, rating },
-}: {
-  review: UserReview;
-}) {
+function ReviewRow({ review }: { review: UserReview }) {
+  const { order, purchasedAt, product, productRating } = review;
+
   return (
     <div className="px-6 py-7 shadow md:flex md:items-start md:justify-between">
       <div className="flex items-start">
@@ -29,13 +27,16 @@ function ReviewRow({
             {product.title}
           </Link>
           <div className="flex gap-1 text-sm text-yellow-400">
-            {[...Array(5).keys()].map((key) =>
-              rating >= key + 1 ? (
-                <StarIconSolid key={key} className="w-4 h-4" />
-              ) : (
-                <StarIconOutline key={key} className="w-4 h-4" />
-              )
-            )}
+            {[...Array(5).keys()].map((key) => (
+              <StarIcon
+                key={key}
+                className={classNames(
+                  "w-4 h-4",
+                  { "text-yellow-400": productRating >= key + 1 },
+                  { "text-gray-200": productRating < key + 1 }
+                )}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -57,6 +58,14 @@ function ReviewRow({
         <div className="flex items-center">
           <Link
             to="details"
+            state={{
+              orderId: order,
+              purchasedAt,
+              productId: product._id,
+              name: product.title,
+              image: product.image,
+              existingReview: review,
+            }}
             className="default-btn capitalize px-4 py-2 text-xs sm:text-sm bg-white text-primary hover:bg-primary hover:text-white"
           >
             Edit Review
@@ -69,6 +78,10 @@ function ReviewRow({
 
 export default function MyReviews() {
   const reviews = useAppSelector(selectAllReviews);
+
+  if (reviews.length === 0) {
+    return <p className="text-center font-roboto text-gray-800">No Reviews</p>;
+  }
 
   return (
     <div className="space-y-6">
