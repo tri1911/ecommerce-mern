@@ -12,8 +12,8 @@ import categoryService, {
   MetaData,
   Price,
   Product,
-  ProductsFilter,
   Size,
+  ProductsQueries,
 } from "services/category.service";
 
 const productsAdapter = createEntityAdapter<Product>({
@@ -49,10 +49,12 @@ const productsSlice = createSlice({
           action.payload;
         state.status = "succeeded";
         state.metadata = metadata[0];
-        state.categories = categories;
-        state.brands = brands;
-        state.sizes = sizes;
-        state.colors = colors;
+        state.categories = categories.sort((a, b) =>
+          a._id.localeCompare(b._id)
+        );
+        state.brands = brands.sort((a, b) => a._id.localeCompare(b._id));
+        state.sizes = sizes.sort((a, b) => a._id.localeCompare(b._id));
+        state.colors = colors.sort((a, b) => a._id.localeCompare(b._id));
         state.price = price[0];
         productsAdapter.setAll(state, products);
       });
@@ -61,14 +63,14 @@ const productsSlice = createSlice({
 
 export const fetchProductsByCategory = createAsyncThunk(
   "products/fetchProductsByCategory",
-  async (query: {
+  async ({
+    categoryId,
+    queries,
+  }: {
     categoryId: string;
-    filter?: ProductsFilter;
-    currentPage?: number;
-    pageSize?: number;
-    sort?: string;
+    queries: ProductsQueries;
   }) => {
-    return await categoryService.fetchProductsByCategory(query);
+    return await categoryService.fetchProductsByCategory(categoryId, queries);
   }
 );
 

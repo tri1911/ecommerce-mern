@@ -37,7 +37,7 @@ const getSingleCategory = asyncHandler(async (request, response) => {
 const getProductsByCategory = asyncHandler(async (request, response) => {
   const {
     params: { id: categoryId },
-    query: { currentPage, pageSize, sort, ...rest },
+    query: { page, limit, sort, ...rest },
   } = categorySchemas.getProductsByCategory.parse(request);
 
   // generate `filter`
@@ -60,8 +60,8 @@ const getProductsByCategory = asyncHandler(async (request, response) => {
   const result = await categoryServices.getProductsByCategory({
     categoryId,
     secondaryFilter: filter,
-    currentPage: currentPage ? Number(currentPage) : undefined,
-    pageSize: pageSize ? Number(pageSize) : undefined,
+    page,
+    limit,
     sortQuery,
   });
 

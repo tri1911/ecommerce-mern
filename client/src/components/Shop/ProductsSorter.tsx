@@ -5,11 +5,11 @@ import { CheckIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { useSearchParams } from "react-router-dom";
 
 const SORT_OPTIONS: Array<{ name: string; value?: string }> = [
-  { name: "Default sorting", value: undefined },
-  { name: "Highest Rated", value: "-ratings.average" },
+  { name: "Default Sorting", value: undefined },
+  { name: "Best Rating", value: "-ratings.average" },
   { name: "Newest", value: "-createdAt" },
-  { name: "Price low - high", value: "price" },
-  { name: "Price high - low", value: "-price" },
+  { name: "Price: Low to High", value: "price" },
+  { name: "Price: High to Low", value: "-price" },
 ];
 
 const ProductsSorter = () => {
@@ -26,7 +26,7 @@ const ProductsSorter = () => {
   return (
     <Listbox
       as="div"
-      className="relative w-44"
+      className="relative w-48"
       value={selectedSort}
       onChange={setSelectedSort}
     >

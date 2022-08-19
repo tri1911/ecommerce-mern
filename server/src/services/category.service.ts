@@ -48,14 +48,14 @@ const getSingleCategory = async (id: string) => {
 const getProductsByCategory = async ({
   categoryId,
   secondaryFilter,
-  currentPage,
-  pageSize,
+  page: currentPage,
+  limit: pageSize,
   sortQuery,
 }: {
   categoryId: string;
   secondaryFilter: ProductsFilter;
-  currentPage?: number;
-  pageSize?: number;
+  page?: number;
+  limit?: number;
   sortQuery?: Record<string, 1 | -1>;
 }) => {
   let categoryFilter = {};

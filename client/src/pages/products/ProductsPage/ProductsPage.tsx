@@ -25,9 +25,6 @@ const ProductsPage = () => {
   const { categoryId } = useParams();
 
   const [searchParams] = useSearchParams();
-  const currentPage = searchParams.has("page")
-    ? Number(searchParams.get("page"))
-    : undefined;
 
   const dispatch = useAppDispatch();
 
@@ -36,20 +33,20 @@ const ProductsPage = () => {
       dispatch(
         fetchProductsByCategory({
           categoryId,
-          filter: {
+          queries: {
             brand: searchParams.getAll("brand"),
             sizes: searchParams.getAll("size"),
             colors: searchParams.getAll("color"),
             minPrice: searchParams.get("minPrice"),
             maxPrice: searchParams.get("maxPrice"),
+            page: searchParams.get("page"),
+            limit: PAGE_SIZE,
+            sort: searchParams.get("sort"),
           },
-          currentPage,
-          pageSize: PAGE_SIZE,
-          sort: searchParams.get("sort") || undefined,
         })
       );
     }
-  }, [dispatch, categoryId, currentPage, searchParams]);
+  }, [dispatch, searchParams, categoryId]);
 
   useEffect(() => {
     if (categoryId) {

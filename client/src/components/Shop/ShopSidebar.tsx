@@ -18,9 +18,9 @@ const SubCategoriesList = () => {
 
   return (
     <div className="">
-      <h3 className="mb-3 text-xl text-gray-800 uppercase font-medium">
+      {/* <h3 className="mb-3 text-xl text-gray-800 uppercase font-medium">
         Sub-Categories
-      </h3>
+      </h3> */}
       <div className="space-y-2">
         {subcategories?.map(({ _id, name }) => (
           <div key={_id}>

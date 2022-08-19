@@ -47,7 +47,7 @@ function OrderInfo({
       </div>
       <div className="mt-4 w-full md:mt-0 md:w-fit">
         <button
-          className="default-btn w-fit py-2 px-4 font-roboto text-base tracking-wide capitalize text-primary bg-white hover:text-white hover:bg-primary disabled:cursor-not-allowed disabled:text-primary/80 disabled:bg-gray-100"
+          className="default-btn w-fit py-2 px-4 font-roboto text-base tracking-wide capitalize text-primary bg-white hover:text-white hover:bg-primary disabled:cursor-not-allowed disabled:text-primary/80 disabled:bg-white"
           onClick={onCancelOrderClicked}
           disabled={order.status !== "processing"}
         >

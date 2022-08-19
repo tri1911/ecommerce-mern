@@ -123,4 +123,4 @@ export const {
   selectById: selectReviewById,
   selectIds: selectReviewIds,
   selectTotal: selectTotalReviews,
-} = reviewsAdapter.getSelectors((state: RootState) => state.reviews);
+} = reviewsAdapter.getSelectors<RootState>((state) => state.reviews);

@@ -67,6 +67,6 @@ export default cancellationsSlice.reducer;
 export const {
   selectAll: selectAllCancellations,
   selectById: selectCancellationById,
-} = cancellationsAdapter.getSelectors(
-  (state: RootState) => state.cancellations
+} = cancellationsAdapter.getSelectors<RootState>(
+  (state) => state.cancellations
 );

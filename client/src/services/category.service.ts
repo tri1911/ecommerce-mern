@@ -1,4 +1,5 @@
 import axios from "axios";
+import generateSearchParams from "utils/generate-search-params";
 
 const baseUrl = "http://localhost:3001/api/categories";
 
@@ -70,69 +71,27 @@ export interface FetchResult {
   price: Price[];
 }
 
-export interface ProductsFilter {
-  brand: string[];
-  sizes: string[];
-  colors: string[];
-  minPrice: string | null;
-  maxPrice: string | null;
-}
+export type SearchParamKeys =
+  | "brand"
+  | "sizes"
+  | "colors"
+  | "minPrice"
+  | "maxPrice"
+  | "page"
+  | "limit"
+  | "sort";
+export type SearchParamValues = string[] | string | null | number;
+export type ProductsQueries = { [key in SearchParamKeys]: SearchParamValues };
 
-const fetchProductsByCategory = async ({
-  categoryId,
-  filter,
-  currentPage,
-  pageSize,
-  sort,
-}: {
-  categoryId: string;
-  filter?: ProductsFilter;
-  currentPage?: number;
-  pageSize?: number;
-  sort?: string;
-}) => {
-  // convert to param queries with format: ?brand[in][]=<brandName>&sort=-createdAt,price
-  let queryParams = "";
-
-  // TODO: refactor filter generator
-
-  if (filter) {
-    const { brand, sizes, colors, minPrice, maxPrice } = filter;
-    queryParams +=
-      (queryParams && "&") +
-      brand.map((name) => `brand[in][]=${name}`).join("&");
-    queryParams +=
-      (queryParams && "&") +
-      sizes.map((size) => `sizes[in][]=${size}`).join("&");
-    queryParams +=
-      (queryParams && "&") +
-      colors.map((color) => `colors[in][]=${color}`).join("&");
-
-    if (minPrice) {
-      queryParams += (queryParams && "&") + `price[gte]=${minPrice}`;
-    }
-
-    if (maxPrice) {
-      queryParams += (queryParams && "&") + `price[lte]=${maxPrice}`;
-    }
-  }
-
-  if (currentPage) {
-    queryParams += (queryParams && "&") + `currentPage=${currentPage}`;
-  }
-
-  if (pageSize) {
-    queryParams += (queryParams && "&") + `pageSize=${pageSize}`;
-  }
-
-  if (sort) {
-    queryParams += (queryParams && "&") + `sort=${sort}`;
-  }
-
+const fetchProductsByCategory = async (
+  categoryId: string,
+  queries: ProductsQueries
+) => {
+  const searchParams = generateSearchParams(queries);
   const {
     data: { result },
   } = await axios.get<{ result: FetchResult }>(
-    `${baseUrl}/${categoryId}/products` + (queryParams ? `?${queryParams}` : "")
+    `${baseUrl}/${categoryId}/products?${searchParams}`
   );
   return result;
 };

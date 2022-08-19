@@ -49,8 +49,12 @@ const getProductsByCategory = z.object({
         }, z.number().optional()),
       })
       .optional(),
-    currentPage: z.string().optional(),
-    pageSize: z.string().optional(),
+    page: z.preprocess((arg) => {
+      if (typeof arg == "string") return Number(arg);
+    }, z.number().optional()),
+    limit: z.preprocess((arg) => {
+      if (typeof arg == "string") return Number(arg);
+    }, z.number().optional()),
     sort: z.string().optional(),
   }),
 });
