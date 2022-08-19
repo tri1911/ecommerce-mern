@@ -20,6 +20,9 @@ module.exports = {
         poppins: "'Poppins', sans-serif",
         roboto: "'Roboto', sans-serif",
       },
+      aspectRatio: {
+        "4/3": "4 / 3",
+      },
     },
   },
   plugins: [

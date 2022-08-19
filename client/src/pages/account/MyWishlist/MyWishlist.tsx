@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { type WishlistItem } from "services/user.service";
 import useWishlist from "hooks/useWishlist";
 import useShoppingCart from "hooks/useShoppingCart";
+import { TrashIcon } from "@heroicons/react/outline";
 
 function WishlistItemRow({
   item,
@@ -17,19 +18,23 @@ function WishlistItemRow({
   const isAvailable = countInStock > 0;
 
   return (
-    <div className="__wrapper flex items-center md:justify-between gap-4 md:gap-6 p-4 pr-5 border border-gray-200 rounded flex-wrap md:flex-nowrap relative">
-      <div className="__image w-28 shrink-0">
+    <div className="__wrapper space-y-3 md:space-y-0 md:grid md:grid-cols-12 md:gap-6 md:items-center p-4 border border-gray-200 rounded relative">
+      <div className="__image w-24 h-20 md:col-span-2">
         <Link to={`/products/${_id}`}>
-          <img className="w-full" src={image} alt="item thumbnail" />
+          <img
+            className="w-full h-full object-cover"
+            src={image}
+            alt="item thumbnail"
+          />
         </Link>
       </div>
-      <div className="__content w-full md:w-fit">
+      <div className="__content w-full md:col-span-4">
         <Link to={`/products/${_id}`}>
-          <h2 className="mb-1 text-lg xl:text-xl text-gray-800 font-medium uppercase hover:text-primary transition">
+          <h2 className="mb-1 text-sm sm:text-base text-gray-800 font-medium uppercase truncate hover:text-primary transition">
             {title}
           </h2>
         </Link>
-        <p className="text-gray-500 text-sm">
+        <p className="text-gray-500 text-xs sm:text-sm">
           Availability:{" "}
           <span
             className={classNames(
@@ -41,23 +46,27 @@ function WishlistItemRow({
           </span>
         </p>
       </div>
-      <div className="__price w-full md:w-fit">
-        <p className="text-primary text-lg font-semibold">
+      <div className="__price w-full md:col-span-2">
+        <p className="text-primary text-sm sm:text-base font-semibold">
           ${price.toFixed(2)}
         </p>
       </div>
-      <button
-        className="__add-btn default-btn block px-6 py-2"
-        onClick={onAddToCartClicked}
-      >
-        Add to cart
-      </button>
-      <button
-        className="__delete-btn absolute md:static top-2 right-3 text-gray-600 hover:text-primary cursor-pointer"
-        onClick={onRemoveWishlistItemClicked}
-      >
-        <i className="fas fa-trash" />
-      </button>
+      <div className="md:col-span-3">
+        <button
+          className="__add-btn default-btn px-6 py-2 text-xs sm:text-sm"
+          onClick={onAddToCartClicked}
+        >
+          Add to cart
+        </button>
+      </div>
+      <div className="absolute top-2 right-3 md:static md:col-span-1">
+        <button
+          className="__delete-btn text-gray-600 hover:text-primary cursor-pointer"
+          onClick={onRemoveWishlistItemClicked}
+        >
+          <TrashIcon className="w-4 h-4 md:w-5 md:h-5" />
+        </button>
+      </div>
     </div>
   );
 }

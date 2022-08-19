@@ -6,6 +6,7 @@ import { type CartItem } from "services/cart.service";
 import Breadcrumbs from "components/Shared/Breadcrumbs";
 import Spinner from "components/Shared/Spinner";
 import QuantitySelector from "components/Shared/QuantitySelector";
+import { TrashIcon, XIcon } from "@heroicons/react/outline";
 
 // TODO: change the layout to grid (since the columns are not line up properly)
 function CartItemRow({ item }: { item: CartItem }) {
@@ -14,46 +15,60 @@ function CartItemRow({ item }: { item: CartItem }) {
   const { productId, title, image, price, quantity } = item;
 
   return (
-    <div className="flex items-center md:justify-between gap-4 md:gap-6 p-4 border border-gray-200 rounded flex-wrap md:flex-nowrap">
+    <div className="relative grid grid-cols-12 gap-4 sm:gap-6 items-center p-4 border border-gray-200 rounded">
       {/* Image */}
-      <div className="w-32 shrink-0">
-        <img src={image} className="w-full" alt="Cart Item Thumbnail" />
+      <div className="w-full aspect-[4/3] rounded overflow-hidden col-span-3 md:col-span-2">
+        <img
+          src={image}
+          className="w-full h-full object-cover"
+          alt="Cart Item Thumbnail"
+        />
       </div>
       {/* Content */}
-      <div className="md:w-fit w-full">
-        <Link to={`/products/${productId}`}>
-          <h2 className="text-gray-800 mb-3 xl:text-xl text-lg font-medium uppercase hover:text-primary transition">
+      <div className="col-span-5 md:col-span-7 space-y-2 md:grid md:grid-cols-3 md:items-center md:gap-6">
+        <div className="space-y-1 md:col-span-2">
+          <Link
+            to={`/products/${productId}`}
+            className="block text-xs sm:text-sm md:text-base lg:text-lg truncate text-gray-800 font-roboto font-medium uppercase hover:text-primary transition"
+          >
             {title}
-          </h2>
-        </Link>
-        <p className="text-primary font-semibold">${price.toFixed(2)}</p>
-        {/* <p className="text-gray-500">Size: {size.toUpperCase()}</p> */}
+          </Link>
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg text-primary font-semibold">
+            ${price.toFixed(2)}
+          </p>
+          {/* <p className="text-gray-500">Size: {size.toUpperCase()}</p> */}
+        </div>
+        {/* Qty Selector */}
+        <div className="md:col-span-1">
+          <QuantitySelector
+            value={item.quantity}
+            onIncreaseQty={handleUpdateItemQuantity({
+              productId,
+              quantity: quantity + 1,
+            })}
+            onDecreaseQty={handleUpdateItemQuantity({
+              productId,
+              quantity: quantity - 1,
+            })}
+          />
+        </div>
       </div>
-      {/* Qty Selector */}
-      <QuantitySelector
-        value={item.quantity}
-        onIncreaseQty={handleUpdateItemQuantity({
-          productId,
-          quantity: quantity + 1,
-        })}
-        onDecreaseQty={handleUpdateItemQuantity({
-          productId,
-          quantity: quantity - 1,
-        })}
-      />
-      {/* Price */}
-      <div className="ml-auto md:ml-0">
-        <p className="text-primary text-lg font-semibold">
+      {/* Total Price */}
+      <div className="col-span-3 md:col-span-2">
+        <p className="text-primary text-sm sm:text-base font-semibold text-center">
           ${(quantity * price).toFixed(2)}
         </p>
       </div>
       {/* Delete Btn */}
-      <button
-        className="text-gray-600 hover:text-primary cursor-pointer"
-        onClick={handleDeleteCartItem(productId)}
-      >
-        <i className="fas fa-trash" />
-      </button>
+      <div className="col-span-1 self-start md:self-center">
+        <button
+          className="text-gray-600 hover:text-primary cursor-pointer"
+          onClick={handleDeleteCartItem(productId)}
+        >
+          <XIcon className="md:hidden w-4 h-4" />
+          <TrashIcon className="hidden md:block w-5 h-5" />
+        </button>
+      </div>
     </div>
   );
 }
@@ -114,7 +129,7 @@ function CartSummary({
         className="bg-primary border border-primary text-white px-4 py-3 font-medium rounded-md uppercase hover:bg-transparent hover:text-primary transition text-sm w-full block text-center"
         onClick={onCheckoutPressed}
       >
-        Process to checkout
+        Proceed to Checkout
       </button>
     </section>
   );
@@ -149,12 +164,12 @@ export default function CartPage() {
         <div className="container lg:grid grid-cols-12 gap-6 items-start pb-16 pt-4">
           <section className="xl:col-span-9 lg:col-span-8">
             {/* Heading */}
-            <div className="bg-gray-200 py-2 pl-12 pr-20 xl:pr-28 mb-4 hidden md:flex font-medium">
-              <p className="text-gray-600 text-center">Product</p>
-              <p className="text-gray-600 text-center ml-auto mr-16 xl:mr-24">
+            <div className="bg-gray-200 py-2 mb-4 hidden md:grid md:grid-cols-12 font-medium">
+              <p className="text-gray-600 text-center md:col-span-6">Product</p>
+              <p className="text-gray-600 text-center md:col-span-3">
                 Quantity
               </p>
-              <p className="text-gray-600 text-center">Total</p>
+              <p className="text-gray-600 text-center md:col-span-2">Total</p>
             </div>
             {/* Cart Items */}
             <div className="space-y-4">

@@ -41,7 +41,7 @@
   }
 
   .product-quantity-btn {
-    @apply h-8 w-8 text-xl flex items-center justify-center cursor-pointer select-none;
+    @apply h-5 w-5 md:h-8 md:w-8 text-base md:text-xl flex items-center justify-center cursor-pointer select-none hover:bg-gray-200;
   }
 
   .input-error {
