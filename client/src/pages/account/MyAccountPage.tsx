@@ -6,6 +6,7 @@ import useOrder from "hooks/useOrder";
 import { logout } from "slices/auth.slice";
 import Breadcrumbs from "components/Shared/Breadcrumbs";
 import { useFetchUserReviews } from "hooks/useReview";
+import useCancellation from "hooks/useCancellation";
 
 function WelcomeCard({ name }: { name?: string }) {
   return (
@@ -153,6 +154,8 @@ function Sidebar() {
 export default function MyAccountPage() {
   const { status: fetchOrderStatus, fetchOrders } = useOrder();
   const { getAllUserReviews, fetchUserReviewsStatus } = useFetchUserReviews();
+  const { status: fetchCancellationsStatus, fetchAllCancellations } =
+    useCancellation();
 
   useEffect(() => {
     if (fetchOrderStatus === "idle") {
@@ -165,6 +168,12 @@ export default function MyAccountPage() {
       getAllUserReviews();
     }
   }, [fetchUserReviewsStatus, getAllUserReviews]);
+
+  useEffect(() => {
+    if (fetchCancellationsStatus === "idle") {
+      fetchAllCancellations();
+    }
+  }, [fetchCancellationsStatus, fetchAllCancellations]);
 
   return (
     <div>

@@ -1,7 +1,9 @@
 import { Fragment } from "react";
+import { format } from "date-fns";
 import classNames from "classnames";
 import { Link, useParams } from "react-router-dom";
 import { useAppSelector } from "hooks";
+import useOrder from "hooks/useOrder";
 import { selectOrderById } from "slices/orders.slice";
 import type {
   Order,
@@ -14,7 +16,13 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import { InfoCard } from "../ProfileSummary/PersonalInfo";
 import { selectReviewById } from "slices/reviews.slice";
 
-function OrderInfo({ order }: { order: Order }) {
+function OrderInfo({
+  order,
+  onCancelOrderClicked,
+}: {
+  order: Order;
+  onCancelOrderClicked?: React.MouseEventHandler<HTMLButtonElement>;
+}) {
   return (
     <div className="flex items-center justify-between flex-wrap">
       <div>
@@ -33,16 +41,18 @@ function OrderInfo({ order }: { order: Order }) {
         <h5 className="text-base font-medium text-gray-800 mb-1">
           Shipped Date
         </h5>
-        <p className="text-sm text-gray-700">{order.createdAt.split("T")[0]}</p>
+        <p className="text-sm text-gray-700">
+          {format(new Date(order.createdAt), "MMM dd, yyyy")}
+        </p>
       </div>
       <div className="mt-4 w-full md:mt-0 md:w-fit">
-        <Link
-          to="/account/reviews/details"
-          className="default-btn inline-block w-fit py-2 px-4 font-roboto text-base tracking-wide capitalize text-primary bg-white hover:text-white hover:bg-primary"
+        <button
+          className="default-btn w-fit py-2 px-4 font-roboto text-base tracking-wide capitalize text-primary bg-white hover:text-white hover:bg-primary disabled:cursor-not-allowed disabled:text-primary/80 disabled:bg-gray-100"
+          onClick={onCancelOrderClicked}
+          disabled={order.status !== "processing"}
         >
-          {/* Write a Review */}
           Cancel Order
-        </Link>
+        </button>
       </div>
     </div>
   );
@@ -297,8 +307,9 @@ function TotalSummaryCard({
 export default function OrderDetails() {
   const { orderId } = useParams();
   const order = useAppSelector((state) => selectOrderById(state, orderId!));
+  const { handleCancelOrder } = useOrder();
 
-  if (!order) {
+  if (!order || !orderId) {
     return null;
   }
 
@@ -306,7 +317,10 @@ export default function OrderDetails() {
     <div className="space-y-10">
       <div className="shadow rounded px-6 pt-5 pb-7">
         <h4 className="text-lg leading-6 font-medium mb-6">Order Details</h4>
-        <OrderInfo order={order} />
+        <OrderInfo
+          order={order}
+          onCancelOrderClicked={handleCancelOrder(orderId)}
+        />
         <OrderTimeline order={order} />
         <OrderItems order={order} />
       </div>

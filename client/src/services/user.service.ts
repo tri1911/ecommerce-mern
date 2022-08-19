@@ -232,7 +232,7 @@ const getUserWishlist = async ({
 };
 
 /**
- * User's reviews
+ * User's Reviews
  */
 
 const fetchUserReviews = async (userId: string, token: string) => {

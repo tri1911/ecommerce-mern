@@ -8,6 +8,7 @@ import productsReducer from "slices/products.slice";
 import productReducer from "slices/product.slice";
 import cartReducer from "slices/cart.slice";
 import ordersReducer from "slices/orders.slice";
+import cancellationsReducer from "slices/cancellations.slice";
 import wishlistReducer from "slices/wishlists.slice";
 import reviewsReducer from "slices/reviews.slice";
 
@@ -22,6 +23,7 @@ export const store = configureStore({
     product: productReducer,
     cart: cartReducer,
     orders: ordersReducer,
+    cancellations: cancellationsReducer,
     wishlist: wishlistReducer,
     reviews: reviewsReducer,
   },
