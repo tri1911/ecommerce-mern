@@ -1,6 +1,6 @@
-import { ProductDetails } from "services/product.service";
+import { Product } from "services/product.service";
 
-export default function ProductInfo({ product }: { product: ProductDetails }) {
+export default function ProductInfo({ product }: { product: Product }) {
   return (
     <>
       <div className="space-y-3 text-gray-600">

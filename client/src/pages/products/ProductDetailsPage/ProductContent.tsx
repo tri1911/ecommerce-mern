@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import { Fn } from "types";
-import { ProductDetails } from "services/product.service";
+import { Product } from "services/product.service";
 import useShoppingCart from "hooks/useShoppingCart";
 import useWishlist from "hooks/useWishlist";
 import { ShoppingCartIcon } from "@heroicons/react/outline";
@@ -235,11 +235,7 @@ function SocialShareIcons() {
   );
 }
 
-export default function ProductContent({
-  product,
-}: {
-  product: ProductDetails;
-}) {
+export default function ProductContent({ product }: { product: Product }) {
   const [selectedInfos, setSelectedInfos] = useState<{
     size?: string;
     color?: string;
@@ -278,8 +274,8 @@ export default function ProductContent({
       <RatingWrapper rating={ratings.average} reviews={ratings.count} />
       <ProductSummary
         countInStock={countInStock}
-        brand={brand.name}
-        category={category.name}
+        brand={brand}
+        category={category}
         sku={sku}
       />
       <ProductPrice price={price} />

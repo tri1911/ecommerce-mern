@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ChevronRightIcon } from "@heroicons/react/solid";
 import Rating from "components/Shared/Rating";
-import { Product } from "services/category.service";
+import type { Product } from "services/product.service";
 
 function SingleCard({
   product: { _id, image, title, price, ratings },

@@ -1,9 +1,8 @@
 import axios from "axios";
-import { Product } from "./category.service";
 
 const baseUrl = "http://localhost:3001/api/products";
 
-export interface ProductDetails {
+export interface Product {
   _id: string;
   sku: string;
   title: string;
@@ -12,8 +11,8 @@ export interface ProductDetails {
   additionalImages: string[];
   countInStock: number;
   price: number;
-  brand: { name: string };
-  category: { name: string };
+  brand: string;
+  category: string;
   sizes: string[];
   colors: string[];
   material?: string;
@@ -25,7 +24,7 @@ export interface ProductDetails {
 }
 
 const getProductById = async (id: string) => {
-  const response = await axios.get<ProductDetails>(`${baseUrl}/${id}`);
+  const response = await axios.get<Product>(`${baseUrl}/${id}`);
   return response.data;
 };
 

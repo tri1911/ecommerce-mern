@@ -8,10 +8,23 @@ const createNewProduct = async (newProduct: Product) => {
 };
 
 const getSingleProduct = async (id: string) => {
-  const foundProduct = await ProductModel.findById(id, { reservations: 0 })
-    .populate("brand", "-_id name")
-    .populate("category", "-_id name");
-  return foundProduct;
+  const foundProduct = await ProductModel.findById(id, {
+    reservations: 0,
+    createdAt: 0,
+    updatedAt: 0,
+    __v: 0,
+  })
+    .populate<{ category: { name: string } }>("category", "-_id name")
+    .populate<{ brand: { name: string } }>("brand", "-_id name")
+    .lean();
+  // flatten the populated fields (category & brand)
+  return (
+    foundProduct && {
+      ...foundProduct,
+      category: foundProduct.category.name,
+      brand: foundProduct.brand.name,
+    }
+  );
 };
 
 const updateProduct = async (id: string, data: Partial<Product>) => {
@@ -34,13 +47,12 @@ export interface ProductsFilter {
 }
 
 interface ProductsAggregationResult {
-  products: Array<{
-    _id: string;
-    title: string;
-    image: string;
-    price: number;
-    ratings: { count: number; average: number };
-  }>;
+  products: Array<
+    Omit<Product, "category" | "brand" | "reservations"> & {
+      category: string;
+      brand: string;
+    }
+  >;
   metadata: Array<{
     total: number;
     pageSize: number;
@@ -102,17 +114,9 @@ const getProducts = async ({
           },
         },
         {
-          $project: {
-            title: 1,
-            image: 1,
-            countInStock: 1,
-            price: 1,
-            // re-format the populated `brand`, `category` arrays (of objects) to string
+          $set: {
             brand: { $arrayElemAt: ["$brand.name", 0] },
             category: { $arrayElemAt: ["$category.name", 0] },
-            sizes: 1,
-            colors: 1,
-            ratings: 1,
           },
         },
         {
@@ -124,8 +128,14 @@ const getProducts = async ({
               { $sort: sortQuery },
               { $skip: pageSize * (currentPage - 1) },
               { $limit: pageSize },
-              // just get some of fields that are required to show product's preview infos
-              { $project: { title: 1, image: 1, price: 1, ratings: 1 } },
+              {
+                $project: {
+                  createdAt: 0,
+                  updatedAt: 0,
+                  reservations: 0,
+                  __v: 0,
+                },
+              },
             ],
             // aggregate the metadata for the result docs
             metadata: [
@@ -163,15 +173,23 @@ const getProducts = async ({
     return resultAsArray[0];
   } else {
     const products = await ProductModel.find(primaryFilter, {
-      title: 1,
-      image: 1,
-      price: 1,
-      ratings: 1,
+      createdAt: 0,
+      updatedAt: 0,
+      reservations: 0,
+      __v: 0,
     })
       .sort(sortQuery)
       .skip(pageSize * (currentPage - 1))
-      .limit(pageSize);
-    return products;
+      .limit(pageSize)
+      .populate<{ category: { name: string } }>("category", "-_id name")
+      .populate<{ brand: { name: string } }>("brand", "-_id name")
+      .lean();
+    // flatten the populated fields (category & brand)
+    return products.map((product) => ({
+      ...product,
+      category: product.category.name,
+      brand: product.brand.name,
+    }));
   }
 };
 

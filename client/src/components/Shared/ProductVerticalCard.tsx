@@ -1,13 +1,11 @@
-// import { Dialog, Transition } from "@headlessui/react";
-// import { XCircleIcon } from "@heroicons/react/solid";
-// import { Fragment, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import useShoppingCart from "hooks/useShoppingCart";
-// import { ProductContent, ProductImage } from "pages/SingleProductPage";
-import { Product } from "services/category.service";
-import { Fn } from "types";
-import Rating from "./Rating";
 import useWishlist from "hooks/useWishlist";
+import Rating from "./Rating";
+import type { Product } from "services/product.service";
+import type { Fn } from "types";
+import ProductDetailsModal from "./ProductDetailsModal";
 
 function ProductCardHeader({
   image,
@@ -90,23 +88,12 @@ function ProductCardContent({
 }
 
 export default function ProductVerticalCard({ product }: { product: Product }) {
-  // NOTE: should place `Quick View` visibility control here? or put it into centralized redux store?
-  // const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
-  // function closeQuickView() {
-  //   setIsQuickViewOpen(false);
-  // }
-
-  // function openQuickView() {
-  //   setIsQuickViewOpen(true);
-  // }
-
+  const { handleAddToCart } = useShoppingCart();
   const { addedToWishlist, handleAddToWishlist, handleRemoveWishlistItem } =
     useWishlist();
 
-  const { handleAddToCart } = useShoppingCart();
-
-  // NOTE: code duplication here - each product card have one modal
   return (
     <div className="group rounded bg-white border border-gray-200 shadow-md overflow-hidden">
       <ProductCardHeader
@@ -114,7 +101,7 @@ export default function ProductVerticalCard({ product }: { product: Product }) {
         addedToWishlist={addedToWishlist(product._id)}
         onAddToWishlistClicked={handleAddToWishlist(product._id)}
         onRemoveFromWishlistClicked={handleRemoveWishlistItem(product._id)}
-        // openQuickView={openQuickView}
+        openQuickView={() => setIsQuickViewOpen(true)}
       />
       <ProductCardContent
         product={product}
@@ -123,48 +110,11 @@ export default function ProductVerticalCard({ product }: { product: Product }) {
           quantity: 1,
         })}
       />
-      {/* <Transition appear show={isQuickViewOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeQuickView}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black/25" />
-          </Transition.Child>
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-50"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-5xl transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl translate-all relative">
-                  <section className="container pt-4 grid lg:grid-cols-2 gap-6">
-                    <ProductImage />
-                    <ProductContent product={product} />
-                  </section>
-
-                  <button
-                    className="absolute top-2 right-2 text-primary hover:text-primary/75 transition"
-                    onClick={closeQuickView}
-                  >
-                    <XCircleIcon className="w-7 h-7" />
-                  </button>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-          </div>
-        </Dialog>
-      </Transition> */}
+      <ProductDetailsModal
+        product={product}
+        isQuickViewOpen={isQuickViewOpen}
+        closeQuickView={() => setIsQuickViewOpen(false)}
+      />
     </div>
   );
 }

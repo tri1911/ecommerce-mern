@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RequestStatus } from "types";
-import { Product } from "services/category.service";
+import type { Product } from "services/product.service";
 import productServices from "services/product.service";
 
 interface HomeState {

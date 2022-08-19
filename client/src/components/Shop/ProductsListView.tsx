@@ -1,4 +1,4 @@
-import { Product } from "../../services/category.service";
+import type { Product } from "services/product.service";
 import ProductHorizontalCard from "./ProductHorizontalCard";
 
 const ProductsListView = ({ products }: { products: Product[] }) => {

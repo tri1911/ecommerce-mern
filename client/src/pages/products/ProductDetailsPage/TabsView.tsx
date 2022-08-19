@@ -6,7 +6,7 @@ import Reviews from "./Reviews";
 import { useAppSelector } from "hooks";
 
 export default function TabsView() {
-  const tabTitles = ["Product Info", "Question & Answers", "Review (10)"];
+  const tabTitles = ["Product Info", "Question & Answers", "Reviews"];
   const { data, reviews } = useAppSelector((state) => state.product);
 
   return (

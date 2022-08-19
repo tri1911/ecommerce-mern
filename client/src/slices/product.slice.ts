@@ -3,20 +3,20 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 import { RejectErrorPayload, RequestStatus } from "types";
 import productServices, {
-  type ProductDetails,
+  type Product,
   type AggregatedProductReviews,
 } from "services/product.service";
 
-interface ProductState {
+interface ProductDetailsState {
   status: RequestStatus;
   error?: string;
-  data?: ProductDetails;
+  data?: Product;
   reviews?: AggregatedProductReviews;
 }
 
 const productSlice = createSlice({
   name: "product",
-  initialState: { status: "idle" } as ProductState,
+  initialState: { status: "idle" } as ProductDetailsState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -36,7 +36,7 @@ const productSlice = createSlice({
 });
 
 export const fetchProductDetails = createAsyncThunk<
-  { details: ProductDetails; reviews: AggregatedProductReviews },
+  { details: Product; reviews: AggregatedProductReviews },
   string,
   { rejectValue: RejectErrorPayload }
 >("product/fetchProductDetails", async (productId, thunkApi) => {

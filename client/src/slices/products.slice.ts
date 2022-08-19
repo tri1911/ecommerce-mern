@@ -11,10 +11,10 @@ import categoryService, {
   Color,
   MetaData,
   Price,
-  Product,
   Size,
   ProductsQueries,
 } from "services/category.service";
+import { Product } from "services/product.service";
 
 const productsAdapter = createEntityAdapter<Product>({
   selectId: (product) => product._id,

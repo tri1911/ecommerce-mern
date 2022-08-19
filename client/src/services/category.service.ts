@@ -1,5 +1,6 @@
 import axios from "axios";
 import generateSearchParams from "utils/generate-search-params";
+import { Product } from "./product.service";
 
 const baseUrl = "http://localhost:3001/api/categories";
 
@@ -22,15 +23,6 @@ const fetchSingleCategory = async (id: string) => {
   }>(`${baseUrl}/${id}`);
   return data.category;
 };
-
-// NOTE: types definition duplicates with the one in server
-export interface Product {
-  _id: string;
-  title: string;
-  image: string;
-  price: number;
-  ratings: { count: number; average: number };
-}
 
 export interface MetaData {
   total: number;

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ChevronRightIcon } from "@heroicons/react/solid";
-import { Product } from "services/category.service";
+import type { Product } from "services/product.service";
 import ProductVerticalCard from "components/Shared/ProductVerticalCard";
 
 export default function RecommendationSection({

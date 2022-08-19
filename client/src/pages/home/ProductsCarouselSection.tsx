@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Product } from "services/category.service";
+import type { Product } from "services/product.service";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import ProductVerticalCard from "components/Shared/ProductVerticalCard";
 // swiper imports

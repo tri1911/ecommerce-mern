@@ -28,6 +28,7 @@ const ProductsPage = () => {
 
   useEffect(() => {
     if (categoryId) {
+      dispatch(fetchSingleCategory(categoryId));
       dispatch(
         fetchProductsByCategory({
           categoryId,
@@ -46,12 +47,6 @@ const ProductsPage = () => {
       );
     }
   }, [dispatch, searchParams, categoryId]);
-
-  useEffect(() => {
-    if (categoryId) {
-      dispatch(fetchSingleCategory(categoryId));
-    }
-  }, [dispatch, categoryId]);
 
   const [displayMode, setDisplayMode] = useState<ShopDisplayMode>("grid");
   const { status, metadata } = useAppSelector((state) => state.products);
