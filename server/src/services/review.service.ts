@@ -32,17 +32,16 @@ const createReview = async (payload: Review) => {
   const { count, average } = foundProduct.ratings;
   foundProduct.ratings.count = count + 1;
   foundProduct.ratings.average =
-    (average * count + payload.rating) / (count + 1);
+    (average * count + payload.productRating) / (count + 1);
   await foundProduct.save();
 
   return createdReview.populate("product", { title: 1, image: 1 });
 };
 
 const updateReview = async ({
-  product,
   user,
-  rating,
-  desc,
+  product,
+  ...changes
 }: Omit<Review, "order" | "purchasedAt">) => {
   const foundProduct = await ProductModel.findById(product);
   if (!foundProduct) {
@@ -50,7 +49,6 @@ const updateReview = async ({
   }
 
   const oldReview = await ReviewModel.findOne({ product, user });
-
   if (!oldReview) {
     throw new HttpException("Review does not exist", 404);
   }
@@ -58,13 +56,15 @@ const updateReview = async ({
   // each time update the review, need to update the rating average for the product as well
   const { count, average } = foundProduct.ratings;
   foundProduct.ratings.average =
-    (average * count - oldReview.rating + rating) / count;
+    (average * count - oldReview.productRating + changes.productRating) / count;
   await foundProduct.save();
 
   // update the review
-  oldReview.rating = rating;
-  oldReview.desc = desc;
-  const updatedReview = await oldReview.save();
+  const updatedReview = await ReviewModel.findByIdAndUpdate(
+    oldReview._id,
+    changes,
+    { new: true }
+  ).populate("product", { title: 1, image: 1 });
 
   return updatedReview;
 };
@@ -153,7 +153,7 @@ const getReviewsByProduct = async ({
       },
       {
         $project: {
-          rating: 1,
+          productRating: 1,
           desc: 1,
           createdAt: 1,
           user: { $arrayElemAt: ["$user", 0] },
@@ -163,7 +163,7 @@ const getReviewsByProduct = async ({
     ratings: [
       {
         $bucket: {
-          groupBy: "$rating",
+          groupBy: "$productRating",
           boundaries: [1, 2, 3, 4, 5, Infinity],
           default: "Other",
           output: { count: { $sum: 1 } },

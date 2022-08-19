@@ -1,19 +1,18 @@
 import asyncHandler from "express-async-handler";
-import { Types } from "mongoose";
 import reviewSchemas from "@schemas/review.schema";
 import reviewServices from "@services/review.service";
 
 const createReview = asyncHandler(async (req, res) => {
   const {
     user,
-    params: { productId },
-    body,
+    body: { orderId, productId, ...rest },
   } = reviewSchemas.createReview.parse(req);
 
   const createdReview = await reviewServices.createReview({
     user: user._id,
-    product: new Types.ObjectId(productId),
-    ...body,
+    order: orderId,
+    product: productId,
+    ...rest,
   });
 
   res.status(201).json({ createdReview });
@@ -22,15 +21,13 @@ const createReview = asyncHandler(async (req, res) => {
 const updateReview = asyncHandler(async (req, res) => {
   const {
     user,
-    params: { productId },
-    body: { rating, desc },
+    body: { productId, ...rest },
   } = reviewSchemas.updateReview.parse(req);
 
   const updatedReview = await reviewServices.updateReview({
     user: user._id,
-    product: new Types.ObjectId(productId),
-    rating,
-    desc,
+    product: productId,
+    ...rest,
   });
 
   res.status(201).json({ updatedReview });
