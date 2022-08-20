@@ -9,15 +9,13 @@ const productSchema = z.object({
   image: z.string(),
   additionalImages: z.string().array(),
   countInStock: z.number(),
-  reservations: z
-    .array(
-      z.object({
-        userId: z.instanceof(Types.ObjectId),
-        quantity: z.number(),
-        modifiedAt: z.date(),
-      })
-    )
-    .optional(),
+  reservations: z.array(
+    z.object({
+      userId: z.instanceof(Types.ObjectId),
+      quantity: z.number(),
+      modifiedAt: z.date(),
+    })
+  ),
   price: z.number(),
   brand: z.preprocess((arg) => {
     if (typeof arg == "string") return new Types.ObjectId(arg);

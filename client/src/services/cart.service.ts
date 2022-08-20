@@ -1,7 +1,7 @@
 import axios from "axios";
 import { generateConfig } from "../utils/generate-auth-config.util";
 
-const baseUrl = "http://localhost:3001/api/carts";
+const baseUrl = "/api/carts";
 
 export interface CartItem {
   _id: string;

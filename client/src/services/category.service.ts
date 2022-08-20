@@ -2,7 +2,7 @@ import axios from "axios";
 import generateSearchParams from "utils/generate-search-params";
 import { Product } from "./product.service";
 
-const baseUrl = "http://localhost:3001/api/categories";
+const baseUrl = "/api/categories";
 
 export interface Category {
   _id: string;

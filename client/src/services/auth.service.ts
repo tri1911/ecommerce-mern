@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:3001/api/auth";
+const baseUrl = "/api/auth";
 export const USER_AUTH_KEY = "loggedInUser";
 
 export enum Role {

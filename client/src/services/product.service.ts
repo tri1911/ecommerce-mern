@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:3001/api/products";
+const baseUrl = "/api/products";
 
 export interface Product {
   _id: string;

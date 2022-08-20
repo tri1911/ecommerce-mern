@@ -19,5 +19,6 @@
       "@middlewares/*": ["middlewares/*"],
       "@utils/*": ["utils/*"]
     }
-  }
+  },
+  "exclude": ["src/seeders"]
 }

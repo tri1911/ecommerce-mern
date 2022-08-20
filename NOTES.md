@@ -24,6 +24,7 @@
 - [Run client and server concurrently tutorial](https://www.youtube.com/watch?v=XwFDdCIDsqY)
 - [npm prefix config](https://docs.npmjs.com/cli/v8/using-npm/config#prefix)
 - [How ot organize file structures of backend and front end in mern](https://stackoverflow.com/questions/51126472/how-to-organise-file-structure-of-backend-and-frontend-in-mern)
+- [Proxy api requests in development](https://create-react-app.dev/docs/proxying-api-requests-in-development/)
 
 #### Node.js config
 
@@ -90,7 +91,7 @@
 - [efficient workflow with eslint, typescript](https://indepth.dev/posts/1282/setting-up-efficient-workflows-with-eslint-prettier-and-typescript)
 - [user authentication libraries](https://blog.bitsrc.io/6-javascript-user-authentication-libraries-for-2019-6c7c45fbe458)
 
-### TypeScript & JavaScript
+### TypeScript, JavaScript, Node
 
 - [TypeScript Deep Dive](https://basarat.gitbook.io/typescript/)
 - [Iterate over Union Type](https://stackoverflow.com/questions/43067354/how-to-iterate-a-string-literal-type-in-typescript)
@@ -99,6 +100,7 @@
   - can write like so `Array.from({length: 5}, (v, i) => i);`
 - [Mapped Types](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html)
   - [index signature as literal string](https://stackoverflow.com/questions/40725773/typescript-literal-types-used-as-key-to-indexer)
+- [path.join and path.resolve](https://stackoverflow.com/questions/35048686/whats-the-difference-between-path-resolve-and-path-join#:~:text=or%20path%20segments.-,The%20path.,then%20normalizes%20the%20resulting%20path.)
 
 ### Markdown
 
@@ -126,6 +128,10 @@
 
 ### Deployment
 
+- [How to use create-react-app with a custom Node server on Heroku](https://github.com/mars/heroku-cra-node)
+- [How to deploy mern app](https://dev.to/stlnick/how-to-deploy-a-full-stack-mern-app-with-heroku-netlify-ncb)
+  - [Deploy React Express app to Heroku](https://daveceddia.com/deploy-react-express-app-heroku/)
+
 #### Heroku
 
 - `heroku create <name>` to create a heroku app
@@ -135,8 +141,22 @@
 - `heroku local web` to run app locally
 - `heroku config:set TIMES=2` to setup an config vars (environment variables)
 - `heroku config` to view config vars on Heroku
+- If you have both a `postinstall` script and a `build` script that both will be executed when Heroku builds your application
+- If a `heroku-postbuild` script is specified, the `build` script will not run
+- [Build behavior - Heroku Node.js](https://devcenter.heroku.com/articles/nodejs-support#build-behavior)
+- [Heroku Node.js Build Script Change FAQ](https://help.heroku.com/P5IMU3MP/heroku-node-js-build-script-change-faq)
 - [Node.js](https://devcenter.heroku.com/categories/nodejs-support)
 - [Deploying TypeScript Nodejs app to heroku](https://medium.com/developer-rants/deploying-typescript-node-js-applications-to-heroku-81dd75424ce0)
+- [Deploy Node.js with TypeScript to heroku](https://www.youtube.com/watch?v=PM4fOeQuCc4)
+- [Deploy a TypeScript Nodejs to heroku](https://stackoverflow.com/questions/59587296/how-to-deploy-a-typescript-nodejs-and-express-app-to-heroku)
+- [Deploying React Node TypeScript to Heroku w/ Github](https://funnelgarden.com/deploying-react-node-typescript-heroku-github/)
+- [Deploy subdirectory to heroku](https://stackoverflow.com/questions/26241683/heroku-deploy-a-sub-directory)
+
+### Issues
+
+- [TypeScript outDir in tsconfig not working](https://stackoverflow.com/questions/45661027/typescript-outdir-setting-in-tsconfig-json-not-working)
+- [Refused to load image url](https://stackoverflow.com/questions/66405357/refused-to-load-the-image-url-because-it-violates-the-following-content-secu)
+- [Getting no same origin error](https://stackoverflow.com/questions/71904052/getting-notsameoriginafterdefaultedtosameoriginbycoep-error-with-helmet)
 
 ## Front-end
 

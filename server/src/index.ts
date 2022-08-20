@@ -3,6 +3,7 @@
  */
 
 import express, { Request } from "express";
+import path from "path";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -34,7 +35,12 @@ const app = express();
  * App Configuration
  */
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+  })
+);
 app.use(cors());
 
 // Use JSON parser for all non-webhook routes
@@ -46,7 +52,10 @@ app.use((req, res, next) => {
   }
 });
 
-if (process.env.NODE_ENV === "development") {
+const NODE_ENV = config.util.getEnv("NODE_ENV");
+
+// log requests with morgan in development mode
+if (NODE_ENV === "development") {
   // app.use(morgan("dev"));
   morgan.token("body", (req: Request) => JSON.stringify(req.body));
 
@@ -69,6 +78,19 @@ app.use("/api/stripe", stripeRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/reviews", reviewRouter);
 
+// serve static React app build in production mode
+if (NODE_ENV === "production") {
+  app.use(express.static(path.resolve(__dirname, "..", "..", "webapp")));
+  // "catchall" handler: for any request that doesn't match one above, send back React's index.html
+  app.get("*", (_req, res) => {
+    res.sendFile(path.resolve(__dirname, "..", "..", "webapp, index.html"));
+  });
+} else {
+  app.get("/", (_req, res) => {
+    res.send("API is working...");
+  });
+}
+
 app.use(errorHandler);
 app.use(notFoundHandler);
 
@@ -79,6 +101,8 @@ app.use(notFoundHandler);
 const port = config.get<string>("server.port");
 
 app.listen(port, async () => {
-  logger.info(themes.success(`✓ Listening on port ${port}`));
+  logger.info(
+    themes.success(`✓ Listening on port ${port} (in ${NODE_ENV} mode)`)
+  );
   await connectDB();
 });

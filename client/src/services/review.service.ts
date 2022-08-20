@@ -1,7 +1,7 @@
 import axios from "axios";
 import { generateConfig } from "utils/generate-auth-config.util";
 
-const baseUrl = "http://localhost:3001/api/reviews";
+const baseUrl = "/api/reviews";
 
 export interface UserReview {
   _id: string;

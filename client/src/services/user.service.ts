@@ -2,7 +2,7 @@ import axios from "axios";
 import { generateConfig } from "utils/generate-auth-config.util";
 import { UserReview } from "./review.service";
 
-const baseUrl = "http://localhost:3001/api/users";
+const baseUrl = "/api/users";
 
 export interface Address {
   _id: string;

@@ -92,7 +92,7 @@ const findOrCreate = async (profile: Profile) => {
 const googleAuthSetup = () => {
   if (
     config.has("google.clientID") &&
-    config.has("google.clientID") &&
+    config.has("google.clientSecret") &&
     config.has("google.callbackURL")
   ) {
     passport.use(
@@ -124,7 +124,7 @@ const googleAuthSetup = () => {
 const facebookAuthSetup = () => {
   if (
     config.has("facebook.clientID") &&
-    config.has("facebook.clientID") &&
+    config.has("facebook.clientSecret") &&
     config.has("facebook.callbackURL")
   ) {
     passport.use(
@@ -146,7 +146,7 @@ const facebookAuthSetup = () => {
       )
     );
   } else {
-    loggerUtil.error(themes.error("Google keys are missing!"));
+    loggerUtil.error(themes.error("Facebook keys are missing!"));
   }
 };
 

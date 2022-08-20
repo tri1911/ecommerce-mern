@@ -26,7 +26,5 @@
   "homepage": "https://github.com/tri1911/ecommerce-mern#readme",
   "devDependencies": {
     "concurrently": "^7.3.0"
-  },"engines": {
-    "node": "18.x"
   }
 }
