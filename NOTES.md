@@ -121,6 +121,20 @@
 - [pexels](https://www.pexels.com/)
 - [pngegg](https://www.pngegg.com/)
 
+### Deployment
+
+#### Heroku
+
+- `heroku create <name>` to create a heroku app
+- `heroku ps:scale web=1` to scale heroku app
+- `heroku open` to open the web page
+- `heroku logs --tail` to stream logs
+- `heroku local web`: run app locally
+- `heroku config:set TIMES=2` to setup an config vars (environment variables)
+- `heroku config` to view config vars on Heroku
+- [Node.js](https://devcenter.heroku.com/categories/nodejs-support)
+- [Deploying TypeScript Nodejs app to heroku](https://medium.com/developer-rants/deploying-typescript-node-js-applications-to-heroku-81dd75424ce0)
+
 ## Front-end
 
 ### UI Template, Tutorial as References

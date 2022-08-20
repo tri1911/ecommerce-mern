@@ -6,24 +6,22 @@ import type {
 // helper function to convert `ProductsFilter` object into a searchParams string
 // e.g. convert { brand: "Adidas", "Nike"], minPrice: 100 } into brand[in][]=Adidas&brand[in][]=Nike&minPrice[gte]=100
 
-type Ops = "[in][]" | "[gte]" | "[lte]" | "";
-
-const operators: { [key in SearchParamKeys]: Ops } = {
-  category: "[in][]",
-  brand: "[in][]",
-  sizes: "[in][]",
-  colors: "[in][]",
-  minPrice: "[gte]",
-  maxPrice: "[lte]",
-  page: "",
-  limit: "",
-  sort: "",
+const operators: { [key in SearchParamKeys]: string } = {
+  category: "category[in][]",
+  brand: "brand[in][]",
+  sizes: "sizes[in][]",
+  colors: "colors[in][]",
+  minPrice: "price[gte]",
+  maxPrice: "price[lte]",
+  page: "page",
+  limit: "limit",
+  sort: "sort",
 } as const;
 
 const generateSearchParams = (queries: ProductsQueries) =>
   Object.entries(queries)
     .reduce((prev, [key, value]) => {
-      const newKey = key.concat(operators[key as SearchParamKeys]);
+      const newKey = operators[key as SearchParamKeys];
       if (Array.isArray(value) && value.length > 0) {
         prev = prev.concat(value.map((v) => `${newKey}=${v}`));
       } else if (!Array.isArray(value) && value !== null) {

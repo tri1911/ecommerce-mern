@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { format } from "date-fns";
 import { useAppSelector } from "hooks";
 import { Link } from "react-router-dom";
 import { Order } from "services/order.service";
@@ -86,7 +87,10 @@ export function OrderSummaryCard({ order }: { order: Order }) {
         />
       </div>
       <div>
-        <OrderInfoItem title="Purchased" info={order.createdAt.split("T")[0]} />
+        <OrderInfoItem
+          title="Purchased"
+          info={format(new Date(order.createdAt), "MMM dd, yyyy")}
+        />
       </div>
       <div className="hidden md:block">
         <OrderInfoItem title="Quantity" info={`x${order.items.length}`} />

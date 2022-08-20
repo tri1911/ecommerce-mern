@@ -114,7 +114,7 @@ function CartSummary({
       <div className="flex mb-5">
         <input
           type="text"
-          className="pl-4 w-full border border-r-0 border-primary py-2 px-3 rounded-l-md focus:ring-primary focus:border-primary text-sm"
+          className="pl-4 w-full border border-r-0 border-gray-200 py-2 px-3 rounded-l-md focus:ring-primary focus:border-primary text-sm"
           placeholder="Coupon Code"
         />
         <button
