@@ -21,6 +21,9 @@
 ### Miscellaneous
 
 - [re-export default imports](https://stackoverflow.com/questions/39999282/re-export-default-in-es-6-modules)
+- [Run client and server concurrently tutorial](https://www.youtube.com/watch?v=XwFDdCIDsqY)
+- [npm prefix config](https://docs.npmjs.com/cli/v8/using-npm/config#prefix)
+- [How ot organize file structures of backend and front end in mern](https://stackoverflow.com/questions/51126472/how-to-organise-file-structure-of-backend-and-frontend-in-mern)
 
 #### Node.js config
 
@@ -129,7 +132,7 @@
 - `heroku ps:scale web=1` to scale heroku app
 - `heroku open` to open the web page
 - `heroku logs --tail` to stream logs
-- `heroku local web`: run app locally
+- `heroku local web` to run app locally
 - `heroku config:set TIMES=2` to setup an config vars (environment variables)
 - `heroku config` to view config vars on Heroku
 - [Node.js](https://devcenter.heroku.com/categories/nodejs-support)

@@ -1,0 +1,32 @@
+{
+  "name": "elliot-ecommerce",
+  "version": "1.0.0",
+  "description": "E-commerce Web Application built with MERN stack",
+  "main": "index.js",
+  "scripts": {
+    "client": "npm start --prefix client",
+    "server": "npm run dev --prefix server",
+    "dev": "concurrently -c \"bgBlue.bold,bgMagenta.bold\" \"npm:server\" \"npm:client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tri1911/ecommerce-mern.git"
+  },
+  "keywords": [
+    "mongodb",
+    "express.js",
+    "react",
+    "node.js"
+  ],
+  "author": "Elliot Ho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tri1911/ecommerce-mern/issues"
+  },
+  "homepage": "https://github.com/tri1911/ecommerce-mern#readme",
+  "devDependencies": {
+    "concurrently": "^7.3.0"
+  },"engines": {
+    "node": "18.x"
+  }
+}

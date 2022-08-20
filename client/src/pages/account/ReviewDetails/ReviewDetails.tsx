@@ -289,7 +289,7 @@ export default function ReviewDetails() {
                 />
               </svg>
             ) : state && state.existingReview ? (
-              "Edit"
+              "Update"
             ) : (
               "Submit"
             )}
