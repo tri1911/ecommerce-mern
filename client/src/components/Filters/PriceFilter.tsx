@@ -2,6 +2,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import debounce from "lodash.debounce";
 
+/**
+ * User changes price range -> local state changed -> immediate update price indicators, but reflect price range to the searchParams only after user stops change the price 1s
+ * - PriceFilter includes local states to keep track the selected min & max prices.
+ * - Use React ref to keep the price range indicator (progress bar) in sync with the local states.
+ * - When user change the price range which triggers local state updates, to avoid calling so many api calls due to minPrice, maxPrice params changes
+ * we need to delay the actual updating `searchParams` operations with lodash's `debounce` method
+ */
+
 export default function PriceFilter({
   priceRangeMin,
   priceRangeMax,
@@ -18,7 +26,7 @@ export default function PriceFilter({
   const [minPrice, setMinPrice] = useState(priceRangeMin);
   const [maxPrice, setMaxPrice] = useState(priceRangeMax);
 
-  // when props are changed, need to update the local state as well
+  // When props are changed, need to update the local state as well.
   useEffect(() => {
     setMinPrice(priceRangeMin);
   }, [priceRangeMin]);
@@ -56,17 +64,40 @@ export default function PriceFilter({
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // TODO: extract into custom hook
+  /**
+   * Reflect local states to searchParams
+   */
 
-  // NOTE: have to useMemo (or useCallback) to make the debounce function persistence among renders
+  // TODO: extract into a custom hook
+
+  // NOTE: have to use `useMemo` (or `useCallback`) to keep the debounce function persistent among renders
   const debouncedUpdateMinPrice = useMemo(
     () =>
       debounce((minPrice: number) => {
+        // If the local state `minPrice` > `priceRangeMin`, consider update the `searchParams`
         if (minPrice > priceRangeMin) {
-          searchParams.set("minPrice", String(minPrice));
-          setSearchParams(searchParams);
+          // Only call `setSearchParam` in either of 2 cases
+          // 1 - local state `minPrice` differs from the current `minPrice` in URL search params
+          // 2 - `minPrice` does not exist in URL search params yet
+          const selectedMinPrice = searchParams.get("minPrice");
+          if (
+            selectedMinPrice === null ||
+            minPrice !== parseInt(selectedMinPrice)
+          ) {
+            console.log("updating `minPrice` local state to searchParams...");
+            searchParams.set("minPrice", String(minPrice));
+            // NOTE: should reset `sort` as well?
+            // Reset the `active page` as well
+            searchParams.delete("page");
+            setSearchParams(searchParams);
+          }
         } else if (searchParams.has("minPrice")) {
+          // otherwise, if the local state `minPrice` is default (equals priceRangeMin)
+          // exclude it from `searchParams` (if it does exist in `searchParams`)
+          console.log("excluding `minPrice` searchParams from searchParams...");
           searchParams.delete("minPrice");
+          // Reset the `active page` as well
+          searchParams.delete("page");
           setSearchParams(searchParams);
         }
       }, 1000),
@@ -85,10 +116,22 @@ export default function PriceFilter({
     () =>
       debounce((maxPrice: number) => {
         if (maxPrice < priceRangeMax) {
-          searchParams.set("maxPrice", String(maxPrice));
-          setSearchParams(searchParams);
+          const selectedMaxPrice = searchParams.get("maxPrice");
+          if (
+            selectedMaxPrice === null ||
+            maxPrice !== parseInt(selectedMaxPrice)
+          ) {
+            console.log("updating `maxPrice` local state to searchParams...");
+            searchParams.set("maxPrice", String(maxPrice));
+            // Reset the `active page` as well
+            searchParams.delete("page");
+            setSearchParams(searchParams);
+          }
         } else if (searchParams.has("maxPrice")) {
+          console.log("excluding `maxPrice` searchParams from searchParams...");
           searchParams.delete("maxPrice");
+          // Reset the `active page` as well
+          searchParams.delete("page");
           setSearchParams(searchParams);
         }
       }, 1000),
@@ -103,7 +146,7 @@ export default function PriceFilter({
   }, [debouncedUpdateMaxPrice, maxPrice]);
 
   /**
-   * Handler method(s)
+   * Event Handler
    */
 
   const handlePriceRangeChanged: React.ChangeEventHandler<HTMLInputElement> =
