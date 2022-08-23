@@ -21,8 +21,8 @@ const useShoppingCart = () => {
   }, [dispatch]);
 
   const handleAddToCart = useCallback(
-    (payload: { productId: string; quantity: number }) => () => {
-      dispatch(cartItemAdded(payload));
+    (payload: { productId: string; quantity: number }) => async () => {
+      await dispatch(cartItemAdded(payload));
       dispatch(setShowCartDrawer(true));
     },
     [dispatch]

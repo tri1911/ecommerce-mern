@@ -1,5 +1,5 @@
 import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/solid";
-import usePagination from "../../hooks/usePagination";
+import usePagination from "hooks/usePagination";
 
 const PageItem = ({
   page,

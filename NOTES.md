@@ -23,8 +23,10 @@
 - [re-export default imports](https://stackoverflow.com/questions/39999282/re-export-default-in-es-6-modules)
 - [Run client and server concurrently tutorial](https://www.youtube.com/watch?v=XwFDdCIDsqY)
 - [npm prefix config](https://docs.npmjs.com/cli/v8/using-npm/config#prefix)
-- [How ot organize file structures of backend and front end in mern](https://stackoverflow.com/questions/51126472/how-to-organise-file-structure-of-backend-and-frontend-in-mern)
+- [How to organize file structures of backend and front end in mern](https://stackoverflow.com/questions/51126472/how-to-organise-file-structure-of-backend-and-frontend-in-mern)
 - [Proxy api requests in development](https://create-react-app.dev/docs/proxying-api-requests-in-development/)
+- [Turn-off auto-formatting markdown in VSCode](https://stackoverflow.com/questions/65866539/how-to-turn-off-vs-code-auto-formatting-for-markdown-files)
+  - [Language specific editor settings](https://code.visualstudio.com/docs/getstarted/settings#_languagespecific-editor-settings)
 
 #### Node.js config
 
@@ -54,6 +56,7 @@
 - [Why should use `undefined` instead of `null`](https://writingjavascript.com/why-you-should-always-use-undefined-and-never-null)
 - [Difference btw jwt decode and verify](https://www.googlecloudcommunity.com/gc/Apigee/What-is-the-difference-between-DecodeJWT-and-VerifyJWT/m-p/47537)
 - [Should use union or enum?](https://stackoverflow.com/questions/40275832/typescript-has-unions-so-are-enums-redundant)
+- [Order of data transformation](https://ux.stackexchange.com/questions/129073/should-the-pagination-be-reset-when-changing-the-order)
 
 ### Lessons
 
@@ -85,6 +88,7 @@
 4. React Router v6
 5. MongoDB & mongoose
 6. React Bootstrap?
+7. [Cloudinary - Upload / Manage media assets](https://cloudinary.com/documentation)
 
 ### To-Read
 
@@ -152,6 +156,13 @@
 - [Deploying React Node TypeScript to Heroku w/ Github](https://funnelgarden.com/deploying-react-node-typescript-heroku-github/)
 - [Deploy subdirectory to heroku](https://stackoverflow.com/questions/26241683/heroku-deploy-a-sub-directory)
 
+### Static Assets Storage with AWS S3
+
+- [Using AWS S3 to Store Static Assets and File Uploads](https://devcenter.heroku.com/articles/s3)
+- [S3 upload node.js](https://devcenter.heroku.com/articles/s3-upload-node)
+- [SDK v2 code examples](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/s3-examples.html)
+- [SDK v3 for JavaScript](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/welcome.html)
+
 ### Issues
 
 - [TypeScript outDir in tsconfig not working](https://stackoverflow.com/questions/45661027/typescript-outdir-setting-in-tsconfig-json-not-working)
@@ -214,23 +225,24 @@
 - [x] `Product Quick View` Modal
 - [x] Shopping Cart: Drawer - in Mobile screen & Dropdown in large screen
 - [x] Pagination
-- [] make the `New Arrival` section horizontally scrollable -> use `Swiper.js`?
-
+- [ ] make the `New Arrival` section horizontally scrollable -> use `Swiper.js`?
 - [x] Make the price filter work in `ShopPage`
-- [] Fix `Filter` toggle in mobile mode - [] `Gallery Slide` banner in `Home` Page - [] `Image Gallery Slide` within the `Sinlge Product Page` - [] `Sign In` modal when checking out
+- [ ] Fix `Filter` toggle in mobile mode
+  - [ ] `Gallery Slide` banner in `Home` Page
+  - [ ] `Image Gallery Slide` within the `Single Product Page`
+  - [ ] `Sign In` modal when checking out
 
-- [] Disable the submit button while the user has attempted to submit (hint: formik.isSubmitting)
-- [] Add a reset button with formik.handleReset or `<button type="reset">`
-- [] Change the input border color to red when a field has an error and isn’t focused
-- [] Persist form state to the browser’s sessionStorage so that form progress is kept in between page refreshes
-
-- [] Animation when clicking on the heart icon to add product into wishlist
-- [] Custom select component
-- [] Language & Currency dropdown
-- [] Account Dropdown
-- [] Search recommendations
-- [] Search product in `All` or by `category`
-- [] `See more` button on `New arrival` products section
+- [ ] Disable the submit button while the user has attempted to submit (hint: formik.isSubmitting)
+- [ ] Add a reset button with formik.handleReset or `<button type="reset">`
+- [ ] Change the input border color to red when a field has an error and isn’t focused
+- [ ] Persist form state to the browser’s sessionStorage so that form progress is kept in between page refreshes
+- [ ] Animation when clicking on the heart icon to add product into wishlist
+- [ ] Custom select component
+- [ ] Language & Currency dropdown
+- [ ] Account Dropdown
+- [ ] Search recommendations
+- [ ] Search product in `All` or by `category`
+- [ ] `See more` button on `New arrival` products section
 
 #### State management
 
@@ -455,11 +467,11 @@
 - [x] User authentication
 - [x] User Profile
 - [x] Categories
-- [] Wishlist
+- [ ] Wishlist
 
-- [] replace yup with zod in formik forms
-- [] re-organize the learning notes
-- [] determine which icon library to use and get rid of the rest
+- [ ] Replace yup with zod in formik forms
+- [x] Re-organize the learning notes
+- [ ] Determine which icon library to use and get rid of the rest
 
 ### Courses / Tutorials
 
