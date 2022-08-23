@@ -1,39 +1,50 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import classNames from "classnames";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { useSearchParams } from "react-router-dom";
 
-const SORT_OPTIONS: Array<{ name: string; value?: string }> = [
-  { name: "Default Sorting", value: undefined },
-  { name: "Best Rating", value: "-ratings.average" },
-  { name: "Newest", value: "-createdAt" },
-  { name: "Price: Low to High", value: "price" },
-  { name: "Price: High to Low", value: "-price" },
-];
+const SORT_ORDERS = {
+  default: "Default Sorting",
+  "-ratings.average": "Best Rating",
+  "-createdAt": "Newest",
+  price: "Price: Low to High",
+  "-price": "Price: High to Low",
+};
+
+type SortOrder = keyof typeof SORT_ORDERS;
 
 const ProductsSorter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
 
-  useEffect(() => {
-    selectedSort.value !== undefined
-      ? searchParams.set("sort", selectedSort.value)
-      : searchParams.delete("sort"); // When setting the sort to default, need to remove `sort` query param in the url as well
+  const selectedSort = searchParams.get("sort") || "default";
+
+  const handleSortChanged = (newSort: SortOrder) => {
+    // Reset the `active page` when changing `sort`
+    searchParams.delete("page");
+
+    if (newSort === "default") {
+      searchParams.delete("sort");
+    } else {
+      searchParams.set("sort", newSort);
+    }
     setSearchParams(searchParams);
-  }, [searchParams, setSearchParams, selectedSort]);
+  };
 
   return (
     <Listbox
       as="div"
       className="relative w-48"
       value={selectedSort}
-      onChange={setSelectedSort}
+      onChange={handleSortChanged}
     >
       {({ open }) => (
         <>
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-            <span className="block truncate">{selectedSort.name}</span>
+            {/* Button Label */}
+            <span className="block truncate">
+              {SORT_ORDERS[selectedSort as SortOrder]}
+            </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronDownIcon
                 className={classNames(
@@ -46,6 +57,7 @@ const ProductsSorter = () => {
               />
             </span>
           </Listbox.Button>
+          {/* Sort Order Options */}
           <Transition
             as={Fragment}
             leave="transition ease-in duration-100"
@@ -53,9 +65,9 @@ const ProductsSorter = () => {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="z-10 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {SORT_OPTIONS.map((sort, index) => (
+              {Object.entries(SORT_ORDERS).map(([sort, name]) => (
                 <Listbox.Option
-                  key={index}
+                  key={sort}
                   value={sort}
                   className={({ active }) =>
                     classNames(
@@ -74,7 +86,7 @@ const ProductsSorter = () => {
                           { "font-normal": !selected }
                         )}
                       >
-                        {sort.name}
+                        {name}
                       </span>
                       {selected && (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">

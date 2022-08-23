@@ -7,7 +7,8 @@ const useFilterCheckboxHandler = () => {
   const handleCheckboxChanged: React.ChangeEventHandler<HTMLInputElement> = (
     event
   ) => {
-    // Reset the active page when the filter is changed
+    // Reset `sort` & `active page` when filter get changed
+    searchParams.delete("sort");
     searchParams.delete("page");
 
     const { name, value, checked } = event.target;

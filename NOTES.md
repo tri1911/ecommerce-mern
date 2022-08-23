@@ -56,7 +56,6 @@
 - [Why should use `undefined` instead of `null`](https://writingjavascript.com/why-you-should-always-use-undefined-and-never-null)
 - [Difference btw jwt decode and verify](https://www.googlecloudcommunity.com/gc/Apigee/What-is-the-difference-between-DecodeJWT-and-VerifyJWT/m-p/47537)
 - [Should use union or enum?](https://stackoverflow.com/questions/40275832/typescript-has-unions-so-are-enums-redundant)
-- [Order of data transformation](https://ux.stackexchange.com/questions/129073/should-the-pagination-be-reset-when-changing-the-order)
 
 ### Lessons
 
@@ -313,6 +312,8 @@
 - [React filter practices](https://stackoverflow.com/questions/55204504/react-filter-best-practices)
 - [Movie search app with react + elasticsearch](https://medium.appbase.io/how-to-build-a-movie-search-app-with-react-and-elasticsearch-2470f202291c)
 - [filter with searchParams](https://stackoverflow.com/questions/63885459/sync-queryparameters-with-redux-state-and-react-router-for-function-components)
+- [Order of data transformation](https://ux.stackexchange.com/questions/129073/should-the-pagination-be-reset-when-changing-the-order)
+  - [Sorting a Paginated Record Set User Experience Expectation](https://ux.stackexchange.com/questions/72124/sorting-a-paginated-record-set-user-experience-expectation)
 
 ### Tailwind components libraries
 
