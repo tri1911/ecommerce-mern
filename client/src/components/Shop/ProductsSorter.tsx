@@ -19,7 +19,7 @@ const ProductsSorter = () => {
   useEffect(() => {
     selectedSort.value !== undefined
       ? searchParams.set("sort", selectedSort.value)
-      : searchParams.delete("sort");
+      : searchParams.delete("sort"); // When setting the sort to default, need to remove `sort` query param in the url as well
     setSearchParams(searchParams);
   }, [searchParams, setSearchParams, selectedSort]);
 

@@ -312,6 +312,7 @@
 
 - [React filter practices](https://stackoverflow.com/questions/55204504/react-filter-best-practices)
 - [Movie search app with react + elasticsearch](https://medium.appbase.io/how-to-build-a-movie-search-app-with-react-and-elasticsearch-2470f202291c)
+- [filter with searchParams](https://stackoverflow.com/questions/63885459/sync-queryparameters-with-redux-state-and-react-router-for-function-components)
 
 ### Tailwind components libraries
 

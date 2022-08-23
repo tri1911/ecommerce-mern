@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "hooks";
 import Breadcrumbs from "components/Shared/Breadcrumbs";
@@ -26,9 +26,16 @@ const ProductsPage = () => {
   const [searchParams] = useSearchParams();
   const dispatch = useAppDispatch();
 
+  // Fetch category details.
   useEffect(() => {
     if (categoryId) {
       dispatch(fetchSingleCategory(categoryId));
+    }
+  }, [dispatch, categoryId]);
+
+  // Fetch products list if the searchParams get changed
+  useEffect(() => {
+    if (categoryId) {
       dispatch(
         fetchProductsByCategory({
           categoryId,
@@ -46,13 +53,15 @@ const ProductsPage = () => {
         })
       );
     }
-  }, [dispatch, searchParams, categoryId]);
+  }, [dispatch, categoryId, searchParams]);
 
   const [displayMode, setDisplayMode] = useState<ShopDisplayMode>("grid");
   const { status, metadata } = useAppSelector((state) => state.products);
-  const category = useAppSelector((state: RootState) => state.category.data);
+  const categoryDetails = useAppSelector(
+    (state: RootState) => state.category.data
+  );
   const products = useAppSelector(selectAllProducts);
-  const crumbs = category ? categoryToCrumbs(category) : [];
+  const crumbs = categoryDetails ? categoryToCrumbs(categoryDetails) : [];
 
   return (
     <div>
