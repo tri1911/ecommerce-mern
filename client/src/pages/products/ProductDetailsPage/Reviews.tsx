@@ -110,7 +110,7 @@ function SingleReview({
   return (
     <div className="space-y-3">
       <div className="flex space-x-3">
-        <div className="__avatar w-9 h-9 rounded-full overflow-hidden">
+        <div className="__avatar w-10 h-10 rounded-full overflow-hidden">
           <img
             src={user.avatar ? user.avatar : "/images/my-avatar.jpeg"}
             alt="user avatar"
@@ -118,7 +118,7 @@ function SingleReview({
           />
         </div>
         <div className="space-y-1">
-          <h4 className="__name text-xs font-medium text-gray-800">
+          <h4 className="__name text-sm font-medium text-gray-800">
             {user.name}
           </h4>
           <div className="__rating flex space-x-1 text-xs text-yellow-400">
@@ -139,9 +139,7 @@ function SingleReview({
         </div>
       </div>
       <div className="__comment">
-        <p className="italic font-roboto text-sm font-thin text-gray-500">
-          {desc}
-        </p>
+        <p className="font-roboto italic text-sm text-gray-600">{desc}</p>
       </div>
     </div>
   );

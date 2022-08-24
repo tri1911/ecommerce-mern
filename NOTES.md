@@ -169,6 +169,18 @@
 - [Refused to load image url](https://stackoverflow.com/questions/66405357/refused-to-load-the-image-url-because-it-violates-the-following-content-secu)
 - [Getting no same origin error](https://stackoverflow.com/questions/71904052/getting-notsameoriginafterdefaultedtosameoriginbycoep-error-with-helmet)
 
+### To-dos (in priority order)
+
+- [ ] Re-design the Hero Section in Home Page
+- [ ] Products with multiple variants (sizes, colors...)
+  - [What about products variants](https://help.akeneo.com/pim/serenity/articles/what-about-products-variants.html)
+  - [Mongodb Schema Design for Product variants](https://stackoverflow.com/questions/42295107/mongodb-schema-for-ecommerce-products-that-have-variations-with-different-skus)
+- [ ] Update the seed data - to present the real-world like products catalog
+  - [ ] Store static assets with AWS S3
+- [ ] Allow user to upload their avatar, review images (to AWS S3)
+- [ ] Searching functionality
+  - [Atlas Search](https://www.mongodb.com/docs/atlas/atlas-search/)
+
 ## Front-end
 
 ### UI Template, Tutorial as References
@@ -474,11 +486,10 @@
 - [x] User Profile
 - [x] Categories
 - [x] Wishlist
+- [x] Re-organize the learning notes
 
 - [ ] Replace yup with zod in formik forms
-- [x] Re-organize the learning notes
 - [ ] Determine which icon library to use and get rid of the rest
-
 ### Courses / Tutorials
 
 - [Coursera - Meta backend course](https://www.coursera.org/professional-certificates/meta-back-end-developer#courses)
@@ -551,7 +562,7 @@
 - [Schema Validation with Zod and Express.js](https://dev.to/franciscomendes10866/schema-validation-with-zod-and-expressjs-111p)
 - [Zod Validate for instance of ObjectId](https://github.com/colinhacks/zod/issues/318)
 
-### Database Model Design (with MongoDB)
+### Database Schema Design (MongoDB)
 
 #### E-Commerce
 

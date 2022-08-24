@@ -36,7 +36,7 @@ export default function AccountIcon() {
   return (
     <Popover>
       <Popover.Button
-        className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75"
         ref={setReferenceElement}
       >
         <div className="relative text-center text-gray-700 hover:text-primary transition">
@@ -86,7 +86,7 @@ export default function AccountIcon() {
               <Popover.Button
                 as={Link}
                 to="/account/summary"
-                className="flex items-center space-x-2 hover:text-primary"
+                className="flex items-center space-x-2 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75"
               >
                 <IdentificationIcon className="w-5 h-5" />
                 <span className="">My Account</span>
@@ -94,7 +94,7 @@ export default function AccountIcon() {
               <Popover.Button
                 as={Link}
                 to="/account/orders"
-                className="flex items-center space-x-2 hover:text-primary"
+                className="flex items-center space-x-2 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75"
               >
                 <GiftIcon className="w-5 h-5" />
                 <span className="">My Order</span>
@@ -102,7 +102,7 @@ export default function AccountIcon() {
               <Popover.Button
                 as={Link}
                 to="/account/wishlist"
-                className="flex items-center space-x-2 hover:text-primary"
+                className="flex items-center space-x-2 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75"
               >
                 <HeartIcon className="w-5 h-5" />
                 <span className="">My Wishlist</span>
@@ -110,7 +110,7 @@ export default function AccountIcon() {
               <Popover.Button
                 as={Link}
                 to="/cart"
-                className="flex items-center space-x-2 hover:text-primary"
+                className="flex items-center space-x-2 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75"
               >
                 <ShoppingCartIcon className="w-5 h-5" />
                 <span className="">My Cart</span>
@@ -118,7 +118,7 @@ export default function AccountIcon() {
               <Popover.Button
                 as={Link}
                 to="#"
-                className="flex items-center space-x-2 hover:text-primary"
+                className="flex items-center space-x-2 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75"
               >
                 <ArrowLeftIcon className="w-5 h-5" />
                 <span className="">Sign Out</span>

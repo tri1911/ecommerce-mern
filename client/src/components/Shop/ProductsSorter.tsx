@@ -40,7 +40,7 @@ const ProductsSorter = () => {
     >
       {({ open }) => (
         <>
-          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-300 sm:text-sm">
             {/* Button Label */}
             <span className="block truncate">
               {SORT_ORDERS[selectedSort as SortOrder]}
@@ -72,7 +72,7 @@ const ProductsSorter = () => {
                   className={({ active }) =>
                     classNames(
                       "relative cursor-default select-none py-2 pl-10 pr-4",
-                      { "bg-amber-100 text-amber-900": active },
+                      { "bg-indigo-100 text-indigo-900": active },
                       { "text-gray-900": !active }
                     )
                   }
@@ -89,7 +89,7 @@ const ProductsSorter = () => {
                         {name}
                       </span>
                       {selected && (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-600">
                           <CheckIcon className="h-5 w-5" aria-hidden="true" />
                         </span>
                       )}
