@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import classNames from "classnames";
 import { useAppSelector } from "hooks";
 import useWishlist from "hooks/useWishlist";
-// import { selectAllWishlistItems } from "slices/wishlists.slice";
+import AccountIcon from "./AccountIcon";
 
 function Logo() {
   return (
@@ -71,7 +71,6 @@ function SingleIcon({
 }
 
 function HeaderIcons() {
-  const user = useAppSelector((state) => state.auth.user);
   const cartItems = useAppSelector((state) => state.cart.data?.items);
   const { items } = useWishlist();
 
@@ -97,11 +96,7 @@ function HeaderIcons() {
         badgeValue={cartItems?.length}
         badgeRight="-right-3"
       />
-      <SingleIcon
-        href={user ? "/account/summary" : "/login"}
-        icon="far fa-user"
-        label={user ? "Account" : "Login"}
-      />
+      <AccountIcon />
     </div>
   );
 }

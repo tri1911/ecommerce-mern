@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRightIcon } from "@heroicons/react/outline";
+import { ChevronRightIcon, PhoneIcon } from "@heroicons/react/outline";
 
 import { useAppDispatch, useAppSelector } from "hooks";
 import { fetchCategoriesTree } from "slices/categories.slice";
@@ -96,8 +96,6 @@ function SubCategorySection({
 
 // TODO: implement mobile menubar
 function NavItems() {
-  const user = useAppSelector((state) => state.auth.user);
-
   return (
     <div className="flex items-center justify-between flex-grow pl-12">
       <div className="flex items-center space-x-6 text-base capitalize">
@@ -107,11 +105,12 @@ function NavItems() {
         <NavItem href="/contact" text="Contact us" />
         <NavItem href="/faq" text="FAQ" />
       </div>
-      {user && (
-        <div className="ml-auto justify-self-end text-gray-200">
-          Hello, {user.name}
-        </div>
-      )}
+      <div className="ml-auto justify-self-end flex items-center text-gray-300 hover:text-primary">
+        <PhoneIcon className="w-4 h-4" />
+        <a href="tel:+1234567890" className="ml-2">
+          Call: +123 456 7890
+        </a>
+      </div>
     </div>
   );
 }

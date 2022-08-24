@@ -73,6 +73,7 @@
 - [Allbirds](https://www.allbirds.com/)
 - [HM](https://www2.hm.com/)
 - [Tiki](https://tiki.vn/)
+- [Home Depot](https://www.homedepot.ca/en/home.html)
 
 #### E-commerce Projects
 
@@ -224,13 +225,13 @@
 - [x] `Product Quick View` Modal
 - [x] Shopping Cart: Drawer - in Mobile screen & Dropdown in large screen
 - [x] Pagination
-- [ ] make the `New Arrival` section horizontally scrollable -> use `Swiper.js`?
+- [x] make the `New Arrival` section horizontally scrollable -> use `Swiper.js`?
 - [x] Make the price filter work in `ShopPage`
+- [x] `Gallery Slide` banner in `Home` Page
+- [x] `Image Gallery Slide` within the `Single Product Page`
+- [x] Account Dropdown / Popover
 - [ ] Fix `Filter` toggle in mobile mode
-  - [ ] `Gallery Slide` banner in `Home` Page
-  - [ ] `Image Gallery Slide` within the `Single Product Page`
-  - [ ] `Sign In` modal when checking out
-
+- [ ] `Sign In` modal when checking out
 - [ ] Disable the submit button while the user has attempted to submit (hint: formik.isSubmitting)
 - [ ] Add a reset button with formik.handleReset or `<button type="reset">`
 - [ ] Change the input border color to red when a field has an error and isn’t focused
@@ -238,7 +239,6 @@
 - [ ] Animation when clicking on the heart icon to add product into wishlist
 - [ ] Custom select component
 - [ ] Language & Currency dropdown
-- [ ] Account Dropdown
 - [ ] Search recommendations
 - [ ] Search product in `All` or by `category`
 - [ ] `See more` button on `New arrival` products section
@@ -301,7 +301,7 @@
 
 #### Redux-persist
 
-- [Redux-presist and RTK](https://blog.logrocket.com/persist-state-redux-persist-redux-toolkit-react/)
+- [Redux-persist and RTK](https://blog.logrocket.com/persist-state-redux-persist-redux-toolkit-react/)
 
 ### axios
 
@@ -386,9 +386,12 @@
 ### Popover & Tooltip
 
 - [Popover](https://headlessui.com/react/popover)
-- [Position the panel](https://popper.js.org/react-popper/)
+  - [React-popper](https://popper.js.org/react-popper/)
+  - [Issue with TypeScript](https://github.com/floating-ui/react-popper/issues/415)
+  - [Popper.js Tutorial](https://popper.js.org/docs/v2/tutorial/)
 - [Tooltip](https://simplernerd.com/tailwind-css-tooltip-react-next-js/)
-- [issue with typescript](https://github.com/floating-ui/react-popper/issues/415)
+- [Show popover when hovering instead of pressing the button](https://github.com/tailwindlabs/headlessui/discussions/425)
+  - [Example](https://codesandbox.io/s/d8llw?file=/src/App.js)
 
 ### Timeline
 
@@ -445,6 +448,7 @@
 - [Spread JSX attributes](https://dev.to/jimjja/lose-coupling-abstractions-in-react-using-typescript-397o)
 - [Admin Dashboard](https://www.youtube.com/watch?v=BOF79TAIkYQ)
 - [URL State in React](https://pierrehedkvist.com/posts/react-state-url)
+- [Pass React component as prop](https://www.developerway.com/posts/react-component-as-prop-the-right-way)
 
 ### Issues
 
@@ -469,7 +473,7 @@
 - [x] User authentication
 - [x] User Profile
 - [x] Categories
-- [ ] Wishlist
+- [x] Wishlist
 
 - [ ] Replace yup with zod in formik forms
 - [x] Re-organize the learning notes
@@ -539,6 +543,7 @@
 - [Jira](https://developer.atlassian.com/cloud/jira/software/rest/intro/)
 - [Notion](https://developers.notion.com/reference/intro)
 - [Shopify](https://shopify.dev/api/ajax/reference/cart)
+- [Tiki](https://tiki.vn/api/v2/products/184059211?platform=web&spid=168778791)
 
 ### Validation (for requests)
 
